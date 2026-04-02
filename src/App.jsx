@@ -1,7 +1,7 @@
 import { useState, useEffect, } from "react";
 import { getProducts } from './services/api';
 // ============================================================
-// DATABASE SCHEMA & MOCK DATA
+// DATABASE SCHEMA & DATA
 // ============================================================
 const DB_SCHEMA = `
 -- B-Com E-Commerce Database Schema
@@ -38,7 +38,6 @@ CREATE TABLE products (
   name          VARCHAR(300) NOT NULL,
   description   TEXT,
   price_bzd     DECIMAL(10,2) NOT NULL,
-  price_usd     DECIMAL(10,2),
   stock_qty     INT DEFAULT 0,
   sku           VARCHAR(100) UNIQUE,
   brand         VARCHAR(100),
@@ -109,37 +108,12 @@ CREATE INDEX idx_products_active ON products(is_active, featured);
 CREATE INDEX idx_orders_customer ON orders(customer_id);
 CREATE INDEX idx_payments_order ON payments(order_id);
 `;
-// TODO: This will be replaced by live API data
-// Keep for now as fallback
-const PRODUCTS = [
-  // CLOTHES
-  { id:1, name:"B-Com Linen Shirt", category:"clothes", price:89.99, usd:44.99, brand:"B-COM Original", sizes:["XS","S","M","L","XL"], colors:["White","Sky Blue","Sand"], image:"👕", featured:true, store:"own", rating:4.8, reviews:124, stock:45 },
-  { id:2, name:"Caribbean Print Dress", category:"clothes", price:129.99, usd:64.99, brand:"B-COM Original", sizes:["XS","S","M","L"], colors:["Coral","Turquoise","Sunset"], image:"👗", featured:true, store:"own", rating:4.9, reviews:89, stock:23 },
-  { id:3, name:"Belize Heritage Tee", category:"clothes", price:49.99, usd:24.99, brand:"B-COM Original", sizes:["S","M","L","XL","XXL"], colors:["Forest Green","Navy","Black"], image:"👕", featured:false, store:"own", rating:4.7, reviews:201, stock:78 },
-  { id:4, name:"Summer Maxi Dress", category:"clothes", price:179.99, usd:89.99, brand:"Shein Collection", sizes:["XS","S","M","L","XL"], colors:["Floral Print","White","Yellow"], image:"👗", featured:true, store:"shein", rating:4.5, reviews:340, stock:0 },
-  { id:5, name:"Men's Cargo Shorts", category:"clothes", price:79.99, usd:39.99, brand:"Temu Basics", sizes:["S","M","L","XL","XXL"], colors:["Khaki","Black","Navy"], image:"🩳", featured:false, store:"temu", rating:4.3, reviews:156, stock:102 },
-  { id:6, name:"Floral Crop Top", category:"clothes", price:59.99, usd:29.99, brand:"Amazon Essentials", sizes:["XS","S","M","L"], colors:["Pink","Green","Orange"], image:"👚", featured:false, store:"amazon", rating:4.4, reviews:88, stock:34 },
-
-  // SHOES
-  { id:7, name:"Reef Runner Sandals", category:"shoes", price:149.99, usd:74.99, brand:"B-COM Footwear", sizes:["6","7","8","9","10","11"], colors:["Natural","Black","Brown"], image:"🩴", featured:true, store:"own", rating:4.9, reviews:267, stock:56 },
-  { id:8, name:"Mangrove Sneakers", category:"shoes", price:199.99, usd:99.99, brand:"B-COM Footwear", sizes:["5","6","7","8","9","10","11","12"], colors:["White","Grey","Teal"], image:"👟", featured:true, store:"own", rating:4.7, reviews:143, stock:29 },
-  { id:9, name:"Cayes Leather Loafers", category:"shoes", price:259.99, usd:129.99, brand:"Alibaba Premium", sizes:["6","7","8","9","10","11"], colors:["Tan","Black","Cognac"], image:"👞", featured:false, store:"alibaba", rating:4.6, reviews:77, stock:15 },
-  { id:10, name:"Platform Heels", category:"shoes", price:189.99, usd:94.99, brand:"Shein Glam", sizes:["5","6","7","8","9","10"], colors:["Black","Nude","Red"], image:"👠", featured:true, store:"shein", rating:4.4, reviews:212, stock:41 },
-  { id:11, name:"Kids Beach Shoes", category:"shoes", price:69.99, usd:34.99, brand:"Temu Kids", sizes:["1","2","3","4","5","6"], colors:["Blue","Pink","Yellow"], image:"👟", featured:false, store:"temu", rating:4.5, reviews:98, stock:67 },
-
-  // ACCESSORIES
-  { id:12, name:"Woven Palm Hat", category:"accessories", price:79.99, usd:39.99, brand:"B-COM Original", sizes:["One Size"], colors:["Natural","Black"], image:"🎩", featured:true, store:"own", rating:4.8, reviews:189, stock:84 },
-  { id:13, name:"Sea Glass Necklace", category:"accessories", price:119.99, usd:59.99, brand:"B-COM Jewels", sizes:["One Size"], colors:["Teal","Amber","Clear"], image:"📿", featured:true, store:"own", rating:4.9, reviews:234, stock:38 },
-  { id:14, name:"Leather Crossbody Bag", category:"accessories", price:229.99, usd:114.99, brand:"Alibaba Leather", sizes:["One Size"], colors:["Tan","Black","Brown"], image:"👜", featured:false, store:"alibaba", rating:4.6, reviews:145, stock:22 },
-  { id:15, name:"Polarized Sunglasses", category:"accessories", price:149.99, usd:74.99, brand:"Amazon Select", sizes:["One Size"], colors:["Black","Tortoise","Gold"], image:"🕶️", featured:true, store:"amazon", rating:4.5, reviews:321, stock:73 },
-  { id:16, name:"Rattan Clutch", category:"accessories", price:99.99, usd:49.99, brand:"B-COM Original", sizes:["One Size"], colors:["Natural","White"], image:"👛", featured:false, store:"own", rating:4.7, reviews:67, stock:31 },
-];
 
 const STORE_LINKS = {
-  amazon: "https://www.amazon.com",
-  shein: "https://www.shein.com",
-  temu: "https://www.temu.com",
-  alibaba: "https://www.alibaba.com",
+  Amazon: "https://www.amazon.com",
+  Shein: "https://www.shein.com",
+  Temu: "https://www.temu.com",
+  Alibaba: "https://www.alibaba.com",
 };
 
 const STORE_COLORS = {
@@ -332,9 +306,11 @@ function Nav({ page, setPage, cartCount, setCartOpen }) {
     <nav style={{ ...styles.nav, background: scrolled ? "rgba(252,248,240,0.97)" : "rgba(252,248,240,0.85)", boxShadow: scrolled ? "0 2px 20px rgba(0,0,0,0.1)" : "none" }}>
       <div style={styles.navInner}>
         <div style={styles.logo} onClick={() => setPage("home")}>
-          <span style={styles.logoIcon}>🌴</span>
-          <span style={styles.logoText}>B-COM</span>
-          <span style={styles.logoSub}>BELIZE</span>
+          <img 
+            src="/images/logo.png" 
+            alt="B-Com Belize" 
+            style={{height:45, objectFit:"contain", cursor:"pointer"}}
+          />
         </div>
 
         <div style={styles.navLinks}>
@@ -371,13 +347,12 @@ function HomePage({ products, setPage, addToCart, wishlist, toggleWishlist, setS
           <div style={styles.heroPattern}/>
         </div>
         <div style={styles.heroContent}>
-          <div style={styles.heroBadge}>BZ Proudly Belizean</div>
           <h1 style={styles.heroTitle}>
             Fashion Meets<br/>
             <span style={styles.heroAccent}>Paradise</span>
           </h1>
           <p style={styles.heroSubtitle}>
-            Belize's premier online fashion destination. Clothes, shoes & accessories<br/>
+            Belize's premier online fashion destination. Clothes, shoes & accessories
             curated from local makers and global brands — delivered to your door.
           </p>
           <div style={styles.heroActions}>
@@ -443,7 +418,7 @@ function HomePage({ products, setPage, addToCart, wishlist, toggleWishlist, setS
       </section>
 
       {/* FEATURED PRODUCTS */}
-      <section style={{ ...styles.section, background: "var(--cream2)" }}>
+      <section style={{ ...styles.section, background: "#ffffff" }}>
         <h2 style={styles.sectionTitle}>Featured Products</h2>
         <div style={styles.productGrid}>
           {featured.slice(0,6).map(p => (
@@ -566,8 +541,8 @@ function ShopPage({ products, allProducts, selectedCategory, setSelectedCategory
 // PRODUCT CARD
 // ============================================================
   function ProductCard({ product, addToCart: _addToCart, wishlist, toggleWishlist, setSelectedProduct, setPage }) {
-  const isExternal = product.store !== "own";
-  const storeColor = STORE_COLORS[product.store] || "var(--teal)";
+  const isExternal = (product.external_store || product.store) !== "own";
+  const storeColor = STORE_COLORS[product.external_store || product.store] || "var(--teal)";
 
   const handleAction = () => {
     if (isExternal) {
@@ -581,14 +556,11 @@ function ShopPage({ products, allProducts, selectedCategory, setSelectedCategory
   return (
     <div style={styles.productCard}>
       <div style={styles.productImageWrap} onClick={handleAction}>
-        <div style={{ ...styles.productImage, background: `linear-gradient(135deg, ${storeColor}22, ${storeColor}44)` }}>
-          <span style={styles.productEmoji}>{product.image}</span>
+        <div style={{ ...styles.productImage, background: product.images ? "transparent" : `linear-gradient(135deg, ${storeColor}22, ${storeColor}44)` }}>
+          <span style={styles.productEmoji}>{product.images ? <img src={product.images} alt={product.name} style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:"12px"}} /> : "🛍️"}</span>
         </div>
         {product.featured && <span style={styles.featuredBadge}>⭐ Featured</span>}
-        <span style={{ ...styles.storeBadge, background: storeColor }}>
-          {product.store === "own" ? "🌴 B-COM" : product.store.toUpperCase()}
-        </span>
-        {product.stock === 0 && <div style={styles.outOfStock}>Out of Stock</div>}
+        {(product.stock_qty ?? product.stock ?? 0) === 0 && <div style={styles.outOfStock}>Out of Stock</div>}
       </div>
 
       <div style={styles.productInfo}>
@@ -599,21 +571,62 @@ function ShopPage({ products, allProducts, selectedCategory, setSelectedCategory
           <span style={styles.productReviews}>({product.reviews})</span>
         </div>
         <div style={styles.productPriceRow}>
-          <span style={styles.productPrice}>BZ$ {product.price.toFixed(2)}</span>
-          <span style={styles.productPriceUsd}>US$ {product.usd.toFixed(2)}</span>
+          <span style={styles.productPrice}>BZ$ {parseFloat(product.price_bzd || product.price || 0).toFixed(2)}</span>
+          
         </div>
 
         <div style={styles.productActions}>
           <button
-            style={{ ...styles.addToCartBtn, background: isExternal ? storeColor : "var(--teal)", opacity: product.stock === 0 && !isExternal ? 0.5 : 1 }}
-            onClick={handleAction}
-            disabled={product.stock === 0 && !isExternal}
+            style={{ 
+              ...styles.addToCartBtn, 
+              background: "var(--teal)",
+              opacity: (product.stock_qty ?? product.stock ?? 0) === 0 ? 0.5 : 1,
+              flex: 1
+            }}
+            onClick={() => _addToCart && _addToCart(product, 
+              (product.sizes ? JSON.parse(product.sizes)[0] : "One Size"), 
+              (product.colors ? JSON.parse(product.colors)[0] : "Default")
+            )}
+            disabled={(product.stock_qty ?? product.stock ?? 0) === 0}
           >
-            {isExternal ? `Shop on ${product.store}` : product.stock === 0 ? "Out of Stock" : "Add to Cart"}
+            {(product.stock_qty ?? product.stock ?? 0) === 0 ? "Out of Stock" : "Add to Cart"}
           </button>
-          <button style={{ ...styles.wishlistBtn, color: wishlist.includes(product.id) ? "var(--rose)" : "#ccc" }} onClick={() => toggleWishlist(product.id)}>
-            {wishlist.includes(product.id) ? "❤️" : "🤍"}
+          <button
+            style={{ 
+              ...styles.addToCartBtn, 
+              background: "var(--dark)",
+              flex: 1
+            }}
+            onClick={() => {
+              _addToCart && _addToCart(product,
+                (product.sizes ? JSON.parse(product.sizes)[0] : "One Size"),
+                (product.colors ? JSON.parse(product.colors)[0] : "Default")
+              );
+              setPage("checkout");
+            }}
+            disabled={(product.stock_qty ?? product.stock ?? 0) === 0}
+          >
+              Buy Now
           </button>
+          <button 
+  style={{ 
+    ...styles.wishlistBtn,
+    background: wishlist.includes(product.id) ? "#fff0f2" : "#f5f5f5",
+    color: wishlist.includes(product.id) ? "var(--rose)" : "var(--muted)",
+    border: wishlist.includes(product.id) ? "1.5px solid var(--rose)" : "1.5px solid #ddd",
+    borderRadius: 10,
+    padding: "8px 10px",
+    fontSize: "0.75rem",
+    fontWeight: 600,
+    display: "flex",
+    alignItems: "center",
+    gap: 4,
+    whiteSpace: "nowrap"
+  }} 
+  onClick={() => toggleWishlist(product.id)}
+>
+  {wishlist.includes(product.id) ? "♥ Saved" : "♡ Save"}
+</button>
         </div>
       </div>
     </div>
@@ -648,9 +661,8 @@ function ProductPage({ product, addToCart, wishlist, toggleWishlist, setPage, re
           </div>
 
           <div style={styles.productPagePrice}>
-            <span style={styles.productPagePriceBzd}>BZ$ {product.price.toFixed(2)}</span>
-            <span style={styles.productPagePriceUsd}>≈ US$ {product.usd.toFixed(2)}</span>
-          </div>
+            <span style={styles.productPagePriceBzd}>BZ$ {parseFloat(product.price_bzd || product.price || 0).toFixed(2)}</span>
+            </div>
 
           <div style={styles.optionGroup}>
             <label style={styles.optionLabel}>Size</label>
@@ -732,7 +744,7 @@ function CartDrawer({ cart, cartTotal, removeFromCart, setCartOpen, setPage }) {
                   <div style={styles.cartItemInfo}>
                     <div style={styles.cartItemName}>{item.name}</div>
                     <div style={styles.cartItemMeta}>{item.size} · {item.color} · ×{item.qty}</div>
-                    <div style={styles.cartItemPrice}>BZ$ {(item.price * item.qty).toFixed(2)}</div>
+                    <div style={styles.cartItemPrice}>BZ$ {(parseFloat(item.price_bzd || item.price || 0) * item.qty).toFixed(2)}</div>
                   </div>
                   <button style={styles.removeBtn} onClick={() => removeFromCart(item.id, item.size, item.color)}>✕</button>
                 </div>
@@ -1057,7 +1069,7 @@ function PaymentInfoPage() {
             <li>✅ 3-D Secure authentication</li>
             <li>✅ Test environment available for integration</li>
             <li>✅ Internet Merchant Account required</li>
-            <li>✅ Transactions in BZD or USD</li>
+            <li>✅ Transactions in BZD</li>
             <li>✅ Online Bill Pay (register as Payee)</li>
             <li>✅ Over-the-counter Collections</li>
           </ul>
@@ -1078,7 +1090,7 @@ function PaymentInfoPage() {
             <li>✅ CVV2 cardholder authentication</li>
             <li>✅ Fraud screening tools included</li>
             <li>✅ Unlimited concurrent users</li>
-            <li>✅ BZD or USD configuration</li>
+            <li>✅ BZD configuration</li>
             <li>✅ POS module via Corporate Online</li>
             <li>✅ Requires Atlantic Bank Corporate Online</li>
           </ul>
@@ -1185,7 +1197,7 @@ function DatabasePage({ dbTab, setDbTab }) {
             { name:"customers", color:"#2ecc71", fields:["id","name","email","phone","address","district"] },
             { name:"sellers", color:"#3498db", fields:["id","store_name","owner_name","email","status","commission_pct","bank_name"] },
             { name:"categories", color:"#9b59b6", fields:["id","name","slug","parent_id","image_url"] },
-            { name:"products", color:"#e67e22", fields:["id","seller_id →","category_id →","name","price_bzd","price_usd","stock_qty","external_store","is_active"] },
+            { name:"products", color:"#e67e22", fields:["id","seller_id →","category_id →","name","price_bzd","stock_qty","external_store","is_active"] },
             { name:"orders", color:"#e74c3c", fields:["id","customer_id →","status","total_bzd","payment_method","shipping_address"] },
             { name:"order_items", color:"#1abc9c", fields:["id","order_id →","product_id →","qty","unit_price","size","color"] },
             { name:"payments", color:"#f39c12", fields:["id","order_id →","gateway","transaction_ref","amount_bzd","status"] },
@@ -1204,7 +1216,7 @@ function DatabasePage({ dbTab, setDbTab }) {
           <div style={{ overflowX:"auto" }}>
             <table style={styles.table}>
               <thead>
-                <tr>{["ID","Name","Category","Price BZD","Price USD","Stock","Store","Rating"].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
+                <tr>{["ID","Name","Category","Price BZD","Stock","Store","Rating"].map(h => <th key={h} style={styles.th}>{h}</th>)}</tr>
               </thead>
               <tbody>
                 {PRODUCTS.map(p => (
@@ -1213,7 +1225,6 @@ function DatabasePage({ dbTab, setDbTab }) {
                     <td style={styles.td}>{p.name}</td>
                     <td style={styles.td}>{p.category}</td>
                     <td style={styles.td}>BZ$ {p.price}</td>
-                    <td style={styles.td}>US$ {p.usd}</td>
                     <td style={styles.td}>{p.stock}</td>
                     <td style={{ ...styles.td, color: STORE_COLORS[p.store] }}>{p.store}</td>
                     <td style={styles.td}>★ {p.rating}</td>
@@ -1389,8 +1400,8 @@ const CSS = `
     --teal-light: #e0f5f3;
     --dark: #1a1a2e;
     --sand: #f5e6d3;
-    --cream: #fdf8f0;
-    --cream2: #f7f0e6;
+    --cream: #ffffff;
+    --cream2: #f9f9f9;
     --rose: #e05c6a;
     --orange: #e07830;
     --muted: #7a7060;
@@ -1408,7 +1419,7 @@ const CSS = `
 `;
 
 const styles = {
-  app: { fontFamily:"'DM Sans',sans-serif", background:"var(--cream)", color:"var(--dark)", minHeight:"100vh" },
+  app: { fontFamily:"'DM Sans',sans-serif", background:"#ffffff", color:"var(--dark)", minHeight:"100vh" },
   notification: { position:"fixed", top:80, right:20, zIndex:1000, padding:"12px 24px", borderRadius:12, color:"white", fontWeight:600, boxShadow:"0 8px 24px rgba(0,0,0,0.2)", animation:"fadeIn 0.3s ease" },
 
   // NAV
@@ -1426,10 +1437,10 @@ const styles = {
 
   // HERO
   hero: { position:"relative", minHeight:"90vh", display:"flex", alignItems:"center", overflow:"hidden" },
-  heroBg: { position:"absolute", inset:0, background:"linear-gradient(135deg, #fdf3e8 0%, #e8f5f3 60%, #d5edf5 100%)" },
-  heroWave1: { position:"absolute", bottom:-50, left:-100, width:700, height:700, borderRadius:"50%", background:"rgba(13,158,142,0.08)" },
-  heroWave2: { position:"absolute", top:-100, right:-150, width:600, height:600, borderRadius:"50%", background:"rgba(224,92,106,0.06)" },
-  heroPattern: { position:"absolute", inset:0, backgroundImage:"radial-gradient(circle, rgba(13,158,142,0.05) 1px, transparent 1px)", backgroundSize:"30px 30px" },
+  heroBg: { position:"absolute", inset:0, background:"#ffffff" },
+  heroWave1: { display:"none" },
+  heroWave2: { display:"none" },
+  heroPattern: { display:"none" },
   heroContent: { position:"relative", zIndex:1, maxWidth:1280, margin:"0 auto", padding:"4rem 2rem", flex:1 },
   heroBadge: { display:"inline-block", background:"var(--teal)", color:"white", padding:"6px 16px", borderRadius:20, fontSize:"0.8rem", fontWeight:600, marginBottom:"1.5rem", letterSpacing:1 },
   heroTitle: { fontFamily:"'Playfair Display',serif", fontSize:"clamp(3rem,6vw,5.5rem)", fontWeight:900, lineHeight:1.05, marginBottom:"1.5rem", color:"var(--dark)" },
@@ -1465,7 +1476,7 @@ const styles = {
   productGrid: { display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))", gap:"1.5rem" },
   productCard: { background:"white", borderRadius:16, overflow:"hidden", boxShadow:"0 4px 16px rgba(0,0,0,0.06)", transition:"all 0.3s", border:"1px solid var(--border)", cursor:"pointer" },
   productImageWrap: { position:"relative", paddingTop:"100%", overflow:"hidden" },
-  productImage: { position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center" },
+  productImage: { position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden", borderRadius:"12px" },
   productEmoji: { fontSize:"5rem" },
   featuredBadge: { position:"absolute", top:10, left:10, background:"#f1c40f", color:"white", padding:"3px 10px", borderRadius:12, fontSize:"0.7rem", fontWeight:700 },
   storeBadge: { position:"absolute", top:10, right:10, color:"white", padding:"3px 10px", borderRadius:12, fontSize:"0.7rem", fontWeight:700 },
@@ -1477,9 +1488,7 @@ const styles = {
   productReviews: { color:"var(--muted)", fontSize:"0.75rem", marginLeft:4 },
   productPriceRow: { display:"flex", alignItems:"baseline", gap:8, marginBottom:"0.75rem" },
   productPrice: { fontWeight:700, color:"var(--dark)", fontSize:"1.05rem" },
-  productPriceUsd: { fontSize:"0.78rem", color:"var(--muted)" },
-  productActions: { display:"flex", gap:8 },
-  addToCartBtn: { flex:1, color:"white", padding:"8px 12px", borderRadius:10, fontSize:"0.82rem", fontWeight:600, transition:"all 0.2s" },
+  productActions: { display:"flex", gap:6, alignItems:"center" },  addToCartBtn: { flex:1, color:"white", padding:"8px 12px", borderRadius:10, fontSize:"0.82rem", fontWeight:600, transition:"all 0.2s" },
   wishlistBtn: { background:"none", fontSize:"1.2rem", padding:"0 4px", transition:"all 0.2s" },
 
   // PAYMENT STRIP
@@ -1528,8 +1537,6 @@ const styles = {
   productPageTitle: { fontFamily:"'Playfair Display',serif", fontSize:"2rem", marginBottom:"0.75rem", marginTop:"0.5rem" },
   productPagePrice: { display:"flex", alignItems:"baseline", gap:12, margin:"1rem 0 1.5rem" },
   productPagePriceBzd: { fontSize:"2rem", fontWeight:800, color:"var(--teal)" },
-  productPagePriceUsd: { fontSize:"1rem", color:"var(--muted)" },
-  productPageInfo: {},
   optionGroup: { marginBottom:"1.25rem" },
   optionLabel: { display:"block", fontSize:"0.8rem", fontWeight:700, textTransform:"uppercase", letterSpacing:1, color:"var(--muted)", marginBottom:"0.5rem" },
   optionBtns: { display:"flex", gap:8, flexWrap:"wrap" },
@@ -1543,7 +1550,7 @@ const styles = {
 
   // CART
   cartOverlay: { position:"fixed", inset:0, background:"rgba(0,0,0,0.4)", zIndex:200, backdropFilter:"blur(4px)" },
-  cartDrawer: { position:"absolute", right:0, top:0, bottom:0, width:400, background:"var(--cream)", padding:"1.5rem", display:"flex", flexDirection:"column", overflow:"hidden" },
+  cartDrawer: { position:"absolute", right:0, top:0, bottom:0, width:400, background:"var(--white)", padding:"1.5rem", display:"flex", flexDirection:"column", overflow:"hidden" },
   cartHeader: { display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"1.5rem" },
   cartTitle: { fontFamily:"'Playfair Display',serif", fontSize:"1.5rem" },
   closeBtn: { background:"none", fontSize:"1.2rem", color:"var(--muted)" },
