@@ -1,0 +1,174 @@
+/* ============================================================
+   B-COM BELIZE — Global Styles & CSS Variables
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --blue: #2563ED;
+  --blue-light: #e8f0fd;
+  --dark: #1a1a2e;
+  --sand: #f5e6d3;
+  --cream: #ffffff;
+  --cream2: #f9f9f9;
+  --rose: #e05c6a;
+  --orange: #e07830;
+  --muted: #7a7060;
+  --border: #e0d9cc;
+  --white: #ffffff;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #ffffff;
+  color: var(--dark);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  text-align: left;
+  border: none;
+  min-height: 100vh;
+  display: block;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+p { margin: 0; }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #ffffff; }
+::-webkit-scrollbar-thumb { background: var(--#2563EB); border-radius: 3px; }
+
+/* Shared Button Styles */
+.btn-primary {
+  background: var(--teal);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btn-primary:hover {
+  background: #1a52d4;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--dark);
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btn-secondary:hover {
+  border-color: var(--dark);
+}
+
+/* Shared Layout */
+.page-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.section {
+  padding: 4rem 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  color: var(--dark);
+}
+
+/* Product Grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem;
+  color: var(--muted);
+}
+
+/* Notification */
+.notification {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 1000;
+  padding: 12px 24px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+/* ---- GLOBAL HOVER STATES ---- */
+a:hover {
+  color: #2563EB !important;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.nav-link:hover {
+  color: #2563EB !important;
+  border-bottom-color: #2563EB !important;
+}
+
+.footer-link:hover {
+  color: #2563EB !important;
+}
