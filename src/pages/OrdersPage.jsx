@@ -1,3 +1,4 @@
+import { createOrder, initiatePayment } from "../services/api";
 import {
   HiOutlineCreditCard,
   HiOutlineTruck,
@@ -28,7 +29,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
   const shipping = cartTotal > 200 ? 0 : 15;
   const total = cartTotal + tax + shipping;
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     if (!form.name || !form.email || !form.phone || !form.address) {
       showNotification("Please fill in all required fields", "error");
       return;
@@ -37,8 +38,48 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
       showNotification("Please select a payment method", "error");
       return;
     }
-    setOrderPlaced(true);
-    showNotification("🎉 Order placed successfully!");
+
+    try {
+      // Build order items from cart
+      const items = cart.map(item => ({
+        product_id: item.id,
+        qty: item.qty,
+        unit_price: parseFloat(item.price_bzd || item.price || 0),
+        size: item.size,
+        color: item.color
+      }));
+
+      // Create order in database
+      const orderData = {
+        customer_name: form.name,
+        customer_email: form.email,
+        customer_phone: form.phone,
+        shipping_address: form.address,
+        district: form.district,
+        notes: form.notes,
+        payment_method: paymentMethod,
+        external_link: externalLink,
+        items
+      };
+
+      const response = await createOrder(orderData);
+
+      if (response.success) {
+        // Initiate payment
+        await initiatePayment({
+          order_id: response.order.id,
+          payment_method: paymentMethod,
+          amount: response.order.total
+        });
+
+        setOrderPlaced(true);
+        showNotification("🎉 Order placed successfully!");
+      }
+
+    } catch (err) {
+      console.error('Order error:', err);
+      showNotification("Something went wrong. Please try again.", "error");
+    }
   };
 
   if (orderPlaced) {
