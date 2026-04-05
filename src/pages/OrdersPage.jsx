@@ -77,7 +77,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
         });
 
         setOrderPlaced(true);
-        showNotification("🎉 Order placed successfully!");
+        showNotification("Order placed successfully!");
       }
 
     } catch (err) {
@@ -89,7 +89,6 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
   if (orderPlaced) {
     return (
       <div style={{ textAlign: "center", padding: "5rem 2rem" }}>
-        <div style={{ fontSize: "5rem", marginBottom: "1rem" }}>🎉</div>
         <h1 style={{
           fontFamily: "'Playfair Display',serif",
           fontSize: "2.5rem",
@@ -245,18 +244,20 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                 />
               </div>
 
-              <button
-                className="btn-primary"
-                onClick={() => {
-                  if (!form.name || !form.email || !form.phone || !form.address) {
-                    showNotification("Please fill in all required fields", "error");
-                    return;
-                  }
-                  setStep(2);
-                }}
-              >
-                Continue to Payment →
-              </button>
+            <button
+                  className="btn-primary"
+                  onClick={() => {
+                    if (!form.name || !form.email || !form.phone || !form.address) {
+                      showNotification("Please fill in all required fields", "error");
+                      return;
+                    }
+                    setStep(2);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                >
+                  Continue to Payment →
+                </button>
+
             </div>
           )}
 
@@ -329,14 +330,20 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
               ))}
 
               <div style={{ display: "flex", gap: "1rem", marginTop: "1.5rem" }}>
-                <button className="btn-secondary" onClick={() => setStep(1)}>
+                <button className="btn-secondary" onClick={() => {
+                    setStep(1);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}>
                   ← Back
                 </button>
                 <button
                   className="btn-primary"
                   style={{ opacity: paymentMethod ? 1 : 0.5 }}
                   disabled={!paymentMethod}
-                  onClick={() => setStep(3)}
+                  onClick={() => {
+                    setStep(3);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
                 >
                   Review Order →
                 </button>
@@ -499,83 +506,12 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                   </p>
                 )}
               </div>
-                
-              {/* TERMS CHECKBOX — Required by Belize Bank */}
-              <div style={{
-                background: "#f0f7ff",
-                border: "1px solid #dbeafe",
-                borderRadius: 10,
-                padding: "1rem",
-                marginBottom: "1rem"
-              }}>
-                <label style={{
-                  display: "flex",
-                  gap: 10,
-                  alignItems: "flex-start",
-                  cursor: "pointer",
-                  fontSize: "0.85rem",
-                  lineHeight: 1.6,
-                  color: "var(--dark)"
-                }}>
-                  <input
-                    type="checkbox"
-                    checked={agreedToTerms}
-                    onChange={e => {
-                      setAgreedToTerms(e.target.checked);
-                      if (e.target.checked) {
-                        setTermsTimestamp(new Date().toISOString());
-                      } else {
-                        setTermsTimestamp(null);
-                      }
-                    }}
-                    style={{ marginTop: 3, flexShrink: 0, accentColor: "#2563EB" }}
-                  />
-                  <span>
-                    I have read and agree to the{" "}
-                    <span
-                      style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
-                      onClick={() => window.open("/terms", "_blank")}
-                    >
-                      Terms & Conditions
-                    </span>
-                    ,{" "}
-                    <span
-                      style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
-                      onClick={() => window.open("/privacy", "_blank")}
-                    >
-                      Privacy Policy
-                    </span>
-                    ,{" "}
-                    <span
-                      style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
-                      onClick={() => window.open("/refund-policy", "_blank")}
-                    >
-                      Return Policy
-                    </span>
-                    {" "}and{" "}
-                    <span
-                      style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
-                      onClick={() => window.open("/delivery-policy", "_blank")}
-                    >
-                      Delivery Policy
-                    </span>
-                    {" "}of B-Com Belize.
-                  </span>
-                </label>
-                {termsTimestamp && (
-                  <p style={{
-                    fontSize: "0.72rem",
-                    color: "var(--muted)",
-                    marginTop: "0.5rem",
-                    marginLeft: 26
-                  }}>
-                    ✓ Agreed at {new Date(termsTimestamp).toLocaleString("en-BZ")}
-                  </p>
-                )}
-              </div>
 
               <div style={{ display: "flex", gap: "1rem" }}>
-                <button className="btn-secondary" onClick={() => setStep(2)}>← Back</button>
+                <button className="btn-secondary" onClick={() => {
+                    setStep(2);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}>← Back</button>
                 <button
                   className="btn-primary"
                   onClick={handlePlaceOrder}

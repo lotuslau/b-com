@@ -11,7 +11,7 @@ export default function FeaturedPage({
   setPage,
   loading,
   searchQuery,
-  setSearchQuery
+  setSearchQuery,
 }) {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedStore, setSelectedStore] = useState("all");
@@ -36,34 +36,7 @@ export default function FeaturedPage({
   return (
     <div style={{ maxWidth: 1280, margin: "0 auto", padding: "2rem" }}>
 
-      {/* HEADER */}
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        marginBottom: "2rem",
-        flexWrap: "wrap",
-        gap: "1rem"
-      }}>
-        <h1 className="section-title" style={{ marginBottom: 0 }}>
-          Featured Collection
-        </h1>
-        <input
-          style={{
-            border: "2px solid var(--border)",
-            borderRadius: 12,
-            padding: "10px 20px",
-            fontSize: "0.9rem",
-            fontFamily: "inherit",
-            background: "white",
-            minWidth: 280,
-            outline: "none"
-          }}
-          placeholder="🔍 Search products, brands..."
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-        />
-      </div>
+      
 
       <div style={{ display: "grid", gridTemplateColumns: "240px 1fr", gap: "2rem" }}>
 
@@ -188,7 +161,7 @@ export default function FeaturedPage({
               color: "var(--muted)",
               marginBottom: "0.5rem"
             }}>
-              🌐 Browse Global Stores
+              Browse Global Stores
             </h3>
             <p style={{
               fontSize: "0.78rem",

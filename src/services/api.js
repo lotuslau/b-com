@@ -63,3 +63,18 @@ export const createPayPalOrder = (amount) =>
     method: 'POST',
     body: JSON.stringify({ amount }),
   });
+
+  // Reviews
+export const getReviews = (productId) =>
+  request(`/reviews/${productId}`);
+
+export const submitReview = (reviewData) =>
+  request('/reviews', {
+    method: 'POST',
+    body: JSON.stringify(reviewData),
+  });
+
+export const markHelpful = (reviewId) =>
+  request(`/reviews/${reviewId}/helpful`, {
+    method: 'PUT',
+  });

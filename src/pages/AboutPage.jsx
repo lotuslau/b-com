@@ -2,7 +2,7 @@ import {
   HiOutlineFlag,
   HiOutlineTruck,
   HiOutlineLockClosed,
-  HiOutlineChatAlt2,
+  HiOutlinePhone,
   HiOutlineGlobe,
   HiOutlineRefresh
 } from "react-icons/hi";
@@ -13,19 +13,19 @@ export default function AboutPage({ setPage }) {
       {/* HERO */}
       <div className="about-hero">
         <h1 style={{
-          fontFamily: "'Playfair Display',serif",
-          fontSize: "clamp(2rem,5vw,3.5rem)",
-          fontWeight: 900,
-          marginBottom: "1rem"
-        }}>
+        fontFamily: "'Playfair Display',serif",
+        fontSize: "clamp(1.8rem,4vw,2.8rem)", // slightly smaller
+        fontWeight: 900,
+      marginBottom: "0.5rem"
+}}>
           About B-Com Belize
         </h1>
         <p style={{
           color: "rgba(255,255,255,0.75)",
-          fontSize: "1.1rem",
-          maxWidth: 560,
+          fontSize: "1rem",
+          maxWidth: 600,
           margin: "0 auto",
-          lineHeight: 1.7
+          lineHeight: 1.6
         }}>
           Belize's premier online fashion destination — connecting customers
           with the best local and global fashion brands.

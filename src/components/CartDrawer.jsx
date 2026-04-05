@@ -147,7 +147,7 @@ export default function CartDrawer({
             </div>
 
             {/* FOOTER */}
-            <div style={{
+           <div style={{
               borderTop: "1px solid var(--border)",
               paddingTop: "1.25rem",
               marginTop: "1rem"
@@ -162,12 +162,58 @@ export default function CartDrawer({
                 <span>Total</span>
                 <span>BZ$ {cartTotal.toFixed(2)}</span>
               </div>
+
               <button
                 className="btn-primary"
-                style={{ width: "100%" }}
+                style={{ width: "100%", marginBottom: "0.75rem" }}
                 onClick={() => { setCartOpen(false); setPage("orders"); }}
               >
                 Proceed to Order →
+              </button>
+
+              <button
+                style={{
+                  width: "100%",
+                  background: "transparent",
+                  color: "var(--dark)",
+                  border: "1.5px solid var(--border)",
+                  borderRadius: 12,
+                  padding: "12px",
+                  fontWeight: 600,
+                  fontSize: "0.9rem",
+                  cursor: "pointer",
+                  fontFamily: "'DM Sans', sans-serif",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 6,
+                  transition: "all 0.2s"
+                }}
+                onClick={() => { setCartOpen(false); setPage("featured"); }}
+              >
+                ← Continue Shopping
+              </button>
+
+              <button
+                style={{
+                  width: "100%",
+                  background: "transparent",
+                  color: "var(--rose)",
+                  border: "none",
+                  padding: "8px",
+                  fontWeight: 500,
+                  fontSize: "0.82rem",
+                  cursor: "pointer",
+                  fontFamily: "'DM Sans', sans-serif",
+                  marginTop: "0.25rem"
+                }}
+                onClick={() => {
+                  if (window.confirm("Clear your entire cart?")) {
+                    cart.forEach(item => removeFromCart(item.id, item.size, item.color));
+                  }
+                }}
+              >
+                🗑️ Clear Cart
               </button>
             </div>
           </>

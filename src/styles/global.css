@@ -69,11 +69,11 @@ img {
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #ffffff; }
-::-webkit-scrollbar-thumb { background: var(--#2563EB); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: #2563EB; border-radius: 3px; }
 
 /* Shared Button Styles */
 .btn-primary {
-  background: var(--teal);
+  background: var(--blue); /* FIXED */
   color: white;
   padding: 12px 28px;
   border-radius: 12px;
@@ -92,7 +92,7 @@ img {
 }
 
 .btn-secondary {
-  background: white;
+  background: var(--blue-light);
   color: var(--dark);
   padding: 12px 28px;
   border-radius: 12px;

@@ -40,7 +40,7 @@ export default function ProductCard({
 
   const handleCardClick = () => {
     setSelectedProduct(product);
-    setPage("product");
+    setPage("reviews");
   };
 
   return (
@@ -97,43 +97,58 @@ export default function ProductCard({
           </span>
         </div>
 
-        {/* BUTTONS */}
-        <div className="product-actions">
-          <button
-            className="add-to-cart-btn"
-            style={{
-              background: "var(--bright blue)",
-              opacity: stock === 0 ? 0.5 : 1
-            }}
-            onClick={handleAddToCart}
-            disabled={stock === 0}
-          >
-            <span style={{ display: "flex", alignItems: "center", gap: 6, justifyContent: "center" }}>
-              <HiOutlineShoppingCart size={15} /> Add to Cart
-            </span>
-          </button>
+       {/* BUTTONS */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: "0.75rem" }}>
 
-          <button
-            className="buy-now-btn"
-            onClick={handleBuyNow}
-            disabled={stock === 0}
-            style={{ opacity: stock === 0 ? 0.5 : 1 }}
-          >
-            <span style={{ display: "flex", alignItems: "center", gap: 6, justifyContent: "center" }}>
-              <HiOutlineLightningBolt size={15} /> Buy Now
-            </span>
-          </button>
+          {/* ROW 1 — Add to Cart + Buy Now */}
+          <div style={{ display: "flex", gap: 6 }}>
+            <button
+              className="add-to-cart-btn"
+              style={{
+                background: stock === 0 ? "#ccc" : "#2563EB",
+                opacity: stock === 0 ? 0.6 : 1,
+                flex: 1
+              }}
+              onClick={handleAddToCart}
+              disabled={stock === 0}
+              title="Add to cart and keep shopping"
+            >
+              <span style={{ display: "flex", alignItems: "center", gap: 5, justifyContent: "center" }}>
+                <HiOutlineShoppingCart size={14} />
+                {stock === 0 ? "Out of Stock" : "Add to Cart"}
+              </span>
+            </button>
 
+            <button
+              className="buy-now-btn"
+              onClick={handleBuyNow}
+              disabled={stock === 0}
+              style={{
+                opacity: stock === 0 ? 0.6 : 1,
+                flex: 1,
+                background: stock === 0 ? "#ccc" : "var(--dark)"
+              }}
+              title="Buy now — go straight to checkout"
+            >
+              <span style={{ display: "flex", alignItems: "center", gap: 5, justifyContent: "center" }}>
+                <HiOutlineLightningBolt size={14} />
+                Buy Now
+              </span>
+            </button>
+          </div>
+
+          {/* ROW 2 — Save to Wishlist */}
           <button
             className={`wishlist-btn ${isWishlisted ? "saved" : ""}`}
             onClick={() => toggleWishlist(product.id)}
+            style={{ width: "100%", justifyContent: "center" }}
           >
             <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
-            {isWishlisted
-              ? <><HiHeart size={14} color="#e05c6a" /> Saved</>
-              : <><HiOutlineHeart size={14} /> Save</>
-            }
-          </span>
+              {isWishlisted
+                ? <><HiHeart size={14} color="#e05c6a" /> Saved to Wishlist</>
+                : <><HiOutlineHeart size={14} /> Save to Wishlist</>
+              }
+            </span>
           </button>
         </div>
       </div>

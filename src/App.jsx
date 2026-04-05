@@ -13,6 +13,51 @@ import AboutPage from "./pages/AboutPage";
 import CustomerServicePage from "./pages/CustomerServicePage";
 import OnlineStoresPage from "./pages/OnlineStoresPage";
 import { getProducts } from "./services/api";
+import { HiOutlineArrowUp } from "react-icons/hi";
+import ProductReviewsPage from "./pages/ProductReviewsPage";
+
+// ============================================================
+// BACK TO TOP BUTTON
+// ============================================================
+function BackToTop() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const h = () => setVisible(window.scrollY > 400);
+    window.addEventListener("scroll", h);
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      style={{
+        position: "fixed",
+        bottom: 32,
+        right: 32,
+        zIndex: 999,
+        width: 48,
+        height: 48,
+        borderRadius: "50%",
+        background: "#2563EB",
+        color: "white",
+        border: "none",
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        boxShadow: "0 4px 20px rgba(37,99,235,0.4)",
+        transition: "all 0.2s",
+        fontFamily: "inherit"
+      }}
+      title="Back to top"
+    >
+      <HiOutlineArrowUp size={22} />
+    </button>
+  );
+}
 
 export default function BComStore() {
   // ── Navigation ──
@@ -78,7 +123,7 @@ export default function BComStore() {
     } else {
       setCart([...cart, { ...product, qty: 1, size, color }]);
     }
-    showNotification(`${product.name} added to cart! 🛍️`);
+    showNotification(`${product.name} successfully added to cart!`);
   };
 
   const removeFromCart = (id, size, color) => {
@@ -110,18 +155,37 @@ export default function BComStore() {
 
   return (
     <div style={{ fontFamily: "'DM Sans',sans-serif", background: "#ffffff", color: "var(--dark)", minHeight: "100vh" }}>
-
+      {/* BACK TO TOP BUTTON */}
+      <BackToTop />
       {/* NOTIFICATION */}
       {notification && (
         <div
-          className="notification"
           style={{
+            position: "fixed",
+            top: 80,
+            right: 20,
+            zIndex: 1000,
+            padding: "14px 24px",
+            borderRadius: 12,
+            color: "#ffffff",
+            fontWeight: 600,
+            fontSize: "0.95rem",
+            fontFamily: "'DM Sans', sans-serif",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
             background: notification.type === "success"
-              ? "var(--teal)"
-              : "var(--rose)"
+              ? "#2563EB"
+              : "#e05c6a",
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            minWidth: 280,
+            maxWidth: 400
           }}
         >
-          {notification.msg}
+          <span style={{ fontSize: "1.2rem" }}>
+            {notification.type === "success" ? "✅" : "⚠️"}
+          </span>
+          <span>{notification.msg}</span>
         </div>
       )}
 
@@ -162,6 +226,12 @@ export default function BComStore() {
           showNotification={showNotification}
         />
       )}
+      {page === "reviews" && (
+  <ProductReviewsPage
+    product={selectedProduct}
+    setPage={setPage}
+  />
+)}
       {page === "about" && <AboutPage setPage={setPage} />}
       {page === "customer-service" && (
         <CustomerServicePage showNotification={showNotification} />

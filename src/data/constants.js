@@ -83,7 +83,6 @@ export const EXTERNAL_STORES = [
     name: "Amazon",
     url: STORE_LINKS.amazon,
     color: "#FF9900",
-    emoji: "📦",
     desc: "World's largest online marketplace. Electronics, fashion, home and more.",
     tags: ["Electronics", "Fashion", "Home", "Books"]
   },
@@ -91,7 +90,6 @@ export const EXTERNAL_STORES = [
     name: "Shein",
     url: STORE_LINKS.shein,
     color: "#e74c3c",
-    emoji: "👘",
     desc: "Trendy fashion at affordable prices. Clothes, shoes and accessories.",
     tags: ["Women", "Men", "Kids", "Accessories"]
   },
@@ -99,7 +97,6 @@ export const EXTERNAL_STORES = [
     name: "Temu",
     url: STORE_LINKS.temu,
     color: "#e67e22",
-    emoji: "🛒",
     desc: "Quality products at factory prices. Wide range of categories.",
     tags: ["Fashion", "Home", "Electronics", "Beauty"]
   },
@@ -107,7 +104,6 @@ export const EXTERNAL_STORES = [
     name: "Alibaba",
     url: STORE_LINKS.alibaba,
     color: "#FF6A00",
-    emoji: "🏪",
     desc: "Global wholesale marketplace. Bulk orders and unique finds.",
     tags: ["Wholesale", "Fashion", "Accessories", "Footwear"]
   },
