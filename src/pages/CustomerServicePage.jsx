@@ -5,6 +5,7 @@ import {
   HiOutlineClock,
   HiOutlineQuestionMarkCircle
 } from "react-icons/hi";
+import { FaWhatsapp } from "react-icons/fa";
 import { useState } from "react";
 
 export default function CustomerServicePage({ showNotification }) {
@@ -87,7 +88,7 @@ export default function CustomerServicePage({ showNotification }) {
       }}>
         {[
           {
-            emoji: <HiOutlineChatAlt2 size={32} color="#25D366" />,
+            emoji: <FaWhatsapp size={32} color="#25D366" />,
             title: "WhatsApp",
             desc: "Chat with us directly",
             action: "Message Us",

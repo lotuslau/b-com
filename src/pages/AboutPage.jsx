@@ -83,7 +83,7 @@ export default function AboutPage({ setPage }) {
             desc: "Pay safely with Belize Bank, Atlantic Bank, PayPal or cash on delivery."
           },
           {
-            emoji: <HiOutlineChatAlt2 size={32} color="#2563EB" />,
+            emoji: <HiOutlinePhone size={32} color="#2563EB" />,
             title: "Customer First",
             desc: "Our support team is always available via WhatsApp, email or our contact form."
           },

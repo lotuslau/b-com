@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { PAYMENT_METHODS, DISTRICTS, EXTERNAL_STORES } from "../data/constants";
+import { TERMS_AND_CONDITIONS } from "../data/policies";
 import { createOrder, initiatePayment } from "../services/api";
 import {
   HiOutlineCreditCard,
@@ -7,11 +10,10 @@ import {
   HiOutlineShieldCheck
 } from "react-icons/hi";
 
-import { useState } from "react";
-import { PAYMENT_METHODS, DISTRICTS, EXTERNAL_STORES } from "../data/constants";
-
 export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotification }) {
   const [step, setStep] = useState(1);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [termsTimestamp, setTermsTimestamp] = useState(null);
   const [orderRef] = useState(() => "BCM-" + String(Date.now()).slice(-5));
   const [paymentMethod, setPaymentMethod] = useState("");
   const [orderPlaced, setOrderPlaced] = useState(false);
@@ -59,6 +61,8 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
         notes: form.notes,
         payment_method: paymentMethod,
         external_link: externalLink,
+        terms_agreed: agreedToTerms,
+        terms_agreed_at: termsTimestamp,
         items
       };
 
@@ -98,15 +102,15 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
           We'll contact you at {form.phone} with updates.
         </p>
         <div style={{
-          background: "var(--teal)",
+          background: "var(--dark)",
           color: "white",
           display: "inline-block",
-          padding: "10px 28px",
+          padding: "12px 28px",
           borderRadius: 12,
-          fontWeight: 700,
-          letterSpacing: 1,
-          fontSize: "1.1rem",
-          marginBottom: "1rem"
+          fontWeight: 600,
+          fontSize: "0.9rem",
+          cursor: "pointer",
+          border: "none"
         }}>
           {orderRef}
         </div>
@@ -422,12 +426,165 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                 </p>
               </div>
 
+              {/* TERMS CHECKBOX — Required by Belize Bank */}
+              <div style={{
+                background: "#f0f7ff",
+                border: "1px solid #dbeafe",
+                borderRadius: 10,
+                padding: "1rem",
+                marginBottom: "1rem"
+              }}>
+                <label style={{
+                  display: "flex",
+                  gap: 10,
+                  alignItems: "flex-start",
+                  cursor: "pointer",
+                  fontSize: "0.85rem",
+                  lineHeight: 1.6,
+                  color: "var(--dark)"
+                }}>
+                  <input
+                    type="checkbox"
+                    checked={agreedToTerms}
+                    onChange={e => {
+                      setAgreedToTerms(e.target.checked);
+                      if (e.target.checked) {
+                        setTermsTimestamp(new Date().toISOString());
+                      } else {
+                        setTermsTimestamp(null);
+                      }
+                    }}
+                    style={{ marginTop: 3, flexShrink: 0, accentColor: "#2563EB" }}
+                  />
+                  <span>
+                    I have read and agree to the{" "}
+                    <span
+                      style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
+                      onClick={() => window.open("/terms", "_blank")}
+                    >
+                      Terms & Conditions
+                    </span>
+                    ,{" "}
+                    <span
+                      style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
+                      onClick={() => window.open("/privacy", "_blank")}
+                    >
+                      Privacy Policy
+                    </span>
+                    ,{" "}
+                    <span
+                      style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
+                      onClick={() => window.open("/refund-policy", "_blank")}
+                    >
+                      Return Policy
+                    </span>
+                    {" "}and{" "}
+                    <span
+                      style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
+                      onClick={() => window.open("/delivery-policy", "_blank")}
+                    >
+                      Delivery Policy
+                    </span>
+                    {" "}of B-Com Belize.
+                  </span>
+                </label>
+                {termsTimestamp && (
+                  <p style={{
+                    fontSize: "0.72rem",
+                    color: "var(--muted)",
+                    marginTop: "0.5rem",
+                    marginLeft: 26
+                  }}>
+                    ✓ Agreed at {new Date(termsTimestamp).toLocaleString("en-BZ")}
+                  </p>
+                )}
+              </div>
+                
+              {/* TERMS CHECKBOX — Required by Belize Bank */}
+              <div style={{
+                background: "#f0f7ff",
+                border: "1px solid #dbeafe",
+                borderRadius: 10,
+                padding: "1rem",
+                marginBottom: "1rem"
+              }}>
+                <label style={{
+                  display: "flex",
+                  gap: 10,
+                  alignItems: "flex-start",
+                  cursor: "pointer",
+                  fontSize: "0.85rem",
+                  lineHeight: 1.6,
+                  color: "var(--dark)"
+                }}>
+                  <input
+                    type="checkbox"
+                    checked={agreedToTerms}
+                    onChange={e => {
+                      setAgreedToTerms(e.target.checked);
+                      if (e.target.checked) {
+                        setTermsTimestamp(new Date().toISOString());
+                      } else {
+                        setTermsTimestamp(null);
+                      }
+                    }}
+                    style={{ marginTop: 3, flexShrink: 0, accentColor: "#2563EB" }}
+                  />
+                  <span>
+                    I have read and agree to the{" "}
+                    <span
+                      style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
+                      onClick={() => window.open("/terms", "_blank")}
+                    >
+                      Terms & Conditions
+                    </span>
+                    ,{" "}
+                    <span
+                      style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
+                      onClick={() => window.open("/privacy", "_blank")}
+                    >
+                      Privacy Policy
+                    </span>
+                    ,{" "}
+                    <span
+                      style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
+                      onClick={() => window.open("/refund-policy", "_blank")}
+                    >
+                      Return Policy
+                    </span>
+                    {" "}and{" "}
+                    <span
+                      style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
+                      onClick={() => window.open("/delivery-policy", "_blank")}
+                    >
+                      Delivery Policy
+                    </span>
+                    {" "}of B-Com Belize.
+                  </span>
+                </label>
+                {termsTimestamp && (
+                  <p style={{
+                    fontSize: "0.72rem",
+                    color: "var(--muted)",
+                    marginTop: "0.5rem",
+                    marginLeft: 26
+                  }}>
+                    ✓ Agreed at {new Date(termsTimestamp).toLocaleString("en-BZ")}
+                  </p>
+                )}
+              </div>
+
               <div style={{ display: "flex", gap: "1rem" }}>
                 <button className="btn-secondary" onClick={() => setStep(2)}>← Back</button>
-                <button className="btn-primary" onClick={handlePlaceOrder}>
+                <button
+                  className="btn-primary"
+                  onClick={handlePlaceOrder}
+                  disabled={!agreedToTerms}
+                  style={{ opacity: agreedToTerms ? 1 : 0.5 }}
+                >
                   Place Order ✓
                 </button>
-              </div>
+              </div>              
             </div>
           )}
         </div>

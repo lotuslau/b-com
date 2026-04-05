@@ -5,6 +5,7 @@ import {
   HiOutlineLocationMarker,
   HiOutlineChatAlt2
 } from "react-icons/hi";
+import { FaWhatsapp } from "react-icons/fa";
 
 export default function Footer({ setPage }) {
   return (
@@ -71,7 +72,7 @@ export default function Footer({ setPage }) {
               { icon: <HiOutlineLocationMarker size={16} />, text: "Belize City, Belize" },
               { icon: <HiOutlineMail size={16} />, text: "b-com@gmail.com"},
               { icon: <HiOutlinePhone size={16} />, text: "+501-614-1234" },
-              { icon: <HiOutlineChatAlt2 size={16} />, text: "WhatsApp Support" },
+              { icon: <FaWhatsapp size={16} color="#25D366" />, text: "WhatsApp Support" },
             ].map(c => (
               <span key={c.text} className="footer-contact" style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 {c.icon} {c.text}
@@ -82,9 +83,28 @@ export default function Footer({ setPage }) {
 
       </div>
 
-      <div className="footer-bottom">
-        <span>© 2026 B-Com Belize. All rights reserved.</span>
-        <span> Secure Checkout · Proudly Belizean</span>
+      <div className="footer-bottom" style={{ flexDirection: "column", gap: "0.75rem" }}>
+        <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", justifyContent: "center" }}>
+          {[
+            ["terms", "Terms & Conditions"],
+            ["privacy", "Privacy Policy"],
+            ["refund-policy", "Return & Refund Policy"],
+            ["delivery-policy", "Delivery Policy"],
+          ].map(([p, l]) => (
+            <button
+              key={p}
+              className="footer-link"
+              onClick={() => setPage(p)}
+              style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.5)" }}
+            >
+              {l}
+            </button>
+          ))}
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: "0.5rem" }}>
+          <span>© 2026 B-Com Belize Ltd. All rights reserved. · Belize City, Belize</span>
+          <span>🔒 PCI DSS Compliant · Proudly Belizean</span>
+        </div>
       </div>
     </footer>
   );

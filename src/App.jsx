@@ -1,3 +1,7 @@
+import TermsPage from "./pages/TermsPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import RefundPolicyPage from "./pages/RefundPolicyPage";
+import DeliveryPolicyPage from "./pages/DeliveryPolicyPage";
 import { useState, useEffect } from "react";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
@@ -144,6 +148,10 @@ export default function BComStore() {
       )}
 
       {/* PAGES */}
+      {page === "terms" && <TermsPage setPage={setPage} />}
+      {page === "privacy" && <PrivacyPage setPage={setPage} />}
+      {page === "refund-policy" && <RefundPolicyPage setPage={setPage} />}
+      {page === "delivery-policy" && <DeliveryPolicyPage setPage={setPage} />}
       {page === "home" && <HomePage {...productProps} />}
       {page === "featured" && <FeaturedPage {...productProps} />}
       {page === "orders" && (

@@ -6,6 +6,7 @@ import {
 } from "react-icons/hi";
 import ProductCard from "../components/ProductCard";
 import { STORE_LINKS, EXTERNAL_STORES } from "../data/constants";
+import { FaWhatsapp } from "react-icons/fa";
 
 export default function HomePage({
   products,
@@ -81,7 +82,7 @@ export default function HomePage({
           { icon: <HiOutlineTruck size={20} color="#2563EB" />, text: "Nationwide Delivery" },
           { icon: <HiOutlineLockClosed size={20} color="#2563EB" />, text: "Secure Checkout" },
           { icon: <HiOutlineRefresh size={20} color="#2563EB" />, text: "Easy Exchanges" },
-          { icon: <HiOutlineChatAlt2 size={20} color="#2563EB" />, text: "Online Support" },
+          { icon: <FaWhatsapp size={20} color="#25D366" />, text: "WhatsApp Support" },
         ].map(b => (
           <div key={b.text} className="trust-badge">
             <span style={{ fontSize: "1.1rem" }}>{b.icon}</span>
