@@ -7,13 +7,11 @@ import {
 } from "react-icons/hi";
 
 export default function DeliveryPolicyPage({ setPage }) {
-  const DISTRICTS = [
-    { name: "Belize District", time: "1-2 business days", note: "Includes Belize City" },
-    { name: "Cayo District", time: "3-5 business days", note: "Includes San Ignacio, Belmopan" },
-    { name: "Corozal District", time: "3-5 business days", note: "Includes Corozal Town" },
-    { name: "Orange Walk District", time: "3-5 business days", note: "Includes Orange Walk Town" },
-    { name: "Stann Creek District", time: "3-5 business days", note: "Includes Dangriga, Placencia" },
-    { name: "Toledo District", time: "3-5 business days", note: "Includes Punta Gorda" },
+  const DELIVER_TO = [
+    { name: "Belize City", time: "1-2 business days", note: "Main delivery area" },
+    { name: "Ladyville", time: "1-2 business days", note: "Adjacent to Belize City" },
+    { name: "Sandhill", time: "1-2 business days", note: "Nearby residential area" },
+    
   ];
 
   return (
@@ -42,7 +40,7 @@ export default function DeliveryPolicyPage({ setPage }) {
           margin: "0 auto 1rem",
           lineHeight: 1.7
         }}>
-          We deliver nationwide to all six districts of Belize.
+          We currently deliver to Belize City, Ladyville, Sandhill and surrounding areas ONLY.
         </p>
         <div style={{
           display: "inline-flex",
@@ -84,7 +82,7 @@ export default function DeliveryPolicyPage({ setPage }) {
               FREE
             </div>
             <div style={{ fontSize: "0.82rem", color: "var(--muted)" }}>
-              Orders over BZ$ 200
+              Orders over BZ$ XXX
             </div>
           </div>
           <div style={{
@@ -97,10 +95,10 @@ export default function DeliveryPolicyPage({ setPage }) {
               fontWeight: 800,
               color: "var(--dark)"
             }}>
-              BZ$ 15
+              BZ$ XXX
             </div>
             <div style={{ fontSize: "0.82rem", color: "var(--muted)" }}>
-              Orders under BZ$ 200
+              Orders under BZ$ XXX
             </div>
           </div>
           <div style={{
@@ -128,13 +126,13 @@ export default function DeliveryPolicyPage({ setPage }) {
         padding: "3rem 2rem"
       }}>
 
-        {/* DISTRICTS TABLE */}
+        {/* DELIVER_TO TABLE */}
         <h2 style={{
           fontFamily: "'Playfair Display',serif",
           fontSize: "1.5rem",
           marginBottom: "1.5rem"
         }}>
-          Delivery by District
+          Delivery Locations
         </h2>
         <div style={{
           display: "grid",
@@ -142,7 +140,7 @@ export default function DeliveryPolicyPage({ setPage }) {
           gap: "1rem",
           marginBottom: "3rem"
         }}>
-          {DISTRICTS.map(d => (
+          {DELIVER_TO.map(d => (
             <div key={d.name} style={{
               background: "white",
               borderRadius: 12,

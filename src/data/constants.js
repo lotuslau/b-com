@@ -17,57 +17,42 @@ export const STORE_COLORS = {
   own: "#2563EB",
 };
 
-export const DISTRICTS = [
+export const DELIVERY_TO = [
   "Belize",
-  "Cayo",
-  "Corozal",
-  "Orange Walk",
-  "Stann Creek",
-  "Toledo"
+  "Ladyville",
+  "Sandhill",
 ];
 
 export const PAYMENT_METHODS = [
   {
     id: "belize_bank_card",
     label: "Belize Bank – Credit/Debit Card",
-    icon: "💳",
     desc: "Visa & Mastercard via Belize Bank hosted gateway. 3-D Secure enabled.",
     badge: "Recommended"
   },
   {
     id: "atlantic_bank_card",
     label: "Atlantic Bank – Credit/Debit Card",
-    icon: "💳",
     desc: "Secure card processing via Atlantic Bank. CVV2 authentication.",
     badge: ""
   },
   {
     id: "belize_bank_transfer",
     label: "Belize Bank – Online Transfer",
-    icon: "🏦",
     desc: "Direct bank-to-bank transfer via Belize Bank Online Banking.",
     badge: ""
   },
   {
     id: "atlantic_bank_transfer",
     label: "Atlantic Bank – Online Transfer",
-    icon: "🏦",
     desc: "Transfer via Atlantic Bank Corporate Online Banking.",
     badge: ""
   },
   {
     id: "paypal",
     label: "PayPal",
-    icon: "🌐",
     desc: "Pay securely with your PayPal account or linked card.",
     badge: "Global"
-  },
-  {
-    id: "cash_delivery",
-    label: "Cash on Delivery",
-    icon: "💵",
-    desc: "Pay when your order arrives. Available in all districts.",
-    badge: ""
   },
 ];
 

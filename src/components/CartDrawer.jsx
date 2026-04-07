@@ -8,7 +8,9 @@ export default function CartDrawer({
   cartTotal,
   removeFromCart,
   setCartOpen,
-  setPage
+  setPage,
+  setCart,
+  showNotification,
 }) {
   return (
     <div
@@ -208,9 +210,11 @@ export default function CartDrawer({
                   marginTop: "0.25rem"
                 }}
                 onClick={() => {
-                  if (window.confirm("Clear your entire cart?")) {
-                    cart.forEach(item => removeFromCart(item.id, item.size, item.color));
-                  }
+                if (window.confirm("Clear your entire cart?")) {
+                setCart([]);
+                setCart([]);
+                showNotification("Cart cleared successfully");
+                }
                 }}
               >
                 🗑️ Clear Cart

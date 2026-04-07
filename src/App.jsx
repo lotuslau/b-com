@@ -15,6 +15,7 @@ import OnlineStoresPage from "./pages/OnlineStoresPage";
 import { getProducts } from "./services/api";
 import { HiOutlineArrowUp } from "react-icons/hi";
 import ProductReviewsPage from "./pages/ProductReviewsPage";
+import WishlistPage from "./pages/WishlistPage";
 
 // ============================================================
 // BACK TO TOP BUTTON
@@ -110,21 +111,26 @@ export default function BComStore() {
   };
 
   // ── Cart Actions ──
-  const addToCart = (product, size, color) => {
-    const existing = cart.find(
+
+const addToCart = (product, size, color) => {
+  setCart(prevCart => {
+    const existing = prevCart.find(
       i => i.id === product.id && i.size === size && i.color === color
     );
+
     if (existing) {
-      setCart(cart.map(i =>
+      return prevCart.map(i =>
         i.id === existing.id && i.size === size && i.color === color
           ? { ...i, qty: i.qty + 1 }
           : i
-      ));
+      );
     } else {
-      setCart([...cart, { ...product, qty: 1, size, color }]);
+      return [...prevCart, { ...product, qty: 1, size, color }];
     }
-    showNotification(`${product.name} successfully added to cart!`);
-  };
+  });
+
+  showNotification(`Item(s) successfully added to cart!`);
+};  
 
   const removeFromCart = (id, size, color) => {
     setCart(cart.filter(i => !(i.id === id && i.size === size && i.color === color)));
@@ -219,13 +225,24 @@ export default function BComStore() {
       {page === "home" && <HomePage {...productProps} />}
       {page === "featured" && <FeaturedPage {...productProps} />}
       {page === "orders" && (
-        <OrdersPage
-          cart={cart}
-          cartTotal={cartTotal}
-          removeFromCart={removeFromCart}
-          showNotification={showNotification}
-        />
-      )}
+  <OrdersPage
+    cart={cart}
+    cartTotal={cartTotal}
+    removeFromCart={removeFromCart}
+    showNotification={showNotification}
+    setCart={setCart}
+  />
+)}
+      {page === "wishlist" && (
+  <WishlistPage
+    products={products}
+    wishlist={wishlist}
+    toggleWishlist={toggleWishlist}
+    addToCart={addToCart}
+    setPage={setPage}
+    setSelectedProduct={setSelectedProduct}
+  />
+)}
       {page === "reviews" && (
   <ProductReviewsPage
     product={selectedProduct}

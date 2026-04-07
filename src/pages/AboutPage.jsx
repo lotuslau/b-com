@@ -75,7 +75,7 @@ export default function AboutPage({ setPage }) {
           {
             emoji: <HiOutlineTruck size={32} color="#2563EB" />,
             title: "Nationwide Delivery",
-            desc: "We deliver to all 6 districts — Belize, Cayo, Corozal, Orange Walk, Stann Creek and Toledo."
+            desc: "B-Com currently delivers to Belize City, Ladyville, Sandhill and surrounding areas ONLY."
           },
           {
             emoji: <HiOutlineLockClosed size={32} color="#2563EB" />,

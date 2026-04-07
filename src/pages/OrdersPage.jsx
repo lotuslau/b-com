@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PAYMENT_METHODS, DISTRICTS, EXTERNAL_STORES } from "../data/constants";
+import { PAYMENT_METHODS, DELIVERY_TO, EXTERNAL_STORES } from "../data/constants";
 import { TERMS_AND_CONDITIONS } from "../data/policies";
 import { createOrder, initiatePayment } from "../services/api";
 import {
@@ -9,8 +9,9 @@ import {
   HiOutlineLink,
   HiOutlineShieldCheck
 } from "react-icons/hi";
+import { BiCheckbox } from "react-icons/bi";
 
-export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotification }) {
+export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotification, setCart }) {
   const [step, setStep] = useState(1);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [termsTimestamp, setTermsTimestamp] = useState(null);
@@ -28,6 +29,27 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
   });
 
   const tax = cartTotal * 0.125;
+
+{/* DELIVERY AREA NOTICE */}
+              <div style={{
+                background: "#fff8e1",
+                border: "1px solid #f59e0b",
+                borderRadius: 10,
+                padding: "10px 14px",
+                marginBottom: "1.25rem",
+                fontSize: "0.85rem",
+                color: "#92400e",
+                display: "flex",
+                alignItems: "flex-start",
+                gap: 8
+              }}>
+                <span style={{ fontSize: "1rem", flexShrink: 0 }}>🚚</span>
+                <span>
+                  <strong>Current delivery areas:</strong> Belize City, Ladyville and Sandhill only.
+                  We are expanding soon — contact us via WhatsApp to check if we deliver to your area.
+                </span>
+              </div>
+
   const shipping = cartTotal > 200 ? 0 : 15;
   const total = cartTotal + tax + shipping;
 
@@ -76,8 +98,10 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
           amount: response.order.total
         });
 
-        setOrderPlaced(true);
-        showNotification("Order placed successfully!");
+      setOrderPlaced(true);
+      setCart([]);
+      showNotification("Order placed successfully. Thank you for your purchase!");
+      window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
     } catch (err) {
@@ -97,7 +121,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
           Order Confirmed!
         </h1>
         <p style={{ color: "var(--muted)", fontSize: "1rem", lineHeight: 1.7, maxWidth: 500, margin: "0 auto 1.5rem" }}>
-          Thank you {form.name}! Your order has been received and is being processed.
+          {form.name} Thank you for shopping with us! Your order has been received and is being processed.
           We'll contact you at {form.phone} with updates.
         </p>
         <div style={{
@@ -229,7 +253,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                   value={form.district}
                   onChange={e => setForm({ ...form, district: e.target.value })}
                 >
-                  {DISTRICTS.map(d => <option key={d}>{d}</option>)}
+                  {DELIVERY_TO.map(d => <option key={d}>{d}</option>)}
                 </select>
               </div>
 
@@ -282,7 +306,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                 lineHeight: 1.6
               }}>
                 <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <HiOutlineShieldCheck size={16} color="#2563EB" /> All Belizean bank integrations
+                  <HiOutlineShieldCheck size={16} color="#2563EB" /> We currently accept Belize Bank and Atlantic Bank credit/debit cards and online transfers, as well as PayPal for international customers. More payment options coming soon!
                 </span>
               </div>
 
@@ -302,7 +326,16 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                 >
                   <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                     <span style={{ fontSize: "1rem", marginTop: 2 }}>
-                      {paymentMethod === pm.id ? "🔵" : "⚪"}
+                      <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer" }}>
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          checked={paymentMethod === pm.id}
+                          onChange={() => setPaymentMethod(pm.id)}
+                          style={{ accentColor: "#2563EB" }}
+                        />
+                        {pm.name}
+                    </label>
                     </span>
                     <div>
                       <div style={{ fontWeight: 600, fontSize: "0.9rem", marginBottom: 2 }}>
@@ -596,7 +629,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
             lineHeight: 1.5
           }}>
             <span style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-              <HiOutlineTruck size={14} color="#2563EB" /> Free shipping on orders over BZ$ 200
+              <HiOutlineTruck size={14} color="#2563EB" /> Free shipping on orders over BZ$ XXX
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
               <HiOutlineShieldCheck size={14} color="#2563EB" /> Secure payment processing

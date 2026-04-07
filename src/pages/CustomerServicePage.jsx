@@ -30,11 +30,11 @@ export default function CustomerServicePage({ showNotification }) {
   const FAQS = [
     {
       Q: "How long does delivery take?",
-      A: "Delivery within Belize City takes 1-2 business days. Other districts take 3-5 business days."
+      A: "Delivery within Belize City takes 1-2 business days. Other locations may take 3-5 business days."
     },
     {
       Q: "What payment methods do you accept?",
-      A: "We accept Belize Bank cards, Atlantic Bank cards, online bank transfers, PayPal and cash on delivery."
+      A: "We accept Belize Bank cards, Atlantic Bank cards, online bank transfers and PayPal."
     },
     {
       Q: "Can I return or exchange an item?",
@@ -46,7 +46,7 @@ export default function CustomerServicePage({ showNotification }) {
     },
     {
       Q: "Do you deliver to all districts?",
-      A: "Yes! We deliver to all 6 districts — Belize, Cayo, Corozal, Orange Walk, Stann Creek and Toledo."
+      A: "No! We currently deliver to Belize City, Ladyville, Sandhill and surrounding areas ONLY.."
     },
     {
       Q: "How can I track my order?",

@@ -14,7 +14,7 @@ export const COMPANY_INFO = {
 };
 
 export const TERMS_AND_CONDITIONS = {
-  lastUpdated: "April 2025",
+  lastUpdated: "April 2026",
   sections: [
     {
       title: "1. Acceptance of Terms",
@@ -34,7 +34,7 @@ export const TERMS_AND_CONDITIONS = {
     },
     {
       title: "5. Delivery Policy",
-      content: `B-Com Belize delivers nationwide to all six districts of Belize including Belize District, Cayo, Corozal, Orange Walk, Stann Creek and Toledo. Delivery timeframes are estimated and not guaranteed. Belize City deliveries typically take 1-2 business days. Other districts typically take 3-5 business days. International product orders may take longer depending on the source retailer. Free delivery applies to orders over BZ$200. A flat delivery fee of BZ$15 applies to orders under BZ$200.`
+      content: `B-Com currently delivers only to Belize City, Ladyville, Sandhill and surrounding areas. Delivery timeframes are estimated and not guaranteed. Belize City deliveries typically take 1-2 business days. Other areas typically take 3-5 business days. International product orders may take longer depending on the source retailer. Free delivery applies to orders over BZ$XXX. A flat delivery fee of BZ$XX applies to orders under BZ$XXX.`
     },
     {
       title: "6. Return and Refund Policy",
@@ -141,19 +141,19 @@ export const REFUND_POLICY = {
 };
 
 export const DELIVERY_POLICY = {
-  lastUpdated: "April 2025",
+  lastUpdated: "April 2026",
   sections: [
     {
       title: "Delivery Coverage",
-      content: `B-Com Belize delivers nationwide to all six districts of Belize: Belize District, Cayo District, Corozal District, Orange Walk District, Stann Creek District and Toledo District. We are a Belizean company based in Belize City, Belize, Central America.`
+      content: `B-Com Belize currently delivers to Belize City, Ladyville, Sandhill and surrounding areas ONLY. We are a Belizean company based in Belize City, Belize, Central America.`
     },
     {
       title: "Delivery Timeframes",
-      content: `Belize City and surrounding areas: 1-2 business days. Other districts: 3-5 business days. External store orders (Amazon, Shein, Temu, Alibaba): 7-21 business days depending on the store and shipping origin. Please note that delivery timeframes are estimates and may vary due to circumstances beyond our control such as weather, public holidays or courier delays.`
+      content: `Belize City : 1-2 business days. Surrounding areas : 3-5 business days. External store orders (Amazon, Shein, Temu, Alibaba): 7-21 business days depending on the store and shipping origin. Please note that delivery timeframes are estimates and may vary due to circumstances beyond our control such as weather, public holidays or courier delays.`
     },
     {
       title: "Delivery Fees",
-      content: `Orders over BZ$200: FREE delivery. Orders under BZ$200: flat fee of BZ$15. Remote areas within districts may incur additional delivery charges which will be communicated before order confirmation.`
+      content: `Orders over BZ$XXX: FREE delivery. Orders under BZ$XXX: flat fee of BZ$XX. Remote areas may incur additional delivery charges which will be communicated before order confirmation.`
     },
     {
       title: "Order Processing",
