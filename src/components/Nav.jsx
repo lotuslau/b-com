@@ -6,11 +6,23 @@ import {
   HiOutlineMenu,
   HiOutlineX,
   HiOutlineSearch,
+  HiOutlineUser,
 } from "react-icons/hi";
 
-export default function Nav({ page, setPage, cartCount, setCartOpen, wishlist, searchQuery, setSearchQuery }) {
+export default function Nav({ page, setPage, cartCount, setCartOpen, wishlist, searchQuery, setSearchQuery, customer }) {  
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  <Nav
+        page={page}
+        setPage={setPage}
+        cartCount={cartCount}
+        setCartOpen={setCartOpen}
+        wishlist={wishlist}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        customer={customer}
+      />
 
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 20);
@@ -39,6 +51,31 @@ export default function Nav({ page, setPage, cartCount, setCartOpen, wishlist, s
               style={{ height: 55, objectFit: "contain" }}
             />
           </div>
+
+          {/* Account */}
+            <button
+              className="nav-icon-btn"
+              onClick={() => setPage(customer ? "account" : "login")}
+              title={customer ? `My Account (${customer.name})` : "Sign In"}
+              style={{ position: "relative" }}
+            >
+              <HiOutlineUser
+                size={24}
+                color={customer ? "#2563EB" : "var(--dark)"}
+              />
+              {customer && (
+                <span style={{
+                  position: "absolute",
+                  top: -2,
+                  right: -2,
+                  width: 10,
+                  height: 10,
+                  borderRadius: "50%",
+                  background: "#22c55e",
+                  border: "2px solid white"
+                }} />
+              )}
+            </button>
 
           {/* NAV LINKS — desktop */}
           <div className="nav-links">
@@ -149,6 +186,31 @@ export default function Nav({ page, setPage, cartCount, setCartOpen, wishlist, s
                 >
                   {wishlist.length}
                 </span>
+              )}
+            </button>
+          
+          {/* Account */}
+            <button
+              className="nav-icon-btn"
+              onClick={() => setPage(customer ? "account" : "login")}
+              title={customer ? `My Account (${customer.name})` : "Sign In"}
+              style={{ position: "relative" }}
+            >
+              <HiOutlineUser
+                size={24}
+                color={customer ? "#2563EB" : "var(--dark)"}
+              />
+              {customer && (
+                <span style={{
+                  position: "absolute",
+                  top: -2,
+                  right: -2,
+                  width: 10,
+                  height: 10,
+                  borderRadius: "50%",
+                  background: "#22c55e",
+                  border: "2px solid white"
+                }} />
               )}
             </button>
 

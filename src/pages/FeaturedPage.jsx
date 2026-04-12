@@ -96,56 +96,6 @@ export default function FeaturedPage({
             ))}
           </div>
 
-          {/* Store Filter */}
-          <div style={{
-            background: "white",
-            borderRadius: 16,
-            padding: "1.25rem",
-            border: "1px solid var(--border)"
-          }}>
-            <h3 style={{
-              fontSize: "0.8rem",
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: 1,
-              color: "var(--muted)",
-              marginBottom: "0.75rem"
-            }}>
-              Store
-            </h3>
-            {["all", "amazon", "shein", "temu", "alibaba"].map(s => (
-              <button
-                key={s}
-                style={{
-                  width: "100%",
-                  padding: "8px 12px",
-                  borderRadius: 8,
-                  fontSize: "0.85rem",
-                  fontWeight: 500,
-                  marginBottom: 4,
-                  textAlign: "left",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  background: selectedStore === s ? "var(--teal)" : "transparent",
-                  color: selectedStore === s ? "white" : "var(--dark)",
-                  border: "none",
-                  cursor: "pointer"
-                }}
-                onClick={() => setSelectedStore(s)}
-              >
-                <span>
-                  {s === "all" ? "All Stores" : s.charAt(0).toUpperCase() + s.slice(1)}
-                </span>
-                <span style={{ opacity: 0.7, fontSize: "0.75rem" }}>
-                  ({s === "all"
-                    ? products.length
-                    : products.filter(p => (p.external_store || p.store) === s).length
-                  })
-                </span>
-              </button>
-            ))}
-          </div>
-
           {/* Browse Global Stores */}
           <div style={{
             background: "white",

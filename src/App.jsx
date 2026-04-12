@@ -16,6 +16,10 @@ import { getProducts } from "./services/api";
 import { HiOutlineArrowUp } from "react-icons/hi";
 import ProductReviewsPage from "./pages/ProductReviewsPage";
 import WishlistPage from "./pages/WishlistPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import AccountPage from "./pages/AccountPage";
+import AuthGuard from "./components/AuthGuard";
 
 // ============================================================
 // BACK TO TOP BUTTON
@@ -86,6 +90,11 @@ export default function BComStore() {
 
   // ── Notification ──
   const [notification, setNotification] = useState(null);
+
+  const [customer, setCustomer] = useState(() => {
+    const saved = localStorage.getItem("bcom_customer");
+    return saved ? JSON.parse(saved) : null;
+  });
 
   // ── Fetch Products ──
   useEffect(() => {
@@ -204,6 +213,7 @@ const addToCart = (product, size, color) => {
         wishlist={wishlist}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        customer={customer}
       />
 
       {/* CART DRAWER */}
@@ -218,6 +228,34 @@ const addToCart = (product, size, color) => {
       )}
 
       {/* PAGES */}
+      {page === "login" && (
+  <LoginPage
+    setPage={setPage}
+    setCustomer={setCustomer}
+    showNotification={showNotification}
+  />
+)}
+
+{page === "register" && (
+  <RegisterPage
+    setPage={setPage}
+    setCustomer={setCustomer}
+    showNotification={showNotification}
+  />
+)}
+
+{page === "account" && (
+  <AuthGuard customer={customer} setPage={setPage}>
+    <AccountPage
+      customer={customer}
+      setCustomer={setCustomer}
+      setPage={setPage}
+      wishlist={wishlist}
+      cart={cart}
+      showNotification={showNotification}
+    />
+  </AuthGuard>
+)}
       {page === "terms" && <TermsPage setPage={setPage} />}
       {page === "privacy" && <PrivacyPage setPage={setPage} />}
       {page === "refund-policy" && <RefundPolicyPage setPage={setPage} />}

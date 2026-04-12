@@ -46,21 +46,7 @@ export default function AboutPage({ setPage }) {
           lineHeight: 1.8,
           marginBottom: "1.5rem"
         }}>
-          B-Com was founded with a simple mission — to make fashion accessible
-          to every Belizean, no matter which district they call home. We saw
-          a gap in the market: Belizeans wanted access to quality clothing,
-          shoes and accessories from both local makers and global brands like
-          Amazon, Shein, Temu and Alibaba — but the process was complicated
-          and unreliable.
-        </p>
-        <p style={{
-          color: "var(--muted)",
-          fontSize: "1.05rem",
-          lineHeight: 1.8
-        }}>
-          B-Com bridges that gap. We curate the best products, handle the
-          ordering process, and deliver nationwide — so you can shop with
-          confidence from the comfort of your home.
+          Our mission is to bring innovation to commerce. Making it easy and accessible for our customers to shop a variety of products online, from the convenience of their home. Connecting international markets to our local market.
         </p>
       </div>
 
@@ -74,7 +60,7 @@ export default function AboutPage({ setPage }) {
           },
           {
             emoji: <HiOutlineTruck size={32} color="#2563EB" />,
-            title: "Nationwide Delivery",
+            title: "Delivery",
             desc: "B-Com currently delivers to Belize City, Ladyville, Sandhill and surrounding areas ONLY."
           },
           {
