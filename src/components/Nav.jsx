@@ -52,31 +52,6 @@ export default function Nav({ page, setPage, cartCount, setCartOpen, wishlist, s
             />
           </div>
 
-          {/* Account */}
-            <button
-              className="nav-icon-btn"
-              onClick={() => setPage(customer ? "account" : "login")}
-              title={customer ? `My Account (${customer.name})` : "Sign In"}
-              style={{ position: "relative" }}
-            >
-              <HiOutlineUser
-                size={24}
-                color={customer ? "#2563EB" : "var(--dark)"}
-              />
-              {customer && (
-                <span style={{
-                  position: "absolute",
-                  top: -2,
-                  right: -2,
-                  width: 10,
-                  height: 10,
-                  borderRadius: "50%",
-                  background: "#22c55e",
-                  border: "2px solid white"
-                }} />
-              )}
-            </button>
-
           {/* NAV LINKS — desktop */}
           <div className="nav-links">
             {NAV_LINKS.map(([p, l]) => (

@@ -80,9 +80,7 @@ export default function Footer({ setPage }) {
             ))}
           </div>
         </div>
-
       </div>
-
       <div className="footer-bottom" style={{ flexDirection: "column", gap: "0.75rem" }}>
         <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", justifyContent: "center" }}>
           {[
@@ -101,6 +99,19 @@ export default function Footer({ setPage }) {
             </button>
           ))}
         </div>
+        <button
+  style={{
+    background: "none",
+    border: "none",
+    color: "rgba(255,255,255,0.2)",
+    fontSize: "0.7rem",
+    cursor: "pointer",
+    fontFamily: "'DM Sans', sans-serif"
+  }}
+  onClick={() => setPage("admin")}
+>
+  Admin
+</button>
         <div style={{ display: "flex", justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: "0.5rem" }}>
           <span>© 2026 B-Com Belize Ltd. All rights reserved. · Belize City, Belize</span>
           <span>🔒 PCI DSS Compliant · Proudly Belizean</span>

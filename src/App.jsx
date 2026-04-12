@@ -20,6 +20,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import AccountPage from "./pages/AccountPage";
 import AuthGuard from "./components/AuthGuard";
+import AdminPage from "./pages/AdminPage";
 
 // ============================================================
 // BACK TO TOP BUTTON
@@ -234,6 +235,10 @@ const addToCart = (product, size, color) => {
     setCustomer={setCustomer}
     showNotification={showNotification}
   />
+)}
+
+{page === "admin" && (
+  <AdminPage showNotification={showNotification} />
 )}
 
 {page === "register" && (
