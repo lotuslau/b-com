@@ -41,6 +41,11 @@
   object-fit: contain;
 }
 
+.product-image-wrap:hover .zoom-overlay {
+  opacity: 1 !important;
+  background: rgba(0,0,0,0.3) !important;
+}
+
 .product-featured-badge {
   position: absolute;
   top: 10px;

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { CATEGORIES, EXTERNAL_STORES } from "../data/constants";
+import { HiOutlineX, HiOutlineZoomIn } from "react-icons/hi";
 
 export default function FeaturedPage({
   products,
@@ -32,6 +33,8 @@ export default function FeaturedPage({
 
     return matchCat && matchStore && matchSearch;
   });
+    const [lightboxImage, setLightboxImage] = useState(null);
+    const [lightboxProduct, setLightboxProduct] = useState(null);
 
   return (
     <div style={{ maxWidth: 1280, margin: "0 auto", padding: "2rem" }}>
@@ -181,12 +184,113 @@ export default function FeaturedPage({
                   toggleWishlist={toggleWishlist}
                   setSelectedProduct={setSelectedProduct}
                   setPage={setPage}
+                  onImageClick={(img, product) => {
+                    setLightboxImage(img);
+                    setLightboxProduct(product);
+                  }}
                 />
               ))}
             </div>
           )}
         </div>
       </div>
+          {/* IMAGE LIGHTBOX */}
+      {lightboxImage && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.92)",
+            zIndex: 2000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "2rem"
+          }}
+          onClick={() => { setLightboxImage(null); setLightboxProduct(null); }}
+        >
+          {/* CLOSE BUTTON */}
+          <button
+            style={{
+              position: "absolute",
+              top: 20,
+              right: 20,
+              background: "rgba(255,255,255,0.15)",
+              border: "none",
+              color: "white",
+              width: 44,
+              height: 44,
+              borderRadius: "50%",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backdropFilter: "blur(4px)"
+            }}
+            onClick={() => { setLightboxImage(null); setLightboxProduct(null); }}
+          >
+            <HiOutlineX size={20} />
+          </button>
+
+          {/* IMAGE */}
+          <div
+            style={{ position: "relative", maxWidth: "80vw", maxHeight: "85vh" }}
+            onClick={e => e.stopPropagation()}
+          >
+            <img
+              src={lightboxImage}
+              alt={lightboxProduct?.name}
+              style={{
+                maxWidth: "80vw",
+                maxHeight: "75vh",
+                objectFit: "contain",
+                borderRadius: 16,
+                display: "block"
+              }}
+            />
+
+            {/* PRODUCT INFO BELOW IMAGE */}
+            {lightboxProduct && (
+              <div style={{
+                background: "rgba(255,255,255,0.1)",
+                backdropFilter: "blur(10px)",
+                borderRadius: 12,
+                padding: "1rem 1.5rem",
+                marginTop: "1rem",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexWrap: "wrap",
+                gap: "1rem"
+              }}>
+                <div>
+                  <div style={{
+                    color: "rgba(255,255,255,0.6)",
+                    fontSize: "0.75rem",
+                    marginBottom: 4
+                  }}>
+                    {lightboxProduct.brand}
+                  </div>
+                  <div style={{
+                    color: "white",
+                    fontWeight: 700,
+                    fontSize: "1rem"
+                  }}>
+                    {lightboxProduct.name}
+                  </div>
+                </div>
+                <div style={{
+                  color: "white",
+                  fontWeight: 800,
+                  fontSize: "1.3rem"
+                }}>
+                  BZ$ {parseFloat(lightboxProduct.price_bzd || lightboxProduct.price || 0).toFixed(2)}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

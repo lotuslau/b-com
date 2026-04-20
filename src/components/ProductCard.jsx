@@ -4,7 +4,8 @@ import {
   HiOutlineStar,
   HiStar,
   HiOutlineShoppingCart,
-  HiOutlineLightningBolt
+  HiOutlineLightningBolt,
+  HiOutlineZoomIn
 } from "react-icons/hi";
 import { STORE_LINKS, STORE_COLORS } from "../data/constants";
 
@@ -14,7 +15,8 @@ export default function ProductCard({
   wishlist,
   toggleWishlist,
   setSelectedProduct,
-  setPage
+  setPage,
+  onImageClick
 }) {
   const store = product.external_store || product.store || "own";
   const storeColor = STORE_COLORS[store] || "var(--bright blue)";
@@ -47,19 +49,39 @@ export default function ProductCard({
     <div className="product-card">
 
       {/* IMAGE */}
-      <div className="product-image-wrap" onClick={handleCardClick}>
+      <div className="product-image-wrap">
         <div
           className="product-image"
-          style={{
-            background: product.images
-              ? "transparent"
-              : `linear-gradient(135deg, ${storeColor}22, ${storeColor}44)`
+          style={{ cursor: product.images ? "zoom-in" : "pointer" }}
+          onClick={() => {
+            if (product.images && onImageClick) {
+              onImageClick(product.images, product);
+            } else {
+              handleCardClick();
+            }
           }}
         >
-          {product.images
-            ? <img src={product.images} alt={product.name} />
-            : <span style={{ fontSize: "5rem" }}>🛍️</span>
-          }
+          {product.images ? (
+            <>
+              <img src={product.images} alt={product.name} />
+              <div style={{
+                position: "absolute",
+                inset: 0,
+                background: "rgba(0,0,0,0)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "all 0.2s",
+                opacity: 0
+              }}
+                className="zoom-overlay"
+              >
+                <HiOutlineZoomIn size={32} color="white" />
+              </div>
+            </>
+          ) : (
+            <span style={{ fontSize: "5rem" }}>🛍️</span>
+          )}          
         </div>
         {product.featured && (
           <span className="product-featured-badge" style={{ display: "flex", alignItems: "center", gap: 4 }}>

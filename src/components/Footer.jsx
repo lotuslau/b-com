@@ -70,7 +70,7 @@ export default function Footer({ setPage }) {
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {[
               { icon: <HiOutlineLocationMarker size={16} />, text: "Belize City, Belize" },
-              { icon: <HiOutlineMail size={16} />, text: "b-com@gmail.com"},
+              { icon: <HiOutlineMail size={16} />, text: "b-com@gmail.com" },
               { icon: <HiOutlinePhone size={16} />, text: "+501-614-1234" },
               { icon: <FaWhatsapp size={16} color="#25D366" />, text: "WhatsApp Support" },
             ].map(c => (
@@ -100,18 +100,18 @@ export default function Footer({ setPage }) {
           ))}
         </div>
         <button
-  style={{
-    background: "none",
-    border: "none",
-    color: "rgba(255,255,255,0.2)",
-    fontSize: "0.7rem",
-    cursor: "pointer",
-    fontFamily: "'DM Sans', sans-serif"
-  }}
-  onClick={() => setPage("admin")}
->
-  Admin
-</button>
+          style={{
+            background: "none",
+            border: "none",
+            color: "rgba(255,255,255,0.2)",
+            fontSize: "0.7rem",
+            cursor: "pointer",
+            fontFamily: "'DM Sans', sans-serif"
+          }}
+          onClick={() => setPage("admin")}
+        >
+          Admin
+        </button>
         <div style={{ display: "flex", justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: "0.5rem" }}>
           <span>© 2026 B-Com Belize Ltd. All rights reserved. · Belize City, Belize</span>
           <span>🔒 PCI DSS Compliant · Proudly Belizean</span>
