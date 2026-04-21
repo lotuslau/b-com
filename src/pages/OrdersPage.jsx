@@ -18,7 +18,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
   const [orderRef] = useState(() => "BCM-" + String(Date.now()).slice(-5));
   const [paymentMethod, setPaymentMethod] = useState("");
   const [orderPlaced, setOrderPlaced] = useState(false);
-  const [externalLink, setExternalLink] = useState("");
+  const [externalLinks, setExternalLinks] = useState([""]);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -31,7 +31,14 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
   const tax = cartTotal * 0.125;
 
 {/* DELIVERY AREA NOTICE */}
-              <div style={{
+  const shipping = cartTotal > 200 ? 0 : 15;
+  const total = cartTotal + tax + shipping;
+
+  const handlePlaceOrder = async () => {
+    if (!form.name || !form.email || !form.phone || !form.address) {
+      showNotification("Please fill in all required fields", "error");
+      
+      <div style={{
                 background: "#fff8e1",
                 border: "1px solid #f59e0b",
                 borderRadius: 10,
@@ -49,14 +56,9 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                   We are expanding soon — contact us via WhatsApp to check if we deliver to your area.
                 </span>
               </div>
-
-  const shipping = cartTotal > 200 ? 0 : 15;
-  const total = cartTotal + tax + shipping;
-
-  const handlePlaceOrder = async () => {
-    if (!form.name || !form.email || !form.phone || !form.address) {
-      showNotification("Please fill in all required fields", "error");
+      
       return;
+      
     }
     if (!paymentMethod) {
       showNotification("Please select a payment method", "error");
@@ -82,7 +84,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
         district: form.district,
         notes: form.notes,
         payment_method: paymentMethod,
-        external_link: externalLink,
+        external_link: externalLinks.filter(l => l.trim()).join('\n'),
         terms_agreed: agreedToTerms,
         terms_agreed_at: termsTimestamp,
         items
@@ -100,6 +102,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
 
       setOrderPlaced(true);
       setCart([]);
+      setExternalLinks([""]);
       showNotification("Order placed successfully. Thank you for your purchase!");
       window.scrollTo({ top: 0, behavior: "smooth" });
       }
@@ -204,28 +207,113 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
               </h2>
 
               {/* External Link Option */}
-              <div style={{
-                background: "#f0faf8",
-                border: "1px solid var(--teal)",
+            
+            <div style={{
+                background: "#f0f7ff",
+                border: "1px solid #dbeafe",
                 borderRadius: 10,
                 padding: "1rem",
-                marginBottom: "1.5rem"
+                marginBottom: "1.25rem"
               }}>
-                <p style={{ fontWeight: 600, marginBottom: "0.5rem", fontSize: "0.9rem" }}>
-                  <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <HiOutlineLink size={16} color="#2563EB" /> Ordering from Amazon, Shein, Temu or Alibaba?
-                </span>
+                <p style={{
+                  fontWeight: 600,
+                  marginBottom: "0.5rem",
+                  fontSize: "0.9rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6
+                }}>
+                  <HiOutlineLink size={16} color="#2563EB" />
+                  Ordering from Amazon, Shein, Temu or Alibaba?
                 </p>
-                <p style={{ color: "var(--muted)", fontSize: "0.82rem", marginBottom: "0.75rem" }}>
-                  Paste the product link below and we'll order it for you.
+                <p style={{
+                  color: "var(--muted)",
+                  fontSize: "0.82rem",
+                  marginBottom: "0.75rem"
+                }}>
+                  Paste product links below — add as many items as you want!
                 </p>
-                <input
-                  className="form-input"
-                  type="url"
-                  placeholder="https://www.amazon.com/product/..."
-                  value={externalLink}
-                  onChange={e => setExternalLink(e.target.value)}
-                />
+
+                {externalLinks.map((link, index) => (
+                  <div key={index} style={{
+                    display: "flex",
+                    gap: 8,
+                    marginBottom: 8,
+                    alignItems: "center"
+                  }}>
+                    <div style={{
+                      width: 24,
+                      height: 24,
+                      borderRadius: "50%",
+                      background: "#2563EB",
+                      color: "white",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "0.72rem",
+                      fontWeight: 700,
+                      flexShrink: 0
+                    }}>
+                      {index + 1}
+                    </div>
+                    <input
+                      className="form-input"
+                      type="url"
+                      placeholder={`https://www.amazon.com/product-${index + 1}...`}
+                      value={link}
+                      onChange={e => {
+                        const updated = [...externalLinks];
+                        updated[index] = e.target.value;
+                        setExternalLinks(updated);
+                      }}
+                      style={{ flex: 1 }}
+                    />
+                    {externalLinks.length > 1 && (
+                      <button
+                        style={{
+                          background: "#fff0f2",
+                          border: "1px solid #e05c6a",
+                          borderRadius: 8,
+                          padding: "8px 10px",
+                          color: "#e05c6a",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          flexShrink: 0
+                        }}
+                        onClick={() => {
+                          const updated = externalLinks.filter((_, i) => i !== index);
+                          setExternalLinks(updated);
+                        }}
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                ))}
+
+                <button
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    background: "white",
+                    border: "1.5px dashed #2563EB",
+                    borderRadius: 8,
+                    padding: "8px 16px",
+                    color: "#2563EB",
+                    fontSize: "0.82rem",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    fontFamily: "'DM Sans', sans-serif",
+                    marginTop: 4,
+                    width: "100%",
+                    justifyContent: "center"
+                  }}
+                  onClick={() => setExternalLinks([...externalLinks, ""])}
+                >
+                  + Add Another Item
+                </button>
               </div>
 
               {[
@@ -421,19 +509,60 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
               )}
 
               {/* External Link */}
-              {externalLink && (
+             
+              {externalLinks.some(l => l.trim()) && (
                 <div style={{
                   background: "#f9f9f9",
                   borderRadius: 12,
                   padding: "1rem",
                   marginBottom: "1rem"
                 }}>
-                  <h3 style={{ fontSize: "0.85rem", fontWeight: 700, marginBottom: "0.5rem", color: "var(--muted)", textTransform: "uppercase", letterSpacing: 0.5 }}>
-                    External Product Link
+                  <h3 style={{
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    marginBottom: "0.75rem",
+                    color: "var(--muted)",
+                    textTransform: "uppercase",
+                    letterSpacing: 0.5
+                  }}>
+                    External Product Links ({externalLinks.filter(l => l.trim()).length})
                   </h3>
-                  <a href={externalLink} target="_blank" rel="noreferrer" style={{ color: "var(--teal)", fontSize: "0.85rem", wordBreak: "break-all" }}>
-                    {externalLink}
-                  </a>
+                  {externalLinks.filter(l => l.trim()).map((link, i) => (
+                    <div key={i} style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      marginBottom: 6
+                    }}>
+                      <span style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: "50%",
+                        background: "#2563EB",
+                        color: "white",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "0.65rem",
+                        fontWeight: 700,
+                        flexShrink: 0
+                      }}>
+                        {i + 1}
+                      </span>
+                      <a
+                        href={link}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{
+                          color: "#2563EB",
+                          fontSize: "0.82rem",
+                          wordBreak: "break-all"
+                        }}
+                      >
+                        {link}
+                      </a>
+                    </div>
+                  ))}
                 </div>
               )}
 
@@ -576,7 +705,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
             Order Summary
           </h3>
 
-          {cart.length === 0 && !externalLink ? (
+          {cart.length === 0 && externalLinks.every(l => !l.trim()) ? (
             <p style={{ color: "var(--muted)", fontSize: "0.85rem", textAlign: "center", padding: "1rem 0" }}>
               No items in cart yet
             </p>
@@ -589,11 +718,12 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                 </div>
               ))}
 
-              {externalLink && (
+                {externalLinks.filter(l => l.trim()).length > 0 && (
                 <div style={{ padding: "6px 0", fontSize: "0.85rem", color: "var(--muted)" }}>
-                  + External product link
+                  + {externalLinks.filter(l => l.trim()).length} external link{externalLinks.filter(l => l.trim()).length > 1 ? "s" : ""}
                 </div>
               )}
+
             </>
           )}
 

@@ -39,7 +39,7 @@ export default function AboutPage({ setPage }) {
         padding: "4rem 2rem",
         textAlign: "center"
       }}>
-        <h2 className="section-title" style={{ textAlign: "center" }}>Our Story</h2>
+        <h2 className="section-title" style={{ textAlign: "center" }}>Our Mission</h2>
         <p style={{
           color: "var(--muted)",
           fontSize: "1.05rem",
