@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { HiStar, HiOutlineCheck, HiOutlineTrash, HiOutlinePhotograph } from "react-icons/hi";
+import { getAdminReviews, approveReview, deleteReview } from "../../services/adminApi";
 
 export default function AdminReviews({ showNotification }) {
   const [reviews, setReviews] = useState([]);
@@ -13,9 +14,8 @@ export default function AdminReviews({ showNotification }) {
   const fetchAllReviews = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:3001/api/admin/reviews");
-      const data = await res.json();
-      setReviews(data.reviews || []);
+      const data = await getAdminReviews();
+      setReviews(data.reviews || []);      
     } catch (err) {
       console.error(err);
     } finally {
@@ -25,9 +25,7 @@ export default function AdminReviews({ showNotification }) {
 
   const handleApprove = async (id) => {
     try {
-      await fetch(`http://localhost:3001/api/reviews/${id}/approve`, {
-        method: "PUT"
-      });
+      await approveReview(id);
       fetchAllReviews();
       showNotification("Review approved and published!");
     } catch (err) {
@@ -38,9 +36,7 @@ export default function AdminReviews({ showNotification }) {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this review?")) return;
     try {
-      await fetch(`http://localhost:3001/api/reviews/${id}`, {
-        method: "DELETE"
-      });
+      await deleteReview(id);
       fetchAllReviews();
       showNotification("Review deleted");
     } catch (err) {

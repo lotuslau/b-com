@@ -16,7 +16,7 @@ import AdminCustomers from "./admin/AdminCustomers";
 import AdminReviews from "./admin/AdminReviews";
 import AdminPayments from "./admin/AdminPayments";
 
-const ADMIN_PASSWORD = "bcom-admin-2025";
+const ADMIN_PASSWORD = "Adm!nk3y426*!";
 
 export default function AdminPage({ showNotification }) {
   const [authenticated, setAuthenticated] = useState(

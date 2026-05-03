@@ -41,19 +41,19 @@ export default function CustomerServicePage({ showNotification }) {
   const FAQS = [
      {
       q: "How long does shipping take?",
-      a: "Orders within Belize City typically take 1-2 business days. Deliveries to other districts may take 3-5 business days depending on the location and availability of the item. We strive to process and ship all orders as quickly as possible, but please allow for potential delays during peak seasons or due to unforeseen circumstances."
+      a: "Orders typically take 2-5 business days."
     },
     {
       q: "How can I make payment for my order?",
-      a: "We accept several payment methods for your convenience. You can pay using Belize Bank cards, Atlantic Bank cards, online bank transfers, and PayPal. When you place an order, you'll be prompted to choose your preferred payment method and follow the instructions to complete the transaction securely."
+      a: "Payment can be made with a valid Belize Bank and Atlantic Bank credit cards. If you have a Belize Bank or Atlantic account the payment will be deducted from your debit account. Payments from international banks/credit card are accepted. We currently do not accept payments from Heritage Bank and National Bank of Belize."
     },
     {
       q: "How can I track my order?",
-      a: "Once your order is placed, you'll receive a reference number. You can contact us via WhatsApp with your reference number to get an update on the status of your delivery. We will provide you with the latest information regarding your order and estimated delivery time."
+      a: "Your order can be tracked on the website using the order number sent to your email. You will also receive updates through your email on your order status."
     },
     {
       q: "Does B-Com deliver countrywide?",
-      a: "Currently, B-Com delivers to Belize City, Ladyville, Sandhill and surrounding areas ONLY. We are working on expanding our delivery coverage in the future, so stay tuned for updates on new delivery locations!"
+      a: "Currently, B-Com delivers to Belize City, Ladyville, Sandhill and surrounding areas ONLY. If you are located outside of Belize District, your order will be outsourced to local couriers such as BPMS, IDS, post office, Tropic Air and Maya Island Air."
     }, 
   ];
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { HiOutlineSearch, HiOutlineRefresh } from "react-icons/hi";
+import { getAdminOrders, updateOrderStatus } from "../../services/adminApi";
 
 export default function AdminOrders({ showNotification }) {
   const [orders, setOrders] = useState([]);
@@ -26,8 +27,7 @@ export default function AdminOrders({ showNotification }) {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:3001/api/orders");
-      const data = await res.json();
+      const data = await getAdminOrders();
       setOrders(data.orders || []);
     } catch (err) {
       console.error(err);
@@ -38,11 +38,7 @@ export default function AdminOrders({ showNotification }) {
 
   const handleStatusUpdate = async (orderId, newStatus) => {
     try {
-      await fetch(`http://localhost:3001/api/orders/${orderId}/status`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus })
-      });
+      await updateOrderStatus(orderId, newStatus);
       fetchOrders();
       showNotification(`Order status updated to ${newStatus}`);
     } catch (err) {

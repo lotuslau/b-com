@@ -6,6 +6,7 @@ import {
   HiOutlinePhone,
   HiOutlineLocationMarker
 } from "react-icons/hi";
+import { getAdminCustomers } from "../../services/adminApi";
 
 export default function AdminCustomers({ showNotification }) {
   const [customers, setCustomers] = useState([]);
@@ -19,8 +20,7 @@ export default function AdminCustomers({ showNotification }) {
   const fetchCustomers = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:3001/api/customers");
-      const data = await res.json();
+      const data = await getAdminCustomers();
       setCustomers(data.customers || []);
     } catch (err) {
       console.error(err);

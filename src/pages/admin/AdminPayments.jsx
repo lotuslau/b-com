@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { HiOutlineSearch, HiOutlineRefresh } from "react-icons/hi";
+import { getAdminPayments } from "../../services/adminApi";
 
 export default function AdminPayments({ showNotification }) {
   const [payments, setPayments] = useState([]);
@@ -21,8 +22,7 @@ export default function AdminPayments({ showNotification }) {
   const fetchPayments = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:3001/api/admin/payments");
-      const data = await res.json();
+      const data = await getAdminPayments();
       setPayments(data.payments || []);
     } catch (err) {
       console.error(err);

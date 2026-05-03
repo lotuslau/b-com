@@ -7,6 +7,7 @@ import {
   HiOutlineTrendingUp,
   HiOutlineExclamationCircle
 } from "react-icons/hi";
+import { getAdminStats, getAdminOrders } from "../../services/adminApi";
 
 export default function AdminOverview({ showNotification }) {
   const [stats, setStats] = useState(null);
@@ -20,9 +21,8 @@ export default function AdminOverview({ showNotification }) {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch("http://localhost:3001/api/admin/stats");
-      const data = await res.json();
-      setStats(data);
+      const data = await getAdminStats();
+    setStats(data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -32,9 +32,8 @@ export default function AdminOverview({ showNotification }) {
 
   const fetchRecentOrders = async () => {
     try {
-      const res = await fetch("http://localhost:3001/api/orders");
-      const data = await res.json();
-      setRecentOrders(data.orders?.slice(0, 5) || []);
+      const data = await getAdminOrders();
+    setRecentOrders(data.orders?.slice(0, 5) || []);
     } catch (err) {
       console.error(err);
     }

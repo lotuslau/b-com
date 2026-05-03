@@ -9,6 +9,7 @@ import {
   HiOutlineEyeOff
 } from "react-icons/hi";
 import { STORE_COLORS } from "../../data/constants";
+import { updateProduct, deleteProduct, addProduct } from "../../services/adminApi";
 
 export default function AdminProducts({ showNotification }) {
   const [products, setProducts] = useState([]);
@@ -36,7 +37,7 @@ export default function AdminProducts({ showNotification }) {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:3001/api/products");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/products`);
       const data = await res.json();
       setProducts(data.products || []);
     } catch (err) {
@@ -48,11 +49,7 @@ export default function AdminProducts({ showNotification }) {
 
   const handleToggleActive = async (product) => {
     try {
-      await fetch(`http://localhost:3001/api/products/${product.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ is_active: !product.is_active })
-      });
+      await updateProduct(product.id, { is_active: !product.is_active });
       fetchProducts();
       showNotification(`Product ${product.is_active ? "hidden" : "activated"}!`);
     } catch (err) {
@@ -63,9 +60,7 @@ export default function AdminProducts({ showNotification }) {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
     try {
-      await fetch(`http://localhost:3001/api/products/${id}`, {
-        method: "DELETE"
-      });
+      await deleteProduct(id);
       fetchProducts();
       showNotification("Product deleted");
     } catch (err) {
@@ -79,24 +74,11 @@ export default function AdminProducts({ showNotification }) {
       return;
     }
     try {
-      const method = editProduct ? "PUT" : "POST";
-      const url = editProduct
-        ? `http://localhost:3001/api/products/${editProduct.id}`
-        : "http://localhost:3001/api/products";
-
-      const body = {
-        ...form,
-        price_bzd: parseFloat(form.price_bzd),
-        stock_qty: parseInt(form.stock_qty) || 0,
-        sizes: form.sizes ? JSON.stringify(form.sizes.split(",").map(s => s.trim())) : "[]",
-        colors: form.colors ? JSON.stringify(form.colors.split(",").map(c => c.trim())) : "[]"
-      };
-
-      await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      });
+      if (editProduct) {
+        await updateProduct(editProduct.id, body);
+      } else {
+        await addProduct(body);
+      }
 
       fetchProducts();
       setShowForm(false);
