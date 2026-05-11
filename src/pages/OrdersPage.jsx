@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { PAYMENT_METHODS, DELIVERY_TO, EXTERNAL_STORES } from "../data/constants";
+import { PAYMENT_METHODS, DELIVERY_TO} from "../data/constants";
 import { TERMS_AND_CONDITIONS } from "../data/policies";
 import { createOrder, initiatePayment } from "../services/api";
 import {
   HiOutlineCreditCard,
   HiOutlineTruck,
   HiOutlineCheckCircle,
-  HiOutlineLink,
   HiOutlineShieldCheck
 } from "react-icons/hi";
 import { BiCheckbox } from "react-icons/bi";
@@ -18,7 +17,6 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
   const [orderRef] = useState(() => "BCM-" + String(Date.now()).slice(-5));
   const [paymentMethod, setPaymentMethod] = useState("");
   const [orderPlaced, setOrderPlaced] = useState(false);
-  const [externalLinks, setExternalLinks] = useState([""]);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -84,7 +82,6 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
         district: form.district,
         notes: form.notes,
         payment_method: paymentMethod,
-        external_link: externalLinks.filter(l => l.trim()).join('\n'),
         terms_agreed: agreedToTerms,
         terms_agreed_at: termsTimestamp,
         items
@@ -102,7 +99,6 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
 
       setOrderPlaced(true);
       setCart([]);
-      setExternalLinks([""]);
       showNotification("Order placed successfully. Thank you for your purchase!");
       window.scrollTo({ top: 0, behavior: "smooth" });
       }
@@ -123,10 +119,70 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
         }}>
           Order Confirmed!
         </h1>
-        <p style={{ color: "var(--muted)", fontSize: "1rem", lineHeight: 1.7, maxWidth: 500, margin: "0 auto 1.5rem" }}>
-          {form.name} Thank you for shopping with us! Your order has been received and is being processed.
-          We'll contact you at {form.phone} with updates.
+        <p style={{
+          color: "#6b7280",
+          fontSize: "1rem",
+          lineHeight: 1.7,
+          maxWidth: 500,
+          margin: "0 auto 1.5rem"
+        }}>
+          Thank you <strong>{form.name}</strong>! Your order has been received.
         </p>
+
+        {/* PAYMENT PENDING NOTICE */}
+        <div style={{
+          background: "#fff8e1",
+          border: "1px solid #f59e0b",
+          borderRadius: 12,
+          padding: "1.25rem",
+          maxWidth: 500,
+          margin: "0 auto 1.5rem",
+          textAlign: "left"
+        }}>
+          <div style={{
+            fontWeight: 700,
+            marginBottom: 8,
+            color: "#92400e",
+            display: "flex",
+            alignItems: "center",
+            gap: 6
+          }}>
+            💳 Payment Instructions
+          </div>
+          <p style={{ color: "#92400e", fontSize: "0.9rem", lineHeight: 1.7, margin: 0 }}>
+            Our team will contact you at <strong>{form.phone}</strong> within
+            24 hours with payment instructions for your{" "}
+            <strong>
+              {paymentMethod === "belize_bank_card"
+                ? "Belize Bank"
+                : "Atlantic Bank"} card payment.
+            </strong>
+            <br /><br />
+            You can also reach us via WhatsApp to complete your payment faster.
+          </p>
+        </div>
+
+        <a
+          href="https://wa.me/501XXXXXXXX"
+          target="_blank"
+          rel="noreferrer"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            background: "#25D366",
+            color: "white",
+            padding: "12px 28px",
+            borderRadius: 12,
+            fontWeight: 700,
+            fontSize: "0.95rem",
+            textDecoration: "none",
+            marginBottom: "1rem"
+          }}
+        >
+          <span>💬</span> Complete Payment via WhatsApp
+        </a>
+        
         <div style={{
           background: "var(--dark)",
           color: "white",
@@ -205,117 +261,6 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
               }}>
                 Your Details
               </h2>
-
-              {/* External Link Option */}
-            
-            <div style={{
-                background: "#f0f7ff",
-                border: "1px solid #dbeafe",
-                borderRadius: 10,
-                padding: "1rem",
-                marginBottom: "1.25rem"
-              }}>
-                <p style={{
-                  fontWeight: 600,
-                  marginBottom: "0.5rem",
-                  fontSize: "0.9rem",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6
-                }}>
-                  <HiOutlineLink size={16} color="#2563EB" />
-                  Ordering from Amazon, Shein, Temu or Alibaba?
-                </p>
-                <p style={{
-                  color: "var(--muted)",
-                  fontSize: "0.82rem",
-                  marginBottom: "0.75rem"
-                }}>
-                  Paste product links below — add as many items as you want!
-                </p>
-
-                {externalLinks.map((link, index) => (
-                  <div key={index} style={{
-                    display: "flex",
-                    gap: 8,
-                    marginBottom: 8,
-                    alignItems: "center"
-                  }}>
-                    <div style={{
-                      width: 24,
-                      height: 24,
-                      borderRadius: "50%",
-                      background: "#2563EB",
-                      color: "white",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "0.72rem",
-                      fontWeight: 700,
-                      flexShrink: 0
-                    }}>
-                      {index + 1}
-                    </div>
-                    <input
-                      className="form-input"
-                      type="url"
-                      placeholder={`https://www.amazon.com/product-${index + 1}...`}
-                      value={link}
-                      onChange={e => {
-                        const updated = [...externalLinks];
-                        updated[index] = e.target.value;
-                        setExternalLinks(updated);
-                      }}
-                      style={{ flex: 1 }}
-                    />
-                    {externalLinks.length > 1 && (
-                      <button
-                        style={{
-                          background: "#fff0f2",
-                          border: "1px solid #e05c6a",
-                          borderRadius: 8,
-                          padding: "8px 10px",
-                          color: "#e05c6a",
-                          cursor: "pointer",
-                          display: "flex",
-                          alignItems: "center",
-                          flexShrink: 0
-                        }}
-                        onClick={() => {
-                          const updated = externalLinks.filter((_, i) => i !== index);
-                          setExternalLinks(updated);
-                        }}
-                      >
-                        ✕
-                      </button>
-                    )}
-                  </div>
-                ))}
-
-                <button
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    background: "white",
-                    border: "1.5px dashed #2563EB",
-                    borderRadius: 8,
-                    padding: "8px 16px",
-                    color: "#2563EB",
-                    fontSize: "0.82rem",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    fontFamily: "'DM Sans', sans-serif",
-                    marginTop: 4,
-                    width: "100%",
-                    justifyContent: "center"
-                  }}
-                  onClick={() => setExternalLinks([...externalLinks, ""])}
-                >
-                  + Add Another Item
-                </button>
-              </div>
-
               {[
                 ["Full Name *", "name", "text"],
                 ["Email Address *", "email", "email"],
@@ -369,10 +314,8 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                 >
                   Continue to Payment →
                 </button>
-
             </div>
           )}
-
           {/* STEP 2 — Payment */}
           {step === 2 && (
             <div className="order-card">
@@ -384,72 +327,145 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                 Payment Method
               </h2>
 
-              <div style={{
-                background: "#e8f0fd",
-                border: "1px solid var(--teal)",
+             <div style={{
+                background: "#f0f7ff",
+                border: "1px solid #dbeafe",
                 borderRadius: 10,
                 padding: "12px 16px",
                 fontSize: "0.85rem",
                 marginBottom: "1.25rem",
                 lineHeight: 1.6
               }}>
-                <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <HiOutlineShieldCheck size={16} color="#2563EB" /> We currently accept Belize Bank and Atlantic Bank credit/debit cards and online transfers, as well as PayPal for international customers. More payment options coming soon!
-                </span>
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  marginBottom: 6,
+                  fontWeight: 700,
+                  color: "#1e40af"
+                }}>
+                  Secure Payment Processing
+                </div>
+                <p style={{ color: "#374151", marginBottom: 4 }}>
+                  All payments are processed securely through Belize Bank Limited
+                  and Atlantic Bank Limited's hosted payment gateways.
+                </p>
+                <p style={{ color: "#6b7280", fontSize: "0.8rem" }}>
+                  ✅ Visa & Mastercard accepted &nbsp;·&nbsp;
+                  ✅ International cards accepted &nbsp;·&nbsp;
+                  ✅ 3D Secure authentication &nbsp;·&nbsp;
+                  ✅ PCI DSS compliant
+                </p>
               </div>
-
-              {PAYMENT_METHODS.map(pm => (
+                {PAYMENT_METHODS.map(pm => (
                 <div
                   key={pm.id}
                   style={{
-                    border: `2px solid ${paymentMethod === pm.id ? "var(--bright blue)" : "#e0d9cc"}`,
-                    background: paymentMethod === pm.id ? "#e8f0fd" : "white",
+                    border: `2px solid ${paymentMethod === pm.id ? "#2563EB" : "#e5e7eb"}`,
+                    background: paymentMethod === pm.id ? "#f0f7ff" : "white",
                     borderRadius: 12,
-                    padding: "1rem",
+                    padding: "1.25rem",
                     marginBottom: "0.75rem",
                     cursor: "pointer",
-                    transition: "all 0.2s"
+                    transition: "all 0.2s",
+                    boxShadow: paymentMethod === pm.id
+                      ? "0 0 0 4px rgba(37,99,235,0.1)"
+                      : "none"
                   }}
                   onClick={() => setPaymentMethod(pm.id)}
                 >
                   <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                    <span style={{ fontSize: "1rem", marginTop: 2 }}>
-                      <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer" }}>
-                        <input
-                          type="radio"
-                          name="paymentMethod"
-                          checked={paymentMethod === pm.id}
-                          onChange={() => setPaymentMethod(pm.id)}
-                          style={{ accentColor: "#2563EB" }}
-                        />
-                        {pm.name}
-                    </label>
-                    </span>
-                    <div>
-                      <div style={{ fontWeight: 600, fontSize: "0.9rem", marginBottom: 2 }}>
+                    <div style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: "50%",
+                      border: `2px solid ${paymentMethod === pm.id ? "#2563EB" : "#d1d5db"}`,
+                      background: paymentMethod === pm.id ? "#2563EB" : "white",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                      marginTop: 2,
+                      transition: "all 0.2s"
+                    }}>
+                      {paymentMethod === pm.id && (
+                        <div style={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: "50%",
+                          background: "white"
+                        }} />
+                      )}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{
+                        fontWeight: 700,
+                        fontSize: "0.95rem",
+                        marginBottom: 4,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8
+                      }}>
                         {pm.icon} {pm.label}
                         {pm.badge && (
                           <span style={{
-                            background: "var(--teal)",
+                            background: "#2563EB",
                             color: "white",
                             padding: "2px 8px",
                             borderRadius: 10,
                             fontSize: "0.68rem",
-                            marginLeft: 6,
                             fontWeight: 600
                           }}>
                             {pm.badge}
                           </span>
                         )}
                       </div>
-                      <div style={{ color: "var(--muted)", fontSize: "0.8rem" }}>
+                      <div style={{
+                        color: "#6b7280",
+                        fontSize: "0.82rem",
+                        marginBottom: 8
+                      }}>
                         {pm.desc}
+                      </div>
+                      {/* CARD LOGOS */}
+                      <div style={{ display: "flex", gap: 6 }}>
+                        <div style={{
+                          background: "#1a1f71",
+                          color: "white",
+                          padding: "2px 8px",
+                          borderRadius: 4,
+                          fontSize: "0.65rem",
+                          fontWeight: 900,
+                          letterSpacing: 0.5
+                        }}>
+                          VISA
+                        </div>
+                        <div style={{
+                          background: "#eb001b",
+                          color: "white",
+                          padding: "2px 8px",
+                          borderRadius: 4,
+                          fontSize: "0.65rem",
+                          fontWeight: 900,
+                          letterSpacing: 0.5
+                        }}>
+                          MC
+                        </div>
+                        <div style={{
+                          background: "#f0f0f0",
+                          color: "#374151",
+                          padding: "2px 8px",
+                          borderRadius: 4,
+                          fontSize: "0.65rem",
+                          fontWeight: 600
+                        }}>
+                          International ✓
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               ))}
-
               <div style={{ display: "flex", gap: "1rem", marginTop: "1.5rem" }}>
                 <button className="btn-secondary" onClick={() => {
                     setStep(1);
@@ -503,64 +519,6 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                     }}>
                       <span>{item.name} ({item.size}) ×{item.qty}</span>
                       <span>BZ$ {parseFloat(item.price_bzd || item.price || 0).toFixed(2)}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* External Link */}
-             
-              {externalLinks.some(l => l.trim()) && (
-                <div style={{
-                  background: "#f9f9f9",
-                  borderRadius: 12,
-                  padding: "1rem",
-                  marginBottom: "1rem"
-                }}>
-                  <h3 style={{
-                    fontSize: "0.85rem",
-                    fontWeight: 700,
-                    marginBottom: "0.75rem",
-                    color: "var(--muted)",
-                    textTransform: "uppercase",
-                    letterSpacing: 0.5
-                  }}>
-                    External Product Links ({externalLinks.filter(l => l.trim()).length})
-                  </h3>
-                  {externalLinks.filter(l => l.trim()).map((link, i) => (
-                    <div key={i} style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                      marginBottom: 6
-                    }}>
-                      <span style={{
-                        width: 20,
-                        height: 20,
-                        borderRadius: "50%",
-                        background: "#2563EB",
-                        color: "white",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "0.65rem",
-                        fontWeight: 700,
-                        flexShrink: 0
-                      }}>
-                        {i + 1}
-                      </span>
-                      <a
-                        href={link}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{
-                          color: "#2563EB",
-                          fontSize: "0.82rem",
-                          wordBreak: "break-all"
-                        }}
-                      >
-                        {link}
-                      </a>
                     </div>
                   ))}
                 </div>
@@ -688,6 +646,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
         </div>
 
         {/* ORDER SUMMARY */}
+          
         <div style={{
           background: "white",
           borderRadius: 20,
@@ -705,27 +664,12 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
             Order Summary
           </h3>
 
-          {cart.length === 0 && externalLinks.every(l => !l.trim()) ? (
-            <p style={{ color: "var(--muted)", fontSize: "0.85rem", textAlign: "center", padding: "1rem 0" }}>
-              No items in cart yet
-            </p>
-          ) : (
-            <>
               {cart.map((item, i) => (
                 <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", fontSize: "0.85rem" }}>
                   <span style={{ color: "var(--muted)" }}>{item.name.slice(0, 18)}... ×{item.qty}</span>
                   <span>BZ$ {parseFloat(item.price_bzd || item.price || 0).toFixed(2)}</span>
                 </div>
               ))}
-
-                {externalLinks.filter(l => l.trim()).length > 0 && (
-                <div style={{ padding: "6px 0", fontSize: "0.85rem", color: "var(--muted)" }}>
-                  + {externalLinks.filter(l => l.trim()).length} external link{externalLinks.filter(l => l.trim()).length > 1 ? "s" : ""}
-                </div>
-              )}
-
-            </>
-          )}
 
           <div style={{ height: 1, background: "var(--border)", margin: "0.75rem 0" }} />
 

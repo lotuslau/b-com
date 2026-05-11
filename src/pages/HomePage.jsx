@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import ProductCard from "../components/ProductCard";
-import { STORE_LINKS, EXTERNAL_STORES } from "../data/constants";
 import {
   HiOutlineTruck,
   HiOutlineLockClosed,
@@ -49,12 +48,12 @@ export default function HomePage({
       image: "/images/apparel.jpg"
     },
     {
-      badge: "Global Brands",
-      title: "Shop From",
-      accent: "Amazon & More",
-      subtitle: "Find items on Amazon, Shein, Temu and Alibaba — we handle the ordering and delivery for you.",
-      cta: "Browse Stores",
-      ctaPage: "online-stores",
+      badge: "Fast Delivery",
+      title: "Quality Products",
+      accent: "Delivered Fast",
+      subtitle: "Browse our curated collection of clothes, shoes and accessories. Delivered to Belize City, Ladyville and Sandhill.",
+      cta: "Shop Now",
+      ctaPage: "featured",
       bg: "#ffffff",
       image: "/images/apparel.jpg"
     },
@@ -205,7 +204,6 @@ export default function HomePage({
               {[
                 { value: products?.length || "8+", label: "Products" },
                 { value: "3", label: "Delivery Areas" },
-                { value: "4", label: "Global Stores" },
               ].map(stat => (
                 <div key={stat.label}>
                   <div style={{
@@ -257,32 +255,16 @@ export default function HomePage({
                 position: "absolute",
                 bottom: 20,
                 left: -20,
-                background: "white",
+                background: "",
                 borderRadius: 14,
                 padding: "12px 20px",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
                 display: "flex",
                 alignItems: "center",
                 gap: 10
               }}>
-                <div style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: "50%",
-                  background: "#f0f7ff",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}>
-                  <HiOutlineStar size={20} color="#2563EB" />
-                </div>
+                
                 <div>
-                  <div style={{ fontWeight: 700, fontSize: "0.85rem", color: "#1a1a2e" }}>
-                    Trusted Store
-                  </div>
-                  <div style={{ fontSize: "0.72rem", color: "#9ca3af" }}>
-                    Proudly Belizean
-                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -590,49 +572,6 @@ export default function HomePage({
         </div>
       </div>
 
-      {/* ── GLOBAL STORES STRIP ── */}
-      <div style={{
-        borderTop: "1px solid #e5e7eb",
-        borderBottom: "1px solid #e5e7eb",
-        padding: "1.5rem 2rem",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: "1.5rem",
-        flexWrap: "wrap",
-        background: "white"
-      }}>
-        <p style={{
-          color: "#9ca3af",
-          fontSize: "0.82rem",
-          fontWeight: 600,
-          textTransform: "uppercase",
-          letterSpacing: 1
-        }}>
-          Also shop from
-        </p>
-        {EXTERNAL_STORES.map(s => (
-          <a
-            key={s.name}
-            href={s.url}
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              padding: "7px 20px",
-              borderRadius: 20,
-              border: `1.5px solid ${s.color}`,
-              color: s.color,
-              fontSize: "0.85rem",
-              fontWeight: 700,
-              transition: "all 0.2s",
-              textDecoration: "none"
-            }}
-          >
-            {s.emoji} {s.name}
-          </a>
-        ))}
-      </div>
-
       {/* ── CTA BANNER ── */}
       <div style={{
         background: "linear-gradient(135deg, #1d4ed8 0%, #2563EB 50%, #3b82f6 100%)",
@@ -690,22 +629,6 @@ export default function HomePage({
               onClick={() => setPage("featured")}
             >
               Shop Now →
-            </button>
-            <button
-              style={{
-                background: "transparent",
-                color: "white",
-                padding: "14px 32px",
-                borderRadius: 10,
-                fontWeight: 600,
-                fontSize: "0.95rem",
-                border: "1.5px solid rgba(255,255,255,0.5)",
-                cursor: "pointer",
-                fontFamily: "'DM Sans', sans-serif"
-              }}
-              onClick={() => setPage("online-stores")}
-            >
-              Browse Global Stores
             </button>
           </div>
         </div>

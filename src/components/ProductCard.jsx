@@ -7,7 +7,6 @@ import {
   HiOutlineLightningBolt,
   HiOutlineZoomIn
 } from "react-icons/hi";
-import { STORE_LINKS, STORE_COLORS } from "../data/constants";
 
 export default function ProductCard({
   product,
@@ -18,8 +17,6 @@ export default function ProductCard({
   setPage,
   onImageClick
 }) {
-  const store = product.external_store || product.store || "own";
-  const storeColor = STORE_COLORS[store] || "var(--bright blue)";
   const stock = product.stock_qty ?? product.stock ?? 0;
   const isWishlisted = wishlist.includes(product.id);
 

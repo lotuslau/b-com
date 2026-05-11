@@ -8,7 +8,6 @@ import {
   HiOutlineEye,
   HiOutlineEyeOff
 } from "react-icons/hi";
-import { STORE_COLORS } from "../../data/constants";
 import { updateProduct, deleteProduct, addProduct } from "../../services/adminApi";
 
 export default function AdminProducts({ showNotification }) {
@@ -24,7 +23,6 @@ export default function AdminProducts({ showNotification }) {
     stock_qty: "",
     brand: "",
     category_id: 1,
-    external_store: "own",
     is_active: true,
     featured: false,
     sizes: "",
@@ -75,9 +73,9 @@ export default function AdminProducts({ showNotification }) {
     }
     try {
       if (editProduct) {
-        await updateProduct(editProduct.id, body);
+        await updateProduct(editProduct.id);
       } else {
-        await addProduct(body);
+        await addProduct();
       }
 
       fetchProducts();
@@ -86,7 +84,7 @@ export default function AdminProducts({ showNotification }) {
       showNotification(editProduct ? "Product updated!" : "Product added!");
       setForm({
         name: "", description: "", price_bzd: "", stock_qty: "",
-        brand: "", category_id: 1, external_store: "own",
+        brand: "", category_id: 1,
         is_active: true, featured: false, sizes: "", colors: ""
       });
     } catch (err) {
@@ -218,7 +216,7 @@ export default function AdminProducts({ showNotification }) {
                 value={form.external_store}
                 onChange={e => setForm({ ...form, external_store: e.target.value })}
               >
-                {["own", "amazon", "shein", "temu", "alibaba"].map(s => (
+                {["own"].map(s => (
                   <option key={s} value={s}>
                     {s === "own" ? "B-Com Original" : s.charAt(0).toUpperCase() + s.slice(1)}
                   </option>
@@ -357,14 +355,13 @@ export default function AdminProducts({ showNotification }) {
                   </td>
                   <td style={{ padding: "10px 12px" }}>
                     <span style={{
-                      background: (STORE_COLORS[product.external_store || "own"] + "22"),
-                      color: STORE_COLORS[product.external_store || "own"],
+                      background: ( "own" + "22"),
+                      color: "own",
                       padding: "2px 8px",
                       borderRadius: 8,
                       fontSize: "0.72rem",
                       fontWeight: 700
                     }}>
-                      {product.external_store || "own"}
                     </span>
                   </td>
                   <td style={{ padding: "10px 12px" }}>

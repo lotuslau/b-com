@@ -43,27 +43,6 @@ export default function Footer({ setPage }) {
           ))}
         </div>
 
-        {/* SHOP */}
-        <div>
-          <h4 className="footer-link-title">Global Stores</h4>
-          {[
-            ["Amazon", "https://www.amazon.com"],
-            ["Shein", "https://www.shein.com"],
-            ["Temu", "https://www.temu.com"],
-            ["Alibaba", "https://www.alibaba.com"],
-          ].map(([name, url]) => (
-            <a
-              key={name}
-              href={url}
-              target="_blank"
-              rel="noreferrer"
-              className="footer-link"
-            >
-              {name}
-            </a>
-          ))}
-        </div>
-
         {/* CONTACT */}
         <div>
           <h4 className="footer-link-title">Contact</h4>

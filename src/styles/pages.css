@@ -160,16 +160,6 @@
   line-height: 1.6;
 }
 
-/* ---- ONLINE STORES PAGE ---- */
-.stores-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
 .store-card {
   background: white;
   border-radius: 20px;
@@ -305,7 +295,6 @@
 
 @media (max-width: 480px) {
   .footer-inner { grid-template-columns: 1fr; }
-  .stores-grid { grid-template-columns: 1fr; }
 }
 /* ---- HOVER STATES ---- */
 .about-card:hover {

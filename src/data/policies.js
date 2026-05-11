@@ -38,7 +38,7 @@ export const TERMS_AND_CONDITIONS = {
     },
     {
       title: "6. Return and Refund Policy",
-      content: `Items may be returned within 30 days of delivery provided they are unused, unworn and in their original condition with all tags attached. To initiate a return contact us via WhatsApp or email with your order reference number. Refunds will be processed to the original payment method used. Cash refunds will not be issued for card transactions — refunds will be returned to the original card. Refunds are typically processed within 5-10 business days. Items purchased on sale or from external stores may have different return conditions.`
+      content: `Items may be returned within 30 days of delivery provided they are unused, unworn and in their original condition with all tags attached. To initiate a return contact us via WhatsApp or email with your order reference number. Refunds will be processed to the original payment method used. Cash refunds will not be issued for card transactions — refunds will be returned to the original card. Refunds are typically processed within 5-10 business days. Items purchased on sale may have different return conditions.`
     },
     {
       title: "7. Cancellation Policy",
@@ -84,7 +84,7 @@ export const PRIVACY_POLICY = {
     },
     {
       title: "3. Data Sharing",
-      content: `We share your information only as necessary to fulfill your order. This may include sharing your delivery address with our courier partners and sharing your order details with external stores (Amazon, Shein, Temu, Alibaba) when placing orders on your behalf. We do not sell your personal information to any third party.`
+      content: `We share your information only as necessary to fulfill your order. This may include sharing your delivery address with our courier partners when placing orders on your behalf. We do not sell your personal information to any third party.`
     },
     {
       title: "4. Data Security",
@@ -119,7 +119,7 @@ export const REFUND_POLICY = {
     },
     {
       title: "Non-Returnable Items",
-      content: `The following items cannot be returned: items marked as final sale, intimate apparel and swimwear for hygiene reasons, items that have been worn, washed or altered, and items from external stores subject to those stores' own return policies.`
+      content: `The following items cannot be returned: items marked as final sale, intimate apparel and swimwear for hygiene reasons, items that have been worn, washed or altered.`
     },
     {
       title: "How to Return",

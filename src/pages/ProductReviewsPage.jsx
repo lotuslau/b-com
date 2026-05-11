@@ -86,17 +86,37 @@ export default function ProductReviewsPage({ product, setPage }) {
         marginBottom: "2rem",
         flexWrap: "wrap"
       }}>
-        {product.images && (
-          <img
-            src={product.images}
-            alt={product.name}
-            style={{
-              width: 80,
-              height: 80,
-              objectFit: "cover",
-              borderRadius: 10
-            }}
-          />
+         {product.images && (
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <img
+              src={product.images}
+              alt={product.name}
+              style={{
+                width: 80,
+                height: 80,
+                objectFit: "cover",
+                borderRadius: 10,
+                border: "2px solid #2563EB",
+                cursor: "pointer"
+              }}
+            />
+            {product.additional_images && product.additional_images.map((img, i) => (
+              <img
+                key={i}
+                src={img}
+                alt={`${product.name} view ${i + 2}`}
+                style={{
+                  width: 80,
+                  height: 80,
+                  objectFit: "cover",
+                  borderRadius: 10,
+                  border: "1px solid var(--border)",
+                  cursor: "pointer",
+                  opacity: 0.8
+                }}
+              />
+            ))}
+          </div>
         )}
         <div>
           <p style={{ color: "var(--muted)", fontSize: "0.78rem", marginBottom: 4 }}>

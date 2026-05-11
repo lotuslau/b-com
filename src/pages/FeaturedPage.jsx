@@ -1,7 +1,7 @@
 import { useState } from "react";
-import ProductCard from "../components/ProductCard";
-import { CATEGORIES, EXTERNAL_STORES } from "../data/constants";
+import { CATEGORIES } from "../data/constants";
 import { HiOutlineX, HiOutlineZoomIn } from "react-icons/hi";
+import ProductCard from "../components/ProductCard";
 
 export default function FeaturedPage({
   products,
@@ -15,7 +15,8 @@ export default function FeaturedPage({
   setSearchQuery,
 }) {
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedStore, setSelectedStore] = useState("all");
+  const [lightboxImage, setLightboxImage] = useState(null);
+  const [lightboxProduct, setLightboxProduct] = useState(null);
 
   const filtered = products.filter(p => {
     const matchCat = selectedCategory === "all" ||
@@ -24,29 +25,65 @@ export default function FeaturedPage({
       (selectedCategory === "accessories" && p.category_id === 3) ||
       (selectedCategory === "lifestyle" && p.category_id === 4);
 
-    const matchStore = selectedStore === "all" ||
-      (p.external_store || p.store) === selectedStore;
-
     const matchSearch = !searchQuery ||
       p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (p.brand && p.brand.toLowerCase().includes(searchQuery.toLowerCase()));
 
-    return matchCat && matchStore && matchSearch;
+    return matchCat && matchSearch;
   });
-    const [lightboxImage, setLightboxImage] = useState(null);
-    const [lightboxProduct, setLightboxProduct] = useState(null);
 
   return (
     <div style={{ maxWidth: 1280, margin: "0 auto", padding: "2rem" }}>
 
-      
+      {/* HEADER */}
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: "2rem",
+        flexWrap: "wrap",
+        gap: "1rem"
+      }}>
+        <h1 style={{
+          fontFamily: "'Playfair Display', serif",
+          fontSize: "2rem",
+          fontWeight: 900,
+          color: "var(--dark)"
+        }}>
+          Featured Collection
+        </h1>
+        <input
+          style={{
+            border: "2px solid var(--border)",
+            borderRadius: 12,
+            padding: "10px 20px",
+            fontSize: "0.9rem",
+            fontFamily: "inherit",
+            background: "white",
+            minWidth: 280,
+            outline: "none"
+          }}
+          placeholder="🔍 Search products, brands..."
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+        />
+      </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "240px 1fr", gap: "2rem" }}>
+      {/* MAIN LAYOUT */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "220px 1fr",
+        gap: "2rem"
+      }}>
 
         {/* SIDEBAR */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1.5rem"
+        }}>
 
-          {/* Category Filter */}
+          {/* CATEGORY FILTER */}
           <div style={{
             background: "white",
             borderRadius: 16,
@@ -76,15 +113,18 @@ export default function FeaturedPage({
                   textAlign: "left",
                   display: "flex",
                   justifyContent: "space-between",
-                  background: selectedCategory === c ? "var(--teal)" : "transparent",
+                  background: selectedCategory === c ? "#2563EB" : "transparent",
                   color: selectedCategory === c ? "white" : "var(--dark)",
                   border: "none",
-                  cursor: "pointer"
+                  cursor: "pointer",
+                  transition: "all 0.2s"
                 }}
                 onClick={() => setSelectedCategory(c)}
               >
                 <span>
-                  {c === "all" ? "All Categories" : c.charAt(0).toUpperCase() + c.slice(1)}
+                  {c === "all"
+                    ? "All Categories"
+                    : c.charAt(0).toUpperCase() + c.slice(1)}
                 </span>
                 <span style={{ opacity: 0.7, fontSize: "0.75rem" }}>
                   ({c === "all"
@@ -99,60 +139,9 @@ export default function FeaturedPage({
             ))}
           </div>
 
-          {/* Browse Global Stores */}
-          <div style={{
-            background: "white",
-            borderRadius: 16,
-            padding: "1.25rem",
-            border: "1px solid var(--border)"
-          }}>
-            <h3 style={{
-              fontSize: "0.8rem",
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: 1,
-              color: "var(--muted)",
-              marginBottom: "0.5rem"
-            }}>
-              Browse Global Stores
-            </h3>
-            <p style={{
-              fontSize: "0.78rem",
-              color: "var(--muted)",
-              marginBottom: "0.75rem",
-              lineHeight: 1.5
-            }}>
-              Find items on these stores and bring the link to our Orders page
-            </p>
-            {EXTERNAL_STORES.map(s => (
-              <a
-                key={s.name}
-                href={s.url}
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  padding: "8px 12px",
-                  borderRadius: 8,
-                  border: `1.5px solid ${s.color}`,
-                  marginBottom: 6,
-                  fontSize: "0.85rem",
-                  fontWeight: 600,
-                  color: s.color,
-                  transition: "all 0.2s"
-                }}
-                onMouseEnter={e => e.target.style.background = s.color}
-                onMouseLeave={e => e.target.style.background = "transparent"}
-              >
-                <span>{s.emoji} {s.name}</span>
-                <span>→</span>
-              </a>
-            ))}
-          </div>
         </div>
 
-        {/* PRODUCTS */}
+        {/* PRODUCTS SECTION */}
         <div>
           <p style={{
             color: "var(--muted)",
@@ -193,8 +182,10 @@ export default function FeaturedPage({
             </div>
           )}
         </div>
+
       </div>
-          {/* IMAGE LIGHTBOX */}
+
+      {/* IMAGE LIGHTBOX */}
       {lightboxImage && (
         <div
           style={{
@@ -207,7 +198,10 @@ export default function FeaturedPage({
             justifyContent: "center",
             padding: "2rem"
           }}
-          onClick={() => { setLightboxImage(null); setLightboxProduct(null); }}
+          onClick={() => {
+            setLightboxImage(null);
+            setLightboxProduct(null);
+          }}
         >
           {/* CLOSE BUTTON */}
           <button
@@ -227,16 +221,24 @@ export default function FeaturedPage({
               justifyContent: "center",
               backdropFilter: "blur(4px)"
             }}
-            onClick={() => { setLightboxImage(null); setLightboxProduct(null); }}
+            onClick={() => {
+              setLightboxImage(null);
+              setLightboxProduct(null);
+            }}
           >
             <HiOutlineX size={20} />
           </button>
 
-          {/* IMAGE */}
+          {/* IMAGE CONTAINER */}
           <div
-            style={{ position: "relative", maxWidth: "80vw", maxHeight: "85vh" }}
+            style={{
+              position: "relative",
+              maxWidth: "80vw",
+              maxHeight: "85vh"
+            }}
             onClick={e => e.stopPropagation()}
           >
+            {/* MAIN IMAGE */}
             <img
               src={lightboxImage}
               alt={lightboxProduct?.name}
@@ -249,7 +251,64 @@ export default function FeaturedPage({
               }}
             />
 
-            {/* PRODUCT INFO BELOW IMAGE */}
+            {/* THUMBNAIL STRIP */}
+            {lightboxProduct?.additional_images?.length > 0 && (
+              <div style={{
+                display: "flex",
+                gap: 8,
+                justifyContent: "center",
+                marginTop: "1rem",
+                flexWrap: "wrap"
+              }}>
+                {/* MAIN IMAGE THUMBNAIL */}
+                <img
+                  src={lightboxProduct.images}
+                  alt="Main view"
+                  style={{
+                    width: 60,
+                    height: 60,
+                    objectFit: "cover",
+                    borderRadius: 8,
+                    border: lightboxImage === lightboxProduct.images
+                      ? "2px solid white"
+                      : "2px solid rgba(255,255,255,0.3)",
+                    cursor: "pointer",
+                    opacity: lightboxImage === lightboxProduct.images ? 1 : 0.7,
+                    transition: "all 0.2s"
+                  }}
+                  onClick={e => {
+                    e.stopPropagation();
+                    setLightboxImage(lightboxProduct.images);
+                  }}
+                />
+                {/* ADDITIONAL IMAGE THUMBNAILS */}
+                {lightboxProduct.additional_images.map((img, i) => (
+                  <img
+                    key={i}
+                    src={img}
+                    alt={`View ${i + 2}`}
+                    style={{
+                      width: 60,
+                      height: 60,
+                      objectFit: "cover",
+                      borderRadius: 8,
+                      border: lightboxImage === img
+                        ? "2px solid white"
+                        : "2px solid rgba(255,255,255,0.3)",
+                      cursor: "pointer",
+                      opacity: lightboxImage === img ? 1 : 0.7,
+                      transition: "all 0.2s"
+                    }}
+                    onClick={e => {
+                      e.stopPropagation();
+                      setLightboxImage(img);
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* PRODUCT INFO */}
             {lightboxProduct && (
               <div style={{
                 background: "rgba(255,255,255,0.1)",
@@ -284,13 +343,17 @@ export default function FeaturedPage({
                   fontWeight: 800,
                   fontSize: "1.3rem"
                 }}>
-                  BZ$ {parseFloat(lightboxProduct.price_bzd || lightboxProduct.price || 0).toFixed(2)}
+                  BZ$ {parseFloat(
+                    lightboxProduct.price_bzd ||
+                    lightboxProduct.price || 0
+                  ).toFixed(2)}
                 </div>
               </div>
             )}
           </div>
         </div>
       )}
+
     </div>
   );
 }

@@ -124,7 +124,7 @@ export default function AboutPage({ setPage }) {
           marginBottom: "2rem",
           fontSize: "1rem"
         }}>
-          Browse our featured collection or explore global stores.
+          Browse our featured collection.
         </p>
         <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
           <button

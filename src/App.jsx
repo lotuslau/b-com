@@ -11,7 +11,6 @@ import FeaturedPage from "./pages/FeaturedPage";
 import OrdersPage from "./pages/OrdersPage";
 import AboutPage from "./pages/AboutPage";
 import CustomerServicePage from "./pages/CustomerServicePage";
-import OnlineStoresPage from "./pages/OnlineStoresPage";
 import { getProducts } from "./services/api";
 import { HiOutlineArrowUp } from "react-icons/hi";
 import ProductReviewsPage from "./pages/ProductReviewsPage";
@@ -296,7 +295,6 @@ const addToCart = (product, size, color) => {
       {page === "customer-service" && (
         <CustomerServicePage showNotification={showNotification} />
       )}
-      {page === "online-stores" && <OnlineStoresPage setPage={setPage} />}
       {page === "product" && selectedProduct && (
   <div style={{ maxWidth: 800, margin: "0 auto", padding: "3rem 2rem" }}>
     <button
