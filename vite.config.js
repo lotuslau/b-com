@@ -7,5 +7,15 @@ export default defineConfig({
     hmr: {
       overlay: false
     }
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    rollupOptions: {
+      onwarn(warning, warn) {
+        if (warning.code === 'UNUSED_EXTERNAL_IMPORT') return;
+        warn(warning);
+      }
+    }
   }
 })
