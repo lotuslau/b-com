@@ -9,6 +9,7 @@ import CartDrawer from "./components/CartDrawer";
 import HomePage from "./pages/HomePage";
 import FeaturedPage from "./pages/FeaturedPage";
 import OrdersPage from "./pages/OrdersPage";
+import OrderTrackingPage from "./pages/OrderTrackingPage";
 import AboutPage from "./pages/AboutPage";
 import CustomerServicePage from "./pages/CustomerServicePage";
 import { getProducts } from "./services/api";
@@ -20,6 +21,7 @@ import RegisterPage from "./pages/RegisterPage";
 import AccountPage from "./pages/AccountPage";
 import AuthGuard from "./components/AuthGuard";
 import AdminPage from "./pages/AdminPage";
+import SecurityPage from "./pages/SecurityPage";
 
 // ============================================================
 // BACK TO TOP BUTTON
@@ -263,7 +265,7 @@ const addToCart = (product, size, color) => {
       {page === "terms" && <TermsPage setPage={setPage} />}
       {page === "privacy" && <PrivacyPage setPage={setPage} />}
       {page === "refund-policy" && <RefundPolicyPage setPage={setPage} />}
-      {page === "delivery-policy" && <DeliveryPolicyPage setPage={setPage} />}
+      {page === "delivery-policy" && <DeliveryPolicyPage setPage={setPage} />}        
       {page === "home" && <HomePage {...productProps} />}
       {page === "featured" && <FeaturedPage {...productProps} />}
       {page === "orders" && (
@@ -273,7 +275,13 @@ const addToCart = (product, size, color) => {
     removeFromCart={removeFromCart}
     showNotification={showNotification}
     setCart={setCart}
+    setPage={setPage}
   />
+)}
+      {page === "security" && (<SecurityPage setPage={setPage} />
+)} 
+      {page === "tracking" && (
+  <OrderTrackingPage showNotification={showNotification} />
 )}
       {page === "wishlist" && (
   <WishlistPage

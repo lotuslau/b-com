@@ -62,12 +62,15 @@ export default function Footer({ setPage }) {
       </div>
       <div className="footer-bottom" style={{ flexDirection: "column", gap: "0.75rem" }}>
         <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", justifyContent: "center" }}>
+          
           {[
             ["terms", "Terms & Conditions"],
             ["privacy", "Privacy Policy"],
             ["refund-policy", "Return & Refund Policy"],
             ["delivery-policy", "Delivery Policy"],
+            ["security", "Security Statement"],
           ].map(([p, l]) => (
+
             <button
               key={p}
               className="footer-link"
@@ -92,7 +95,7 @@ export default function Footer({ setPage }) {
           Admin
         </button>
         <div style={{ display: "flex", justifyContent: "space-between", width: "100%", flexWrap: "wrap", gap: "0.5rem" }}>
-          <span>© 2026 B-Com Belize Ltd. All rights reserved. · Belize City, Belize</span>
+          <span>© 2026 B-Com Belize Ltd. All rights reserved. Belize City, Belize</span>
           <span>🔒 PCI DSS Compliant · Proudly Belizean</span>
         </div>
       </div>

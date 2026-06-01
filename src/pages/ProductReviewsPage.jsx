@@ -129,9 +129,43 @@ export default function ProductReviewsPage({ product, setPage }) {
           }}>
             {product.name}
           </h1>
-          <p style={{ color: "#2563EB", fontWeight: 700, fontSize: "1.1rem" }}>
-            BZ$ {parseFloat(product.price_bzd || product.price || 0).toFixed(2)}
-          </p>
+
+          {/* PRICE */}
+          {parseFloat(product.price_bzd || product.price || 0) === 0 ? (
+            <span style={{
+              background: "#f0f7ff",
+              color: "#2563EB",
+              padding: "4px 14px",
+              borderRadius: 20,
+              fontSize: "0.9rem",
+              fontWeight: 700,
+              display: "inline-block",
+              marginBottom: "0.75rem"
+            }}>
+              Contact for Price
+            </span>
+          ) : (
+            <p style={{
+              color: "#2563EB",
+              fontWeight: 700,
+              fontSize: "1.1rem",
+              marginBottom: "0.75rem"
+            }}>
+              BZ$ {parseFloat(product.price_bzd || product.price || 0).toFixed(2)}
+            </p>
+          )}
+
+          {/* DESCRIPTION */}
+          {product.description && (
+            <p style={{
+              color: "#6b7280",
+              fontSize: "0.92rem",
+              lineHeight: 1.7,
+              marginBottom: "0.5rem"
+            }}>
+              {product.description}
+            </p>
+          )}
         </div>
       </div>
 

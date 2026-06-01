@@ -35,7 +35,7 @@ export default function HomePage({
       cta: "Shop Now",
       ctaPage: "featured",
       bg: "#ffffff",
-      image: "/images/apparel.jpg"
+      image: "/images/femalemodes.png"
     },
     {
       badge: "Fast Delivery",
@@ -45,17 +45,17 @@ export default function HomePage({
       cta: "Place an Order",
       ctaPage: "orders",
       bg: "#f0f7ff",
-      image: "/images/apparel.jpg"
+      image: "/images/accessories.png"
     },
     {
-      badge: "Fast Delivery",
+      badge: "Quality Guaranteed",
       title: "Quality Products",
       accent: "Delivered Fast",
       subtitle: "Browse our curated collection of clothes, shoes and accessories. Delivered to Belize City, Ladyville and Sandhill.",
       cta: "Shop Now",
       ctaPage: "featured",
       bg: "#ffffff",
-      image: "/images/apparel.jpg"
+      image: "/images/modemen.png"
     },
   ];
 
@@ -350,7 +350,7 @@ export default function HomePage({
           { icon: <HiOutlineTruck size={20} color="white" />, text: "Nationwide Delivery" },
           { icon: <HiOutlineLockClosed size={20} color="white" />, text: "Secure Checkout" },
           { icon: <HiOutlineRefresh size={20} color="white" />, text: "Easy Exchanges" },
-          { icon: <FaWhatsapp size={20} color="white" />, text: "WhatsApp Support" },
+          { icon: <FaWhatsapp size={18} color="#25D366" />, text: "WhatsApp Support" },
         ].map(b => (
           <div key={b.text} style={{
             display: "flex",
@@ -485,155 +485,16 @@ export default function HomePage({
         )}
       </div>
 
-      {/* ── WHY SHOP WITH US ── */}
-      <div style={{
-        background: "#f0f7ff",
-        padding: "4rem 2rem"
-      }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-            <p style={{
-              color: "#2563EB",
-              fontSize: "0.82rem",
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: 1.5,
-              marginBottom: 6
-            }}>
-              Why B-Com?
-            </p>
-            <h2 style={{
-              fontFamily: "'Playfair Display', serif",
-              fontSize: "2rem",
-              fontWeight: 900,
-              color: "#1a1a2e"
-            }}>
-              Shopping Made Simple
-            </h2>
-          </div>
-
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "1.5rem"
-          }}>
-            {[
-              {
-                icon: "🇧🇿",
-                title: "Proudly Belizean",
-                desc: "Born and built in Belize. We know what our customers need."
-              },
-              {
-                icon: "🚚",
-                title: "Fast Delivery",
-                desc: "Belize City, Ladyville and Sandhill. Free delivery over BZ$200."
-              },
-              {
-                icon: "🌐",
-                title: "Global Access",
-                desc: "Order from Amazon, Shein, Temu and Alibaba through us."
-              },
-              {
-                icon: "💬",
-                title: "WhatsApp Support",
-                desc: "Real human support available Monday to Saturday 8am-6pm."
-              },
-            ].map(item => (
-              <div key={item.title} style={{
-                background: "white",
-                borderRadius: 16,
-                padding: "1.75rem",
-                border: "1px solid #dbeafe",
-                textAlign: "center",
-                transition: "all 0.2s"
-              }}>
-                <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>
-                  {item.icon}
-                </div>
-                <h3 style={{
-                  fontWeight: 700,
-                  fontSize: "1rem",
-                  marginBottom: "0.5rem",
-                  color: "#1a1a2e"
-                }}>
-                  {item.title}
-                </h3>
-                <p style={{
-                  color: "#6b7280",
-                  fontSize: "0.875rem",
-                  lineHeight: 1.6,
-                  margin: 0
-                }}>
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* ── CTA BANNER ── */}
-      <div style={{
-        background: "linear-gradient(135deg, #1d4ed8 0%, #2563EB 50%, #3b82f6 100%)",
-        padding: "5rem 2rem",
-        textAlign: "center"
-      }}>
-        <div style={{ maxWidth: 600, margin: "0 auto" }}>
-          <p style={{
-            color: "rgba(255,255,255,0.8)",
-            fontSize: "0.85rem",
-            fontWeight: 600,
-            textTransform: "uppercase",
-            letterSpacing: 2,
-            marginBottom: "1rem"
-          }}>
-            Ready to Shop?
-          </p>
-          <h2 style={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
-            color: "white",
-            fontWeight: 900,
-            marginBottom: "1rem",
-            lineHeight: 1.2
-          }}>
-            Belize's Fashion Store is Open
-          </h2>
-          <p style={{
-            color: "rgba(255,255,255,0.8)",
-            fontSize: "1rem",
-            lineHeight: 1.7,
-            marginBottom: "2rem"
-          }}>
-            Browse our collection or find items on Amazon, Shein, Temu and Alibaba.
-            We'll handle the ordering and deliver right to your door.
-          </p>
-          <div style={{
-            display: "flex",
-            gap: "1rem",
-            justifyContent: "center",
-            flexWrap: "wrap"
-          }}>
-            <button
-              style={{
-                background: "white",
-                color: "#2563EB",
-                padding: "14px 32px",
-                borderRadius: 10,
-                fontWeight: 700,
-                fontSize: "0.95rem",
-                border: "none",
-                cursor: "pointer",
-                fontFamily: "'DM Sans', sans-serif"
-              }}
-              onClick={() => setPage("featured")}
-            >
-              Shop Now →
-            </button>
-          </div>
-        </div>
+          <img
+          src="/images/bottombanner.png"
+          alt="Bottom Banner"
+          style={{
+            width: "100%",
+            height: "auto",
+            border: "none",
+          }}
+          />
       </div>
-
-    </div>
   );
 }

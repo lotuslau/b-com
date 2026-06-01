@@ -237,9 +237,6 @@ export default function AdminOverview({ showNotification }) {
         {[
           { method: "Belize Bank Card", pct: 42, color: "#2563EB" },
           { method: "Atlantic Bank Card", pct: 28, color: "#8b5cf6" },
-          { method: "Online Transfer", pct: 18, color: "#06b6d4" },
-          { method: "PayPal", pct: 8, color: "#f59e0b" },
-          { method: "Cash on Delivery", pct: 4, color: "var(--muted)" },
         ].map(p => (
           <div key={p.method} style={{
             display: "flex",

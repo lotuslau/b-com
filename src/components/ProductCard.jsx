@@ -110,10 +110,40 @@ export default function ProductCard({
           </span>
         </div>
 
+        {/* DESCRIPTION */}
+        {product.description && (
+          <p style={{
+            color: "var(--muted)",
+            fontSize: "0.8rem",
+            lineHeight: 1.5,
+            marginBottom: "0.5rem",
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden"
+          }}>
+            {product.description}
+          </p>
+        )}
+
+        {/* PRICE */}
         <div style={{ marginBottom: "0.75rem" }}>
-          <span className="product-price">
-            BZ$ {parseFloat(product.price_bzd || product.price || 0).toFixed(2)}
-          </span>
+          {parseFloat(product.price_bzd || product.price || 0) === 0 ? (
+            <span style={{
+              background: "#f0f7ff",
+              color: "#2563EB",
+              padding: "4px 12px",
+              borderRadius: 20,
+              fontSize: "0.82rem",
+              fontWeight: 700
+            }}>
+              Contact for Price
+            </span>
+          ) : (
+            <span className="product-price">
+              BZ$ {parseFloat(product.price_bzd || product.price || 0).toFixed(2)}
+            </span>
+          )}
         </div>
 
        {/* BUTTONS */}

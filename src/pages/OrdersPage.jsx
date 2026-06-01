@@ -10,7 +10,7 @@ import {
 } from "react-icons/hi";
 import { BiCheckbox } from "react-icons/bi";
 
-export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotification, setCart }) {
+export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotification, setCart, setPage }) {
   const [step, setStep] = useState(1);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [termsTimestamp, setTermsTimestamp] = useState(null);
@@ -196,9 +196,16 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
         }}>
           {orderRef}
         </div>
-        <p style={{ color: "var(--muted)", fontSize: "0.85rem" }}>
-          Save this reference number to track your order via WhatsApp
+        <p style={{ color: "var(--muted)", fontSize: "0.85rem", marginBottom: "1rem" }}>
+          Save this reference number to track your order
         </p>
+        <button
+          className="btn-primary"
+          onClick={() => setPage("tracking")}
+          style={{ marginBottom: "0.75rem" }}
+        >
+          Track Your Order →
+        </button>
       </div>
     );
   }

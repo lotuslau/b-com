@@ -74,11 +74,6 @@ export default function AboutPage({ setPage }) {
             desc: "Our support team is always available via WhatsApp, email or our contact form."
           },
           {
-            emoji: <HiOutlineGlobe size={32} color="#2563EB" />,
-            title: "Global Access",
-            desc: "We connect you with Amazon, Shein, Temu and Alibaba — all through one platform."
-          },
-          {
             emoji: <HiOutlineRefresh size={32} color="#2563EB" />,
             title: "Easy Returns",
             desc: "Not satisfied? We make returns and exchanges simple and stress-free."

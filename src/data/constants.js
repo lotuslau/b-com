@@ -38,6 +38,7 @@ export const NAV_LINKS = [
   ["home", "Home"],
   ["featured", "Featured"],
   ["orders", "Orders"],
+  ["tracking", "Track Order"],
   ["about", "About"],
   ["customer-service", "Customer Service"],
 ];

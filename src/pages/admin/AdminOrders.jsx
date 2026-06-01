@@ -10,15 +10,14 @@ export default function AdminOrders({ showNotification }) {
 
   const STATUS_COLORS = {
     pending: "#f59e0b",
-    paid: "#2563EB",
-    processing: "#8b5cf6",
-    shipped: "#06b6d4",
+    confirmed: "#2563EB",
+    preparing: "#8b5cf6",
+    out_for_delivery: "#06b6d4",
     delivered: "#22c55e",
     cancelled: "#e05c6a",
-    refunded: "#6b7280"
   };
 
-  const STATUSES = ["all", "pending", "paid", "processing", "shipped", "delivered", "cancelled", "refunded"];
+  const STATUSES = ["all", "pending", "confirmed", "preparing", "out_for_delivery", "delivered", "cancelled"];
 
   useEffect(() => {
     fetchOrders();
@@ -251,7 +250,7 @@ export default function AdminOrders({ showNotification }) {
                   value={order.status}
                   onChange={e => handleStatusUpdate(order.id, e.target.value)}
                 >
-                  {["pending", "paid", "processing", "shipped", "delivered", "cancelled", "refunded"].map(s => (
+                  {["pending", "confirmed", "preparing", "out_for_delivery", "delivered", "cancelled"].map(s => (
                     <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>
                   ))}
                 </select>
