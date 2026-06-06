@@ -163,7 +163,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
         </div>
 
         <a
-          href="https://wa.me/501XXXXXXXX"
+          href="https://wa.me/5016206637"
           target="_blank"
           rel="noreferrer"
           style={{

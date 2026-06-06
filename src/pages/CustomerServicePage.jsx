@@ -64,7 +64,7 @@ export default function CustomerServicePage({ showNotification }) {
       desc: "Chat with us directly",
       action: "Message Us",
       color: "#25D366",
-      href: `https://wa.me/501XXXXXXXX?text=${encodeURIComponent(
+      href: `https://wa.me/5016206637?text=${encodeURIComponent(
         `Hi B-Com! My name is ${form.name || "there"} and I need help with an order 😊`
       )}`
     },
@@ -82,7 +82,7 @@ export default function CustomerServicePage({ showNotification }) {
       desc: "+501-XXX-XXXX",
       action: "Call Now",
       color: "var(--dark)",
-      href: "tel:+501XXXXXXXX"
+      href: "tel:+5016206637"
     },
     {
       emoji: <HiOutlineClock size={32} color="var(--muted)" />,

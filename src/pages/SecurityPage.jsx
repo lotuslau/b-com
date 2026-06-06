@@ -334,7 +334,7 @@ export default function SecurityPage({ setPage }) {
               📧 hello@b-com.bz
             </a>
             <a
-              href="https://wa.me/501XXXXXXXX"
+              href="https://wa.me/5016206637"
               target="_blank"
               rel="noreferrer"
               style={{
