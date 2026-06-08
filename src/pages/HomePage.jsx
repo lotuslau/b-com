@@ -170,7 +170,7 @@ export default function HomePage({
                 {slide.cta} →
               </button>
               <a
-                href="https://wa.me/5016123456"
+                href="https://wa.me/5016206637"
                 target="_blank"
                 rel="noreferrer"
                 style={{
@@ -484,17 +484,6 @@ export default function HomePage({
           </div>
         )}
       </div>
-
-      {/* ── CTA BANNER ── */}
-          <img
-          src="/images/bottombanner.png"
-          alt="Bottom Banner"
-          style={{
-            width: "100%",
-            height: "auto",
-            border: "none",
-          }}
-          />
       </div>
   );
 }

@@ -15,10 +15,10 @@ export default function Footer({ setPage }) {
         {/* BRAND */}
         <div>
           <img
-            src="/images/logofooter.png"
+            src="/images/bcomlogo.png"
             alt="B-Com Belize"
             style={{
-              height: 100,
+              height: 70,
               objectFit: "contain",
               marginBottom: "0.75rem"
             }}
@@ -50,7 +50,7 @@ export default function Footer({ setPage }) {
             {[
               { icon: <HiOutlineLocationMarker size={16} />, text: "Belize City, Belize" },
               { icon: <HiOutlineMail size={16} />, text: "b-com@gmail.com" },
-              { icon: <HiOutlinePhone size={16} />, text: "+501-614-1234" },
+              { icon: <HiOutlinePhone size={16} />, text: "+501-6206637" },
               { icon: <FaWhatsapp size={16} color="#25D366" />, text: "WhatsApp Support" },
             ].map(c => (
               <span key={c.text} className="footer-contact" style={{ display: "flex", alignItems: "center", gap: 6 }}>

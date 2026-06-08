@@ -6,49 +6,31 @@ import {
   HiOutlineMenu,
   HiOutlineX,
   HiOutlineSearch,
-  HiOutlineUser,
+  HiOutlineUser
 } from "react-icons/hi";
 
-export default function Nav({ page, setPage, cartCount, setCartOpen, wishlist, searchQuery, setSearchQuery, customer }) {  
-  const [scrolled, setScrolled] = useState(false);
+export default function Nav({
+  page,
+  setPage,
+  cartCount,
+  setCartOpen,
+  wishlist,
+  searchQuery,
+  setSearchQuery,
+  customer
+}) {
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  <Nav
-        page={page}
-        setPage={setPage}
-        cartCount={cartCount}
-        setCartOpen={setCartOpen}
-        wishlist={wishlist}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        customer={customer}
-      />
-
-  useEffect(() => {
-    const h = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", h);
-    return () => window.removeEventListener("scroll", h);
-  }, []);
 
   return (
     <>
-      <nav
-        className="nav"
-        style={{
-          background: scrolled
-            ? "rgba(255,255,255,0.97)"
-            : "rgba(255,255,255,0.85)",
-          boxShadow: scrolled ? "0 2px 20px rgba(0,0,0,0.1)" : "none",
-        }}
-      >
+      <nav className="nav">
         <div className="nav-inner">
 
           {/* LOGO */}
           <div className="nav-logo" onClick={() => setPage("home")}>
             <img
-              src="/images/logo.png"
+              src="/images/bcomlogo.png"
               alt="B-Com Belize"
-              style={{ height: 55, objectFit: "contain" }}
             />
           </div>
 
@@ -60,9 +42,9 @@ export default function Nav({ page, setPage, cartCount, setCartOpen, wishlist, s
                 onClick={() => setPage(p)}
                 className="nav-link"
                 style={{
-                  color: page === p ? "#2563EB" : "var(--dark)",
+                  color: page === p ? "#93c5fd" : "white",
                   borderBottom: page === p
-                    ? "2px solid #2563EB"
+                    ? "2px solid #93c5fd"
                     : "2px solid transparent",
                 }}
               >
@@ -72,76 +54,75 @@ export default function Nav({ page, setPage, cartCount, setCartOpen, wishlist, s
           </div>
 
           {/* SEARCH BAR */}
-        <div style={{
-          position: "relative",
-          display: "flex",
-          alignItems: "center"
-        }}>
-          <HiOutlineSearch
-            size={18}
-            color="var(--muted)"
-            style={{
-              position: "absolute",
-              left: 12,
-              pointerEvents: "none"
-            }}
-          />
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={e => {
-              setSearchQuery(e.target.value);
-              if (e.target.value.length > 0) {
-                setPage("featured");
-              }
-            }}
-            onKeyDown={e => {
-              if (e.key === "Enter") {
-                setPage("featured");
-              }
-            }}
-            style={{
-              border: "1.5px solid var(--border)",
-              borderRadius: 24,
-              padding: "8px 16px 8px 36px",
-              fontSize: "0.85rem",
-              fontFamily: "'DM Sans', sans-serif",
-              background: "#f9f9f9",
-              outline: "none",
-              width: 200,
-              transition: "all 0.2s",
-              color: "var(--dark)"
-            }}
-            onFocus={e => {
-              e.target.style.width = "260px";
-              e.target.style.borderColor = "#2563EB";
-              e.target.style.background = "white";
-            }}
-            onBlur={e => {
-              e.target.style.width = "200px";
-              e.target.style.borderColor = "var(--border)";
-              e.target.style.background = "#f9f9f9";
-            }}
-          />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery("")}
+          <div style={{
+            position: "relative",
+            display: "flex",
+            alignItems: "center",
+            flexShrink: 0
+          }}>
+            <HiOutlineSearch
+              size={16}
+              color="rgba(255,255,255,0.6)"
               style={{
                 position: "absolute",
-                right: 10,
-                background: "none",
-                border: "none",
-                color: "var(--muted)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center"
+                left: 10,
+                pointerEvents: "none"
               }}
-            >
-              <HiOutlineX size={14} />
-            </button>
-          )}
-        </div>
+            />
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={e => {
+                setSearchQuery(e.target.value);
+                if (e.target.value.length > 0) {
+                  setPage("featured");
+                }
+              }}
+              onKeyDown={e => {
+                if (e.key === "Enter") setPage("featured");
+              }}
+              style={{
+                border: "1px solid rgba(255,255,255,0.2)",
+                borderRadius: 24,
+                padding: "7px 14px 7px 32px",
+                fontSize: "0.82rem",
+                fontFamily: "'DM Sans', sans-serif",
+                background: "rgba(255,255,255,0.1)",
+                outline: "none",
+                width: 150,
+                transition: "all 0.2s",
+                color: "white",
+              }}
+              onFocus={e => {
+                e.target.style.width = "200px";
+                e.target.style.background = "rgba(255,255,255,0.15)";
+                e.target.style.borderColor = "#93c5fd";
+              }}
+              onBlur={e => {
+                e.target.style.width = "150px";
+                e.target.style.background = "rgba(255,255,255,0.1)";
+                e.target.style.borderColor = "rgba(255,255,255,0.2)";
+              }}
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                style={{
+                  position: "absolute",
+                  right: 8,
+                  background: "none",
+                  border: "none",
+                  color: "rgba(255,255,255,0.6)",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center"
+                }}
+              >
+                <HiOutlineX size={13} />
+              </button>
+            )}
+          </div>
 
           {/* ACTION ICONS */}
           <div className="nav-actions">
@@ -151,9 +132,11 @@ export default function Nav({ page, setPage, cartCount, setCartOpen, wishlist, s
               className="nav-icon-btn"
               onClick={() => setPage("wishlist")}
               title="Wishlist"
-              style={{ position: "relative" }}
             >
-              <HiOutlineHeart size={24} color={wishlist.length > 0 ? "#e05c6a" : "var(--dark)"} />
+              <HiOutlineHeart
+                size={22}
+                color={wishlist.length > 0 ? "#e05c6a" : "white"}
+              />
               {wishlist.length > 0 && (
                 <span
                   className="nav-badge"
@@ -163,28 +146,27 @@ export default function Nav({ page, setPage, cartCount, setCartOpen, wishlist, s
                 </span>
               )}
             </button>
-          
-          {/* Account */}
+
+            {/* Account */}
             <button
               className="nav-icon-btn"
               onClick={() => setPage(customer ? "account" : "login")}
-              title={customer ? `My Account (${customer.name})` : "Sign In"}
-              style={{ position: "relative" }}
+              title={customer ? `My Account` : "Sign In"}
             >
               <HiOutlineUser
-                size={24}
-                color={customer ? "#2563EB" : "var(--dark)"}
+                size={22}
+                color={customer ? "#93c5fd" : "white"}
               />
               {customer && (
                 <span style={{
                   position: "absolute",
-                  top: -2,
-                  right: -2,
-                  width: 10,
-                  height: 10,
+                  top: 0,
+                  right: 0,
+                  width: 8,
+                  height: 8,
                   borderRadius: "50%",
                   background: "#22c55e",
-                  border: "2px solid white"
+                  border: "1.5px solid #102538"
                 }} />
               )}
             </button>
@@ -194,9 +176,8 @@ export default function Nav({ page, setPage, cartCount, setCartOpen, wishlist, s
               className="nav-icon-btn"
               onClick={() => setCartOpen(true)}
               title="Cart"
-              style={{ position: "relative" }}
             >
-              <HiOutlineShoppingBag size={24} color="var(--dark)" />
+              <HiOutlineShoppingBag size={22} color="white" />
               {cartCount > 0 && (
                 <span
                   className="nav-badge"
@@ -210,13 +191,13 @@ export default function Nav({ page, setPage, cartCount, setCartOpen, wishlist, s
             {/* Mobile menu toggle */}
             <button
               className="nav-icon-btn"
+              id="mobile-menu-btn"
               onClick={() => setMobileOpen(!mobileOpen)}
               style={{ display: "none" }}
-              id="mobile-menu-btn"
             >
               {mobileOpen
-                ? <HiOutlineX size={24} color="var(--dark)" />
-                : <HiOutlineMenu size={24} color="var(--dark)" />
+                ? <HiOutlineX size={22} color="white" />
+                : <HiOutlineMenu size={22} color="white" />
               }
             </button>
 
@@ -228,16 +209,16 @@ export default function Nav({ page, setPage, cartCount, setCartOpen, wishlist, s
       {mobileOpen && (
         <div style={{
           position: "fixed",
-          top: 72,
+          top: 75,
           left: 0,
           right: 0,
-          background: "white",
+          background: "#102538",
           zIndex: 99,
           padding: "1rem 2rem",
-          borderBottom: "1px solid var(--border)",
+          borderBottom: "1px solid #1a3a52",
           display: "flex",
           flexDirection: "column",
-          gap: "0.5rem"
+          gap: "0.25rem"
         }}>
           {NAV_LINKS.map(([p, l]) => (
             <button
@@ -247,11 +228,11 @@ export default function Nav({ page, setPage, cartCount, setCartOpen, wishlist, s
                 background: "none",
                 border: "none",
                 textAlign: "left",
-                padding: "10px 0",
+                padding: "12px 0",
                 fontSize: "1rem",
                 fontWeight: page === p ? 600 : 400,
-                color: page === p ? "#2563EB" : "var(--dark)",
-                borderBottom: "1px solid var(--border)",
+                color: page === p ? "#93c5fd" : "white",
+                borderBottom: "1px solid rgba(255,255,255,0.1)",
                 cursor: "pointer",
                 fontFamily: "'DM Sans', sans-serif"
               }}

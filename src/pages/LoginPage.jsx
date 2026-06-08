@@ -63,7 +63,7 @@ export default function LoginPage({ setPage, setCustomer, showNotification }) {
         {/* LOGO */}
         <div style={{ textAlign: "center", marginBottom: "2rem" }}>
           <img
-            src="/images/logo.png"
+            src="/images/bcomlogo.png"
             alt="B-Com Belize"
             style={{ height: 50, objectFit: "contain", margin: "0 auto 1rem" }}
           />
