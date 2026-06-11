@@ -167,6 +167,7 @@ export default function AdminPage({ showNotification }) {
           onClick={() => {
             sessionStorage.removeItem("bcom_admin");
             setAuthenticated(false);
+            setPassword("");
           }}
         >
           Sign Out

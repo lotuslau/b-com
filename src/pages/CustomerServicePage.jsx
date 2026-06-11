@@ -71,15 +71,15 @@ export default function CustomerServicePage({ showNotification }) {
     {
       emoji: <HiOutlineMail size={32} color="#2563EB" />,
       title: "Email",
-      desc: "hello@b-com.bz",
+      desc: "bcom@gmail.com",
       action: "Send Email",
       color: "#2563EB",
-      href: "mailto:hello@b-com.bz"
+      href: "mailto:bcom@gmail.com"
     },
     {
       emoji: <HiOutlinePhone size={32} color="var(--dark)" />,
       title: "Phone",
-      desc: "+501-XXX-XXXX",
+      desc: "+501-6206637",
       action: "Call Now",
       color: "var(--dark)",
       href: "tel:+5016206637"

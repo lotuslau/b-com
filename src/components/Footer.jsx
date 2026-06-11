@@ -49,7 +49,7 @@ export default function Footer({ setPage }) {
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {[
               { icon: <HiOutlineLocationMarker size={16} />, text: "Belize City, Belize" },
-              { icon: <HiOutlineMail size={16} />, text: "b-com@gmail.com" },
+              { icon: <HiOutlineMail size={16} />, text: "bcom@gmail.com" },
               { icon: <HiOutlinePhone size={16} />, text: "+501-6206637" },
               { icon: <FaWhatsapp size={16} color="#25D366" />, text: "WhatsApp Support" },
             ].map(c => (

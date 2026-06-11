@@ -317,7 +317,7 @@ export default function SecurityPage({ setPage }) {
           </p>
           <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
             <a
-              href="mailto:hello@b-com.bz"
+              href="mailto:bcom@gmail.com"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -331,7 +331,7 @@ export default function SecurityPage({ setPage }) {
                 textDecoration: "none"
               }}
             >
-              📧 hello@b-com.bz
+              📧 
             </a>
             <a
               href="https://wa.me/5016206637"

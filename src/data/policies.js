@@ -6,15 +6,15 @@ export const COMPANY_INFO = {
   name: "B-Com Belize Ltd",
   country: "Belize",
   address: "Belize City, Belize",
-  email: "hello@b-com.bz",
-  phone: "+501-XXX-XXXX",
-  whatsapp: "+501-XXX-XXXX",
-  website: "www.b-com.bz",
-  established: "2025",
+  email: "bcom@gmail.com",
+  phone: "+501-6206637",
+  whatsapp: "+501-6206637",
+  website: "www.bcom.bz",
+  established: "2026",
 };
 
 export const TERMS_AND_CONDITIONS = {
-  lastUpdated: "April 2026",
+  lastUpdated: "June 2026",
   sections: [
     {
       title: "1. Acceptance of Terms",
@@ -66,13 +66,13 @@ export const TERMS_AND_CONDITIONS = {
     },
     {
       title: "13. Contact Information",
-      content: `For any questions regarding these Terms and Conditions please contact us at hello@b-com.bz or via WhatsApp at +501-XXX-XXXX. B-Com Belize Ltd, Belize City, Belize, Central America.`
+      content: `For any questions regarding these Terms and Conditions please contact us at bcom@gmail.com or via WhatsApp at +501-6206637. B-Com Belize Ltd, Belize City, Belize, Central America.`
     },
   ]
 };
 
 export const PRIVACY_POLICY = {
-  lastUpdated: "April 2025",
+  lastUpdated: "June 2026",
   sections: [
     {
       title: "1. Information We Collect",
@@ -96,7 +96,7 @@ export const PRIVACY_POLICY = {
     },
     {
       title: "6. Your Rights",
-      content: `You have the right to access the personal data we hold about you, request correction of inaccurate data, request deletion of your data subject to legal requirements, and withdraw consent for data processing at any time. To exercise these rights contact us at hello@b-com.bz.`
+      content: `You have the right to access the personal data we hold about you, request correction of inaccurate data, request deletion of your data subject to legal requirements, and withdraw consent for data processing at any time. To exercise these rights contact us at bcom@gmail.com.`
     },
     {
       title: "7. Cookies",
@@ -104,13 +104,13 @@ export const PRIVACY_POLICY = {
     },
     {
       title: "8. Contact",
-      content: `For privacy related inquiries contact us at hello@b-com.bz or via WhatsApp at +501-XXX-XXXX.`
+      content: `For privacy related inquiries contact us at bcom@gmail.com or via WhatsApp at +501-6206637.`
     },
   ]
 };
 
 export const REFUND_POLICY = {
-  lastUpdated: "April 2025",
+  lastUpdated: "June 2026",
   timeframe: "30 days",
   sections: [
     {
@@ -123,7 +123,7 @@ export const REFUND_POLICY = {
     },
     {
       title: "How to Return",
-      content: `To initiate a return: contact us via WhatsApp at +501-XXX-XXXX or email hello@b-com.bz with your order reference number and reason for return. Wait for our confirmation before sending the item. Bring the item to our Belize City location or arrange courier pickup. Once received and inspected we will process your refund within 5-10 business days.`
+      content: `To initiate a return: contact us via WhatsApp at +501-6206637 or email bcom@gmail.com with your order reference number and reason for return. Wait for our confirmation before sending the item. Bring the item to our Belize City location or arrange courier pickup. Once received and inspected we will process your refund within 5-10 business days.`
     },
     {
       title: "Refund Method",
@@ -141,7 +141,7 @@ export const REFUND_POLICY = {
 };
 
 export const DELIVERY_POLICY = {
-  lastUpdated: "April 2026",
+  lastUpdated: "June 2026",
   sections: [
     {
       title: "Delivery Coverage",
@@ -169,7 +169,7 @@ export const DELIVERY_POLICY = {
     },
     {
       title: "Order Tracking",
-      content: `Once your order is dispatched you will receive your tracking information via WhatsApp or email. For updates on your order contact us at any time via WhatsApp at +501-XXX-XXXX with your order reference number.`
+      content: `Once your order is dispatched you will receive your tracking information via WhatsApp or email. For updates on your order contact us at any time via WhatsApp at +501-6206637 with your order reference number.`
     },
   ]
 };

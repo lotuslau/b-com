@@ -236,38 +236,96 @@ export default function AdminOrders({ showNotification }) {
                 </div>
 
                 {/* STATUS UPDATE */}
-                <select
-                  style={{
-                    border: "1.5px solid var(--border)",
-                    borderRadius: 8,
-                    padding: "5px 10px",
-                    fontSize: "0.82rem",
-                    fontFamily: "'DM Sans', sans-serif",
-                    background: "white",
-                    cursor: "pointer",
-                    outline: "none"
-                  }}
-                  value={order.status}
-                  onChange={e => handleStatusUpdate(order.id, e.target.value)}
-                >
-                  {["pending", "confirmed", "preparing", "out_for_delivery", "delivered", "cancelled"].map(s => (
-                    <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>
-                  ))}
-                </select>
+                
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{
+                    fontSize: "0.75rem",
+                    color: "var(--muted)",
+                    whiteSpace: "nowrap"
+                  }}>
+                    Update Status:
+                  </span>
+                  <select
+                    style={{
+                      border: `2px solid ${STATUS_COLORS[order.status] || "#ddd"}`,
+                      borderRadius: 8,
+                      padding: "6px 12px",
+                      fontSize: "0.82rem",
+                      fontFamily: "'DM Sans', sans-serif",
+                      background: "white",
+                      cursor: "pointer",
+                      outline: "none",
+                      fontWeight: 600,
+                      color: STATUS_COLORS[order.status] || "var(--dark)"
+                    }}
+                    value={order.status}
+                    onChange={e => handleStatusUpdate(order.id, e.target.value)}
+                  >
+                    {[
+                      { value: "pending", label: "⏳ Pending" },
+                      { value: "confirmed", label: "✅ Confirmed" },
+                      { value: "preparing", label: "📦 Preparing" },
+                      { value: "out_for_delivery", label: "🚚 Out for Delivery" },
+                      { value: "delivered", label: "🏠 Delivered" },
+                      { value: "cancelled", label: "❌ Cancelled" },
+                    ].map(s => (
+                      <option key={s.value} value={s.value}>
+                        {s.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              {order.notes && (
+             <div style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginTop: "0.75rem",
+                flexWrap: "wrap",
+                gap: 8
+              }}>
+                {order.notes && (
+                  <div style={{
+                    background: "#f9f9f9",
+                    borderRadius: 8,
+                    padding: "8px 12px",
+                    fontSize: "0.82rem",
+                    color: "var(--muted)",
+                    flex: 1
+                  }}>
+                    📝 {order.notes}
+                  </div>
+                )}
+
+                {/* TRACKING PREVIEW */}
                 <div style={{
-                  marginTop: "0.75rem",
-                  background: "#f9f9f9",
-                  borderRadius: 8,
-                  padding: "8px 12px",
-                  fontSize: "0.82rem",
-                  color: "var(--muted)"
+                  display: "flex",
+                  gap: 6,
+                  marginLeft: "auto"
                 }}>
-                  📝 {order.notes}
+                  <a
+                    href={`https://wa.me/?text=Hi! Your B-Com order ${order.payment_ref} status has been updated to: ${order.status?.replace(/_/g, ' ').toUpperCase()}. Track your order at b-com.bz`}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
+                      background: "#25D366",
+                      color: "white",
+                      padding: "5px 12px",
+                      borderRadius: 8,
+                      fontSize: "0.75rem",
+                      fontWeight: 600,
+                      textDecoration: "none"
+                    }}
+                  >
+                    💬 Notify Customer
+                  </a>
                 </div>
-              )}
+              </div>
+
             </div>
           ))}
         </div>
