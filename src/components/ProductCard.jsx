@@ -7,6 +7,7 @@ import {
   HiOutlineLightningBolt,
   HiOutlineZoomIn
 } from "react-icons/hi";
+import { useState } from "react";
 
 export default function ProductCard({
   product,
@@ -17,24 +18,27 @@ export default function ProductCard({
   setPage,
   onImageClick
 }) {
+  const sizes = product.sizes ? JSON.parse(product.sizes) : [];
+  const colors = product.colors ? JSON.parse(product.colors) : [];
+  const [selectedSize, setSelectedSize] = useState(sizes[0] || "One Size");
+  const [selectedColor, setSelectedColor] = useState(colors[0] || "Default");
+
+  const CLOTHING_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
+  const SHOE_SIZES = ["6", "7", "8", "9", "10", "11", "12", "13"];
+
+  const isClothing = product.category_id === 1;
+  const isShoes = product.category_id === 2;
+  const showSizes = (isClothing || isShoes) && sizes.length > 0 && sizes[0] !== "One Size" && sizes[0] !== "Contact us for sizes";
   const stock = product.stock_qty ?? product.stock ?? 0;
   const isWishlisted = wishlist.includes(product.id);
 
   const handleBuyNow = () => {
-    addToCart(
-      product,
-      product.sizes ? JSON.parse(product.sizes)[0] : "One Size",
-      product.colors ? JSON.parse(product.colors)[0] : "Default"
-    );
+    addToCart(product, selectedSize, selectedColor);
     setPage("orders");
-  };
+  };  
 
   const handleAddToCart = () => {
-    addToCart(
-      product,
-      product.sizes ? JSON.parse(product.sizes)[0] : "One Size",
-      product.colors ? JSON.parse(product.colors)[0] : "Default"
-    );
+    addToCart(product, selectedSize, selectedColor);
   };
 
   const handleCardClick = () => {
@@ -145,6 +149,44 @@ export default function ProductCard({
             </span>
           )}
         </div>
+
+        {/* SIZE SELECTOR */}
+        {showSizes && (
+          <div style={{ marginBottom: "0.5rem" }}>
+            <p style={{
+              fontSize: "0.72rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: 0.5,
+              color: "var(--muted)",
+              marginBottom: "0.4rem"
+            }}>
+              Size: <span style={{ color: "var(--dark)", fontWeight: 600 }}>{selectedSize}</span>
+            </p>
+            <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+              {sizes.map(size => (
+                <button
+                  key={size}
+                  onClick={() => setSelectedSize(size)}
+                  style={{
+                    padding: "4px 8px",
+                    borderRadius: 6,
+                    border: `1.5px solid ${selectedSize === size ? "#2563EB" : "#e5e7eb"}`,
+                    background: selectedSize === size ? "#2563EB" : "white",
+                    color: selectedSize === size ? "white" : "var(--dark)",
+                    fontSize: "0.72rem",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    transition: "all 0.15s",
+                    fontFamily: "'DM Sans', sans-serif"
+                  }}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
        {/* BUTTONS */}
         <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: "0.75rem" }}>

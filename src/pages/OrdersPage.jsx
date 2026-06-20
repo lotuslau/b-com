@@ -279,7 +279,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                   <input
                     className="form-input"
                     type={type}
-                    placeholder={label.replace(" *", "")}
+                    placeholder={label.replace(" *", "e.g. 6221234")}
                     value={form[field]}
                     onChange={e => setForm({ ...form, [field]: e.target.value })}
                   />

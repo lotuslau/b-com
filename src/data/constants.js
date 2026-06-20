@@ -42,3 +42,10 @@ export const NAV_LINKS = [
   ["about", "About"],
   ["customer-service", "Customer Service"],
 ];
+
+export const SOCIAL_LINKS = {
+  facebook: "https://m.facebook.com/BenguchesStore",
+  instagram: "https://www.instagram.com/benguches?igsh=cDRyeDV1cWRtcGo2",
+  whatsapp: "https://wa.me/5016206637",
+  whatsappDisplay: "+501 620-6637"
+};

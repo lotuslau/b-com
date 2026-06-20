@@ -266,7 +266,7 @@ const addToCart = (product, size, color) => {
       {page === "privacy" && <PrivacyPage setPage={setPage} />}
       {page === "refund-policy" && <RefundPolicyPage setPage={setPage} />}
       {page === "delivery-policy" && <DeliveryPolicyPage setPage={setPage} />}        
-      {page === "home" && <HomePage {...productProps} />}
+      {page === "home" && <HomePage {...productProps} showNotification={showNotification} />}
       {page === "featured" && <FeaturedPage {...productProps} />}
       {page === "orders" && (
   <OrdersPage
