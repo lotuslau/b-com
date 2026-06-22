@@ -178,7 +178,7 @@ export default function RegisterPage({ setPage, setCustomer, showNotification })
             value={form.district}
             onChange={e => setForm({ ...form, district: e.target.value })}
           >
-            {DISTRICTS.map(d => <option key={d}>{d}</option>)}
+            {DELIVERY_TO.map(d => <option key={d}>{d}</option>)}
           </select>
         </div>
 
