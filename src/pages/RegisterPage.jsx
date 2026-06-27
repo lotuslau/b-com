@@ -59,7 +59,7 @@ export default function RegisterPage({ setPage, setCustomer, showNotification })
       });
 
       if (data.success) {
-        localStorage.setItem("bcom_token", data.token);
+        sessionStorage.setItem("bcom_token", data.token);
         localStorage.setItem("bcom_customer", JSON.stringify(data.customer));
         setCustomer(data.customer);
         showNotification(`Welcome to B-Com, ${data.customer.name}! 🎉`);

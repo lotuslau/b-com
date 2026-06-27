@@ -30,7 +30,7 @@ export const TERMS_AND_CONDITIONS = {
     },
     {
       title: "4. Pricing and Payment",
-      content: `All prices are displayed in Belize Dollars (BZD) unless otherwise stated. A General Sales Tax (GST) of 12.5% applies to all transactions. B-Com Belize accepts payment via Belize Bank credit/debit cards, Atlantic Bank credit/debit cards, online bank transfers, E-Kyash digital wallet, PayPal and cash on delivery. Payment must be completed before goods are dispatched. Transactions are not settled until goods have been shipped or services received.`
+      content: `All prices are displayed in Belize Dollars (BZD) unless otherwise stated. A General Sales Tax (GST) of 12.5% applies to all transactions. B-Com Belize accepts payment via Belize Bank credit/debit cards, Atlantic Bank credit/debit cards, and international credit cards. Payment must be completed before goods are dispatched. Transactions are not settled until goods have been shipped or services received.`
     },
     {
       title: "5. Delivery Policy",

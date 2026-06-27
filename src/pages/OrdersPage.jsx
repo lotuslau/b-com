@@ -10,7 +10,7 @@ import {
 } from "react-icons/hi";
 import { BiCheckbox } from "react-icons/bi";
 
-export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotification, setCart, setPage }) {
+export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotification, setCart, setPage, customer }) {
   const [step, setStep] = useState(1);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [termsTimestamp, setTermsTimestamp] = useState(null);
@@ -18,11 +18,11 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
   const [paymentMethod, setPaymentMethod] = useState("");
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    district: "Belize",
+    name: customer?.name || "",
+    email: customer?.email || "",
+    phone: customer?.phone || "",
+    address: customer?.address || "",
+    district: customer?.district || "Belize City",
     notes: ""
   });
 
@@ -87,7 +87,8 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
         items
       };
 
-      const response = await createOrder(orderData);
+      const token = sessionStorage.getItem("bcom_token");
+      const response = await createOrder(orderData, token);
 
       if (response.success) {
         // Initiate payment
@@ -147,7 +148,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
             alignItems: "center",
             gap: 6
           }}>
-            💳 Payment Instructions
+            Payment Instructions
           </div>
           <p style={{ color: "#92400e", fontSize: "0.9rem", lineHeight: 1.7, margin: 0 }}>
             Our team will contact you at <strong>{form.phone}</strong> within
@@ -178,8 +179,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
             fontSize: "0.95rem",
             textDecoration: "none",
             marginBottom: "1rem"
-          }}
-        >
+          }}>
           <span>💬</span> Complete Payment via WhatsApp
         </a>
         
@@ -279,7 +279,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                   <input
                     className="form-input"
                     type={type}
-                    placeholder={label.replace(" *", "e.g. 6221234")}
+                    placeholder={label.replace("Enter your address", "")}
                     value={form[field]}
                     onChange={e => setForm({ ...form, [field]: e.target.value })}
                   />

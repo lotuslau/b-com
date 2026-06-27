@@ -11,8 +11,16 @@ async function request(endpoint, options = {}) {
   });
 
   if (!response.ok) {
-    throw new Error(`API error: ${response.status}`);
-  }
+  const errorData = await response.json().catch(() => ({}));
+
+  console.error('API Error Response:', errorData);
+
+  throw new Error(
+    errorData.error ||
+    errorData.message ||
+    `API error: ${response.status}`
+  );
+}
 
   return response.json();
 }
@@ -25,9 +33,10 @@ export const getProducts = (filters = {}) => {
 export const getProduct = (id) => request(`/products/${id}`);
 
 //Orders
-export const createOrder = (orderData) =>
+export const createOrder = (orderData, token) =>
   request('/orders', {
     method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
     body: JSON.stringify(orderData),
   });
 export const getOrder = (ref) => request(`/orders/${ref}`);
@@ -56,12 +65,6 @@ export const registerSeller = (data) =>
   request('/sellers/register', {
     method: 'POST',
     body: JSON.stringify(data),
-  });
-
-export const createPayPalOrder = (amount) =>
-  request('/payments/paypal/create-order', {
-    method: 'POST',
-    body: JSON.stringify({ amount }),
   });
 
   // Reviews

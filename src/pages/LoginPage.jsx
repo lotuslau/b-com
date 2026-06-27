@@ -28,7 +28,7 @@ export default function LoginPage({ setPage, setCustomer, showNotification }) {
       });
 
       if (data.success) {
-        localStorage.setItem("bcom_token", data.token);
+        sessionStorage.setItem("bcom_token", data.token);
         localStorage.setItem("bcom_customer", JSON.stringify(data.customer));
         setCustomer(data.customer);
         showNotification(`Welcome back, ${data.customer.name}! 👋`);
