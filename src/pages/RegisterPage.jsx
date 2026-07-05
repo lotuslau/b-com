@@ -59,8 +59,8 @@ export default function RegisterPage({ setPage, setCustomer, showNotification })
       });
 
       if (data.success) {
-        localStorage.setItem("bcom_token", data.token);
-        localStorage.setItem("bcom_customer", JSON.stringify(data.customer));
+        sessionStorage.setItem("bcom_token", data.token);
+        sessionStorage.setItem("bcom_customer", JSON.stringify(data.customer));
         setCustomer(data.customer);
         showNotification(`Welcome to B-Com, ${data.customer.name}! 🎉`);
         setPage("account");
@@ -178,7 +178,7 @@ export default function RegisterPage({ setPage, setCustomer, showNotification })
             value={form.district}
             onChange={e => setForm({ ...form, district: e.target.value })}
           >
-            {DISTRICTS.map(d => <option key={d}>{d}</option>)}
+            {DELIVERY_TO.map(d => <option key={d}>{d}</option>)}
           </select>
         </div>
 

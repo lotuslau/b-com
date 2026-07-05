@@ -67,13 +67,9 @@ function BackToTop() {
 }
 
 export default function BComStore() {
-  // ── Navigation ──
-  const [page, setPageState] = useState("home");
 
-  const setPage = (newPage) => {
-    setPageState(newPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+// ── Navigation ──
+  const [page, setPageState] = useState("home");
 
   // ── Products ──
   const [products, setProducts] = useState([]);
@@ -93,10 +89,16 @@ export default function BComStore() {
   // ── Notification ──
   const [notification, setNotification] = useState(null);
 
+  // ── Customer ──
   const [customer, setCustomer] = useState(() => {
-    const saved = localStorage.getItem("bcom_customer");
+    const saved = sessionStorage.getItem("bcom_customer");
     return saved ? JSON.parse(saved) : null;
   });
+
+  const setPage = (newPage) => {
+    setPageState(newPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   // ── Fetch Products ──
   useEffect(() => {
@@ -114,6 +116,27 @@ export default function BComStore() {
     }
     fetchProducts();
   }, []);
+
+  //Load wishlist from server when customer logs in
+  useEffect(() => {
+    const loadWishlist = async () => {
+      if (customer) {
+        setWishlist([]);
+        return;
+      }
+      try {
+        const token = sessionStorage.getItem("bcom_token");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/wishlist`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        setWishlist(data.productIds || []);
+      } catch (err) {
+        console.error("Failed to fetch wishlist:", err);
+      }
+    };
+    loadWishlist();
+  }, [customer]);
 
   // ── Notification Helper ──
   const showNotification = (msg, type = "success") => {
@@ -153,8 +176,27 @@ const addToCart = (product, size, color) => {
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
 
   // ── Wishlist Actions ──
-  const toggleWishlist = (id) => {
-    setWishlist(w => w.includes(id) ? w.filter(x => x !== id) : [...w, id]);
+  const toggleWishlist = async (id) => {
+    if (!customer) {
+      showNotification("Please sign in to save items to your wishlist", "error");
+      return;
+    }
+    //Optimistic update
+      setWishlist(w => w.includes(id) ? w.filter(x => x !== id) : [...w, id]);
+
+      try {
+        const token = sessionStorage.getItem("bcom_token");
+        await fetch(`${import.meta.env.VITE_API_URL}/wishlist/toggle`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({ product_id: id })
+        });
+      } catch (err) {
+        console.error("Failed to update wishlist:", err);
+      }
   };
 
   // ── Shared Props ──
@@ -238,11 +280,11 @@ const addToCart = (product, size, color) => {
   />
 )}
 
-{page === "admin" && (
+      {page === "admin" && (
   <AdminPage showNotification={showNotification} />
 )}
 
-{page === "register" && (
+      {page === "register" && (
   <RegisterPage
     setPage={setPage}
     setCustomer={setCustomer}
@@ -250,7 +292,7 @@ const addToCart = (product, size, color) => {
   />
 )}
 
-{page === "account" && (
+      {page === "account" && (
   <AuthGuard customer={customer} setPage={setPage}>
     <AccountPage
       customer={customer}
@@ -269,13 +311,14 @@ const addToCart = (product, size, color) => {
       {page === "home" && <HomePage {...productProps} />}
       {page === "featured" && <FeaturedPage {...productProps} />}
       {page === "orders" && (
-  <OrdersPage
+    <OrdersPage
     cart={cart}
     cartTotal={cartTotal}
     removeFromCart={removeFromCart}
     showNotification={showNotification}
     setCart={setCart}
     setPage={setPage}
+    customer={customer}
   />
 )}
       {page === "security" && (<SecurityPage setPage={setPage} />
@@ -472,6 +515,7 @@ const addToCart = (product, size, color) => {
       </div>
     </div>
   </div>
+
 )}
       {/* FOOTER */}
       <Footer setPage={setPage} />

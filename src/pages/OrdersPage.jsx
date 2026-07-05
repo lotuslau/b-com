@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { PAYMENT_METHODS, DELIVERY_TO} from "../data/constants";
-import { TERMS_AND_CONDITIONS } from "../data/policies";
+import { PAYMENT_METHODS, DELIVERY_TO } from "../data/constants";
+import {TERMS_AND_CONDITIONS, PRIVACY_POLICY, REFUND_POLICY} from "../data/policies";
 import { createOrder, initiatePayment } from "../services/api";
 import {
   HiOutlineCreditCard,
   HiOutlineTruck,
   HiOutlineCheckCircle,
-  HiOutlineShieldCheck
+  HiOutlineShieldCheck,
+  HiOutlineLink
 } from "react-icons/hi";
+import { FaWhatsapp } from "react-icons/fa";
 import { BiCheckbox } from "react-icons/bi";
 
-export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotification, setCart, setPage }) {
+export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotification, setCart, setPage, customer }) {
   const [step, setStep] = useState(1);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [termsTimestamp, setTermsTimestamp] = useState(null);
@@ -18,53 +20,42 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
   const [paymentMethod, setPaymentMethod] = useState("");
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    district: "Belize",
+    name: customer?.name || "",
+    email: customer?.email || "",
+    phone: customer?.phone || "",
+    address: customer?.address || "",
+    district: customer?.district || "Belize City",
     notes: ""
   });
 
   const tax = cartTotal * 0.125;
 
-{/* DELIVERY AREA NOTICE */}
   const shipping = cartTotal > 200 ? 0 : 15;
   const total = cartTotal + tax + shipping;
 
   const handlePlaceOrder = async () => {
-    if (!form.name || !form.email || !form.phone || !form.address) {
+    if (!form.name?.trim() || !form.email?.trim() || !form.phone?.trim() || !form.address?.trim()) {
       showNotification("Please fill in all required fields", "error");
-      
-      <div style={{
-                background: "#fff8e1",
-                border: "1px solid #f59e0b",
-                borderRadius: 10,
-                padding: "10px 14px",
-                marginBottom: "1.25rem",
-                fontSize: "0.85rem",
-                color: "#92400e",
-                display: "flex",
-                alignItems: "flex-start",
-                gap: 8
-              }}>
-                <span style={{ fontSize: "1rem", flexShrink: 0 }}>🚚</span>
-                <span>
-                  <strong>Current delivery areas:</strong> Belize City, Ladyville and Sandhill only.
-                  We are expanding soon — contact us via WhatsApp to check if we deliver to your area.
-                </span>
-              </div>
-      
       return;
-      
     }
+
+    if (cart.length === 0) {
+      showNotification("Your cart is empty", "error");
+      return;
+    }
+
     if (!paymentMethod) {
       showNotification("Please select a payment method", "error");
       return;
     }
 
+    if (!agreedToTerms) {
+      showNotification("Please agree to the Terms & Conditions", "error");
+      return;
+    }
+
     try {
-      // Build order items from cart
+        //Build order items from cart
       const items = cart.map(item => ({
         product_id: item.id,
         qty: item.qty,
@@ -73,7 +64,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
         color: item.color
       }));
 
-      // Create order in database
+      //Create order in database
       const orderData = {
         customer_name: form.name,
         customer_email: form.email,
@@ -87,31 +78,31 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
         items
       };
 
-      const response = await createOrder(orderData);
+      const token = localStorage.getItem("bcom_token");
+      const response = await createOrder(orderData, token);
 
       if (response.success) {
-        // Initiate payment
         await initiatePayment({
           order_id: response.order.id,
           payment_method: paymentMethod,
           amount: response.order.total
         });
 
-      setOrderPlaced(true);
-      setCart([]);
-      showNotification("Order placed successfully. Thank you for your purchase!");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+        setOrderPlaced(true);
+        setCart([]);
+        showNotification("Order placed successfully!");
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
-
     } catch (err) {
-      console.error('Order error:', err);
-      showNotification("Something went wrong. Please try again.", "error");
+      console.error("Order error:", err);
+      showNotification(err.message || "Something went wrong. Please try again.", "error");
     }
   };
 
-  if (orderPlaced) {
+   if (orderPlaced) {
     return (
       <div style={{ textAlign: "center", padding: "5rem 2rem" }}>
+        <div style={{ fontSize: "5rem", marginBottom: "1rem" }}>🎉</div>
         <h1 style={{
           fontFamily: "'Playfair Display',serif",
           fontSize: "2.5rem",
@@ -120,7 +111,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
           Order Confirmed!
         </h1>
         <p style={{
-          color: "#6b7280",
+          color: "var(--muted)",
           fontSize: "1rem",
           lineHeight: 1.7,
           maxWidth: 500,
@@ -157,55 +148,55 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                 ? "Belize Bank"
                 : "Atlantic Bank"} card payment.
             </strong>
-            <br /><br />
-            You can also reach us via WhatsApp to complete your payment faster.
           </p>
         </div>
 
-        <a
-          href="https://wa.me/5016206637"
-          target="_blank"
-          rel="noreferrer"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            background: "#25D366",
-            color: "white",
-            padding: "12px 28px",
-            borderRadius: 12,
-            fontWeight: 700,
-            fontSize: "0.95rem",
-            textDecoration: "none",
-            marginBottom: "1rem"
-          }}
-        >
-          <span>💬</span> Complete Payment via WhatsApp
-        </a>
-        
         <div style={{
-          background: "var(--dark)",
+          background: "#2563EB",
           color: "white",
           display: "inline-block",
-          padding: "12px 28px",
+          padding: "10px 28px",
           borderRadius: 12,
-          fontWeight: 600,
-          fontSize: "0.9rem",
-          cursor: "pointer",
-          border: "none"
+          fontWeight: 700,
+          letterSpacing: 1,
+          fontSize: "1.1rem",
+          marginBottom: "1rem"
         }}>
           {orderRef}
         </div>
-        <p style={{ color: "var(--muted)", fontSize: "0.85rem", marginBottom: "1rem" }}>
+
+        <p style={{ color: "var(--muted)", fontSize: "0.85rem", marginBottom: "1.5rem" }}>
           Save this reference number to track your order
         </p>
-        <button
-          className="btn-primary"
-          onClick={() => setPage("tracking")}
-          style={{ marginBottom: "0.75rem" }}
-        >
-          Track Your Order →
-        </button>
+
+        <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+          <a
+            href={`https://wa.me/5016206637?text=Hi! I need help with my order ${orderRef}`}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              background: "#25D366",
+              color: "white",
+              padding: "12px 28px",
+              borderRadius: 12,
+              fontWeight: 700,
+              fontSize: "0.95rem",
+              textDecoration: "none"
+            }}
+          >
+            <FaWhatsapp size={18} />
+            Complete Payment via WhatsApp
+          </a>
+          <button
+            className="btn-primary"
+            onClick={() => setPage("tracking")}
+          >
+            Track Your Order →
+          </button>
+        </div>
       </div>
     );
   }
@@ -221,7 +212,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
         Place Your Order
       </h1>
       <p style={{ color: "var(--muted)", marginBottom: "2rem" }}>
-        Fill in your details and we'll deliver to your door anywhere in Belize.
+        Fill in your details and we'll deliver to your door.
       </p>
 
       {/* STEPS */}
@@ -232,7 +223,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
               width: 28,
               height: 28,
               borderRadius: "50%",
-              background: step > i ? "var(--teal)" : step === i + 1 ? "var(--dark)" : "#ddd",
+              background: step > i ? "#2563EB" : step === i + 1 ? "var(--dark)" : "#ddd",
               color: step >= i + 1 ? "white" : "#999",
               display: "flex",
               alignItems: "center",
@@ -268,18 +259,19 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
               }}>
                 Your Details
               </h2>
+
               {[
-                ["Full Name *", "name", "text"],
-                ["Email Address *", "email", "email"],
-                ["Phone / WhatsApp *", "phone", "tel"],
-                ["Delivery Address *", "address", "text"],
-              ].map(([label, field, type]) => (
+                ["Full Name *", "name", "text", "John Smith"],
+                ["Email Address *", "email", "email", "your@email.com"],
+                ["Phone / WhatsApp *", "phone", "tel", "e.g. 6206637"],
+                ["Delivery Address *", "address", "text", "Street address"],
+              ].map(([label, field, type, placeholder]) => (
                 <div key={field} className="form-group">
                   <label className="form-label">{label}</label>
                   <input
                     className="form-input"
                     type={type}
-                    placeholder={label.replace(" *", "")}
+                    placeholder={placeholder}
                     value={form[field]}
                     onChange={e => setForm({ ...form, [field]: e.target.value })}
                   />
@@ -287,7 +279,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
               ))}
 
               <div className="form-group">
-                <label className="form-label">District *</label>
+                <label className="form-label">Delivery Area *</label>
                 <select
                   className="form-input"
                   value={form.district}
@@ -302,27 +294,29 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                 <textarea
                   className="form-input"
                   style={{ height: 80 }}
-                  placeholder="Any special instructions for your order..."
+                  placeholder="Any special instructions..."
                   value={form.notes}
                   onChange={e => setForm({ ...form, notes: e.target.value })}
                 />
               </div>
 
-            <button
-                  className="btn-primary"
-                  onClick={() => {
-                    if (!form.name || !form.email || !form.phone || !form.address) {
-                      showNotification("Please fill in all required fields", "error");
-                      return;
-                    }
-                    setStep(2);
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }}
-                >
-                  Continue to Payment →
-                </button>
+              <button
+                className="btn-primary"
+                onClick={() => {
+                  if (!form.name?.trim() || !form.email?.trim() ||
+                      !form.phone?.trim() || !form.address?.trim()) {
+                    showNotification("Please fill in all required fields", "error");
+                    return;
+                  }
+                  setStep(2);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              >
+                Continue to Payment →
+              </button>
             </div>
           )}
+
           {/* STEP 2 — Payment */}
           {step === 2 && (
             <div className="order-card">
@@ -334,7 +328,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                 Payment Method
               </h2>
 
-             <div style={{
+              <div style={{
                 background: "#f0f7ff",
                 border: "1px solid #dbeafe",
                 borderRadius: 10,
@@ -351,20 +345,22 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                   fontWeight: 700,
                   color: "#1e40af"
                 }}>
+                  <HiOutlineShieldCheck size={16} />
                   Secure Payment Processing
                 </div>
-                <p style={{ color: "#374151", marginBottom: 4 }}>
+                <p style={{ color: "#374151", marginBottom: 4, fontSize: "0.82rem" }}>
                   All payments are processed securely through Belize Bank Limited
                   and Atlantic Bank Limited's hosted payment gateways.
                 </p>
-                <p style={{ color: "#6b7280", fontSize: "0.8rem" }}>
-                  ✅ Visa & Mastercard accepted &nbsp;·&nbsp;
-                  ✅ International cards accepted &nbsp;·&nbsp;
-                  ✅ 3D Secure authentication &nbsp;·&nbsp;
+                <p style={{ color: "#6b7280", fontSize: "0.78rem" }}>
+                  ✅ Visa & Mastercard &nbsp;·&nbsp;
+                  ✅ International cards &nbsp;·&nbsp;
+                  ✅ 3D Secure &nbsp;·&nbsp;
                   ✅ PCI DSS compliant
                 </p>
               </div>
-                {PAYMENT_METHODS.map(pm => (
+
+              {PAYMENT_METHODS.map(pm => (
                 <div
                   key={pm.id}
                   style={{
@@ -434,7 +430,6 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                       }}>
                         {pm.desc}
                       </div>
-                      {/* CARD LOGOS */}
                       <div style={{ display: "flex", gap: 6 }}>
                         <div style={{
                           background: "#1a1f71",
@@ -442,8 +437,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                           padding: "2px 8px",
                           borderRadius: 4,
                           fontSize: "0.65rem",
-                          fontWeight: 900,
-                          letterSpacing: 0.5
+                          fontWeight: 900
                         }}>
                           VISA
                         </div>
@@ -453,8 +447,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                           padding: "2px 8px",
                           borderRadius: 4,
                           fontSize: "0.65rem",
-                          fontWeight: 900,
-                          letterSpacing: 0.5
+                          fontWeight: 900
                         }}>
                           MC
                         </div>
@@ -473,11 +466,15 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                   </div>
                 </div>
               ))}
+
               <div style={{ display: "flex", gap: "1rem", marginTop: "1.5rem" }}>
-                <button className="btn-secondary" onClick={() => {
+                <button
+                  className="btn-secondary"
+                  onClick={() => {
                     setStep(1);
                     window.scrollTo({ top: 0, behavior: "smooth" });
-                  }}>
+                  }}
+                >
                   ← Back
                 </button>
                 <button
@@ -506,7 +503,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                 Review Your Order
               </h2>
 
-              {/* Cart Items */}
+              {/* CART ITEMS */}
               {cart.length > 0 && (
                 <div style={{
                   background: "#f9f9f9",
@@ -514,15 +511,23 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                   padding: "1rem",
                   marginBottom: "1rem"
                 }}>
-                  <h3 style={{ fontSize: "0.85rem", fontWeight: 700, marginBottom: "0.5rem", color: "var(--muted)", textTransform: "uppercase", letterSpacing: 0.5 }}>
-                    Cart Items
+                  <h3 style={{
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    marginBottom: "0.5rem",
+                    color: "var(--muted)",
+                    textTransform: "uppercase",
+                    letterSpacing: 0.5
+                  }}>
+                    Cart Items ({cart.length})
                   </h3>
                   {cart.map((item, i) => (
                     <div key={i} style={{
                       display: "flex",
                       justifyContent: "space-between",
                       padding: "4px 0",
-                      fontSize: "0.9rem"
+                      fontSize: "0.9rem",
+                      borderBottom: i < cart.length - 1 ? "1px solid var(--border)" : "none"
                     }}>
                       <span>{item.name} ({item.size}) ×{item.qty}</span>
                       <span>BZ$ {parseFloat(item.price_bzd || item.price || 0).toFixed(2)}</span>
@@ -531,36 +536,55 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                 </div>
               )}
 
-              {/* Delivery */}
+              {/* DELIVERY */}
               <div style={{
                 background: "#f9f9f9",
                 borderRadius: 12,
                 padding: "1rem",
                 marginBottom: "1rem"
               }}>
-                <h3 style={{ fontSize: "0.85rem", fontWeight: 700, marginBottom: "0.5rem", color: "var(--muted)", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                <h3 style={{
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  marginBottom: "0.5rem",
+                  color: "var(--muted)",
+                  textTransform: "uppercase",
+                  letterSpacing: 0.5
+                }}>
                   Delivery Details
                 </h3>
-                <p style={{ fontSize: "0.9rem" }}>{form.name} · {form.phone}</p>
-                <p style={{ fontSize: "0.9rem", color: "var(--muted)" }}>{form.address}, {form.district}</p>
+                <p style={{ fontSize: "0.9rem" }}>
+                  {form.name} · {form.phone}
+                </p>
+                <p style={{ fontSize: "0.9rem", color: "var(--muted)" }}>
+                  {form.address}, {form.district}
+                </p>
               </div>
 
-              {/* Payment */}
+              {/* PAYMENT */}
               <div style={{
                 background: "#f9f9f9",
                 borderRadius: 12,
                 padding: "1rem",
                 marginBottom: "1.5rem"
               }}>
-                <h3 style={{ fontSize: "0.85rem", fontWeight: 700, marginBottom: "0.25rem", color: "var(--muted)", textTransform: "uppercase", letterSpacing: 0.5 }}>
-                  Payment
+                <h3 style={{
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  marginBottom: "0.25rem",
+                  color: "var(--muted)",
+                  textTransform: "uppercase",
+                  letterSpacing: 0.5
+                }}>
+                  Payment Method
                 </h3>
                 <p style={{ fontSize: "0.9rem" }}>
                   {PAYMENT_METHODS.find(p => p.id === paymentMethod)?.label}
                 </p>
               </div>
 
-              {/* TERMS CHECKBOX — Required by Belize Bank */}
+
+              {/* T&C CHECKBOX */}
               <div style={{
                 background: "#f0f7ff",
                 border: "1px solid #dbeafe",
@@ -588,39 +612,33 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                         setTermsTimestamp(null);
                       }
                     }}
-                    style={{ marginTop: 3, flexShrink: 0, accentColor: "#2563EB" }}
+                    style={{ marginTop: 3, accentColor: "#2563EB" }}
                   />
                   <span>
                     I have read and agree to the{" "}
                     <span
                       style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
-                      onClick={() => window.open("/terms", "_blank")}
+                      onClick={() => setPage("terms")}
                     >
                       Terms & Conditions
                     </span>
                     ,{" "}
                     <span
                       style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
-                      onClick={() => window.open("/privacy", "_blank")}
+                      onClick={() => setPage("privacy")}
                     >
                       Privacy Policy
-                    </span>
-                    ,{" "}
-                    <span
-                      style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
-                      onClick={() => window.open("/refund-policy", "_blank")}
-                    >
-                      Return Policy
                     </span>
                     {" "}and{" "}
                     <span
                       style={{ color: "#2563EB", textDecoration: "underline", cursor: "pointer" }}
-                      onClick={() => window.open("/delivery-policy", "_blank")}
+                      onClick={() => setPage("refund-policy")}
                     >
-                      Delivery Policy
+                      Return Policy
                     </span>
-                    {" "}of B-Com Belize.
+
                   </span>
+
                 </label>
                 {termsTimestamp && (
                   <p style={{
@@ -629,16 +647,21 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                     marginTop: "0.5rem",
                     marginLeft: 26
                   }}>
-                    ✓ Agreed at {new Date(termsTimestamp).toLocaleString("en-BZ")}
+                    ✓ Agreed at {new Date(termsTimestamp).toLocaleString()}
                   </p>
                 )}
               </div>
 
               <div style={{ display: "flex", gap: "1rem" }}>
-                <button className="btn-secondary" onClick={() => {
+                <button
+                  className="btn-secondary"
+                  onClick={() => {
                     setStep(2);
                     window.scrollTo({ top: 0, behavior: "smooth" });
-                  }}>← Back</button>
+                  }}
+                >
+                  ← Back
+                </button>
                 <button
                   className="btn-primary"
                   onClick={handlePlaceOrder}
@@ -647,13 +670,12 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
                 >
                   Place Order ✓
                 </button>
-              </div>              
+              </div>
             </div>
           )}
         </div>
 
         {/* ORDER SUMMARY */}
-          
         <div style={{
           background: "white",
           borderRadius: 20,
@@ -671,53 +693,97 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
             Order Summary
           </h3>
 
-              {cart.map((item, i) => (
-                <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", fontSize: "0.85rem" }}>
-                  <span style={{ color: "var(--muted)" }}>{item.name.slice(0, 18)}... ×{item.qty}</span>
-                  <span>BZ$ {parseFloat(item.price_bzd || item.price || 0).toFixed(2)}</span>
-                </div>
-              ))}
+          {cart.length === 0 ? (
+            <p style={{
+              color: "var(--muted)",
+              fontSize: "0.85rem",
+              textAlign: "center",
+              padding: "1rem 0"
+            }}>
+              No items in cart yet
+            </p>
+          ) : (
+            cart.map((item, i) => (
+              <div key={i} style={{
+                display: "flex",
+                justifyContent: "space-between",
+                padding: "6px 0",
+                fontSize: "0.85rem"
+              }}>
+                <span style={{ color: "var(--muted)" }}>
+                  {item.name.slice(0, 18)}... ×{item.qty}
+                </span>
+                <span>
+                  BZ$ {parseFloat(item.price_bzd || item.price || 0).toFixed(2)}
+                </span>
+              </div>
+            ))
+          )}
 
           <div style={{ height: 1, background: "var(--border)", margin: "0.75rem 0" }} />
 
-          <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", fontSize: "0.85rem" }}>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "6px 0",
+            fontSize: "0.85rem"
+          }}>
             <span>Subtotal</span>
             <span>BZ$ {cartTotal.toFixed(2)}</span>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", fontSize: "0.85rem" }}>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "6px 0",
+            fontSize: "0.85rem"
+          }}>
             <span>Shipping</span>
             <span>{shipping === 0 ? "FREE" : `BZ$ ${shipping.toFixed(2)}`}</span>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", fontSize: "0.85rem" }}>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "6px 0",
+            fontSize: "0.85rem"
+          }}>
             <span>GST (12.5%)</span>
             <span>BZ$ {tax.toFixed(2)}</span>
           </div>
 
           <div style={{ height: 1, background: "var(--border)", margin: "0.75rem 0" }} />
 
-          <div style={{ display: "flex", justifyContent: "space-between", fontWeight: 700, color: "var(--teal)", fontSize: "1.1rem" }}>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            fontWeight: 700,
+            color: "#2563EB",
+            fontSize: "1.1rem"
+          }}>
             <span>Total</span>
             <span>BZ$ {total.toFixed(2)}</span>
           </div>
 
           <div style={{
-            background: "#f0faf8",
+            background: "#f0f7ff",
             borderRadius: 8,
             padding: "0.75rem",
             marginTop: "1rem",
             fontSize: "0.78rem",
             color: "var(--muted)",
-            lineHeight: 1.5
+            lineHeight: 1.6
           }}>
-            <span style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-              <HiOutlineTruck size={14} color="#2563EB" /> Free shipping on orders over BZ$ XXX
-            </span>
-            <span style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-              <HiOutlineShieldCheck size={14} color="#2563EB" /> Secure payment processing
-            </span>
-            <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <HiOutlineCreditCard size={14} color="#2563EB" /> WhatsApp support available
-            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
+              <HiOutlineTruck size={14} color="#2563EB" />
+              Free shipping on orders over BZ$ 200
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
+              <HiOutlineShieldCheck size={14} color="#2563EB" />
+              Secure payment processing
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <HiOutlineCheckCircle size={14} color="#2563EB" />
+              Order confirmation via email
+            </div>
           </div>
         </div>
       </div>

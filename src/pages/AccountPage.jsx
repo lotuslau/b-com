@@ -30,10 +30,11 @@ export default function AccountPage({ customer, setCustomer, setPage, wishlist, 
   const fetchOrders = async () => {
     try {
       setLoadingOrders(true);
-      const token = localStorage.getItem("bcom_token");
-      const res = await fetch(`http://localhost:3001/api/orders/customer`, {
+      const token = sessionStorage.getItem("bcom_token");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/orders/customer`, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      
       const data = await res.json();
       setOrders(data.orders || []);
     } catch (err) {
@@ -44,8 +45,8 @@ export default function AccountPage({ customer, setCustomer, setPage, wishlist, 
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("bcom_token");
-    localStorage.removeItem("bcom_customer");
+    sessionStorage.removeItem("bcom_token");
+    sessionStorage.removeItem("bcom_customer");
     setCustomer(null);
     showNotification("Logged out successfully");
     setPage("home");
@@ -334,11 +335,35 @@ export default function AccountPage({ customer, setCustomer, setPage, wishlist, 
                       />
                     </div>
                   ))}
-                  <button
+                 <button
                     className="btn-primary"
-                    onClick={() => {
-                      showNotification("Profile updated! ✅");
-                      setEditMode(false);
+                    onClick={async () => {
+                      try {
+                        const token = sessionStorage.getItem("bcom_token");
+                        const res = await fetch(
+                          `${import.meta.env.VITE_API_URL}/auth/update`,
+                          {
+                            method: "PUT",
+                            headers: {
+                              "Content-Type": "application/json",
+                              Authorization: `Bearer ${token}`
+                            },
+                            body: JSON.stringify(form)
+                          }
+                        );
+                        const data = await res.json();
+
+                        if (data.success) {
+                          setCustomer(data.customer);
+                          sessionStorage.setItem("bcom_customer", JSON.stringify(data.customer));
+                          showNotification("Profile updated! ✅");
+                          setEditMode(false);
+                        } else {
+                          showNotification(data.error || "Update failed", "error");
+                        }
+                      } catch (err) {
+                        showNotification("Could not update profile", "error");
+                      }
                     }}
                   >
                     Save Changes

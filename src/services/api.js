@@ -2,19 +2,26 @@
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 async function request(endpoint, options = {}) {
+  const { headers, ...fetchOptions } = options;
+
   const response = await fetch(`${BASE_URL}${endpoint}`, {
+    ...fetchOptions,
     headers: {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...headers,
     },
-    ...options,
   });
 
+  const contentType = response.headers.get('content-type') || '';
+  const data = contentType.includes('application/json')
+    ? await response.json()
+    : null;
+
   if (!response.ok) {
-    throw new Error(`API error: ${response.status}`);
+    throw new Error(data?.error || data?.message || `API error: ${response.status}`);
   }
 
-  return response.json();
+  return data;
 }
 
 export const getProducts = (filters = {}) => {
@@ -25,9 +32,10 @@ export const getProducts = (filters = {}) => {
 export const getProduct = (id) => request(`/products/${id}`);
 
 //Orders
-export const createOrder = (orderData) =>
+export const createOrder = (orderData, token) =>
   request('/orders', {
     method: 'POST',
+    headers: token ? { 'Authorization': `Bearer ${token}` } : {},
     body: JSON.stringify(orderData),
   });
 export const getOrder = (ref) => request(`/orders/${ref}`);
