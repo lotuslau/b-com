@@ -138,7 +138,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
             alignItems: "center",
             gap: 6
           }}>
-            💳 Payment Instructions
+            Payment Instructions
           </div>
           <p style={{ color: "#92400e", fontSize: "0.9rem", lineHeight: 1.7, margin: 0 }}>
             Our team will contact you at <strong>{form.phone}</strong> within

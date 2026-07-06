@@ -10,6 +10,8 @@ import {
   HiOutlineStar
 } from "react-icons/hi";
 import { FaWhatsapp } from "react-icons/fa";
+import NewsletterSection from "../components/NewsletterSection";
+import SocialMediaSection from "../components/SocialMediaSection";
 
 export default function HomePage({
   products,
@@ -18,7 +20,8 @@ export default function HomePage({
   wishlist,
   toggleWishlist,
   setSelectedProduct,
-  loading
+  loading,
+  showNotification
 }) {
   const featured = products.filter(p => p.featured);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -484,6 +487,10 @@ export default function HomePage({
           </div>
         )}
       </div>
+      {/* SOCIAL MEDIA */}
+      <SocialMediaSection />
+      {/* NEWSLETTER */}
+      <NewsletterSection showNotification={showNotification} />
       </div>
   );
 }

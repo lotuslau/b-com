@@ -66,7 +66,7 @@ export default function AboutPage({ setPage }) {
           {
             emoji: <HiOutlineLockClosed size={32} color="#2563EB" />,
             title: "Secure Payments",
-            desc: "Pay safely with Belize Bank, Atlantic Bank, PayPal or cash on delivery."
+            desc: "Pay safely with Belize Bank, Atlantic Bank or international credit cards."
           },
           {
             emoji: <HiOutlinePhone size={32} color="#2563EB" />,

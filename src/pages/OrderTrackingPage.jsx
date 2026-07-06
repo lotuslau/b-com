@@ -9,8 +9,7 @@ import {
   HiOutlineShoppingBag,
   HiOutlineLocationMarker,
   HiOutlineCreditCard,
-  HiOutlinePhone,
-  HiOutlineMail
+  HiOutlinePhone
 } from "react-icons/hi";
 import { FaWhatsapp } from "react-icons/fa";
 
@@ -66,6 +65,8 @@ const CANCELLED_STATUS = {
   bg: "#fff0f2"
 };
 
+const normalizePhone = (p) => p.replace(/\D/g, '').replace(/^501/, '');
+
 export default function OrderTrackingPage({ showNotification }) {
   const [form, setForm] = useState({ reference: "", contact: "" });
   const [order, setOrder] = useState(null);
@@ -75,7 +76,7 @@ export default function OrderTrackingPage({ showNotification }) {
 
   const handleTrack = async () => {
     if (!form.reference || !form.contact) {
-      setError("Please enter your order reference and phone/email");
+      setError("Please enter your order reference and phone number or email");
       return;
     }
 
@@ -114,19 +115,16 @@ export default function OrderTrackingPage({ showNotification }) {
     }
   };
 
-  const getStatusIndex = (status) => {
-    return ORDER_STATUSES.findIndex(s => s.key === status);
-  };
+  const getStatusIndex = (status) =>
+    ORDER_STATUSES.findIndex(s => s.key === status);
 
   const getEstimatedDelivery = (status, district, createdAt) => {
     if (status === "delivered") return "Delivered";
     if (status === "cancelled") return "Cancelled";
-
     const created = new Date(createdAt);
     const days = district === "Belize City" ? 2 : 3;
     const estimated = new Date(created);
     estimated.setDate(estimated.getDate() + days);
-
     return estimated.toLocaleDateString("en-BZ", {
       weekday: "long",
       month: "long",
@@ -166,7 +164,7 @@ export default function OrderTrackingPage({ showNotification }) {
           Track Your Order
         </h1>
         <p style={{ color: "var(--muted)", fontSize: "0.95rem" }}>
-          Enter your order reference and phone number or email to track your delivery
+          Enter your order reference number and 7-digit phone number or email
         </p>
       </div>
 
@@ -179,6 +177,7 @@ export default function OrderTrackingPage({ showNotification }) {
         marginBottom: "2rem",
         boxShadow: "0 4px 20px rgba(0,0,0,0.06)"
       }}>
+
         <div className="form-group">
           <label className="form-label">Order Reference *</label>
           <div style={{ position: "relative" }}>
@@ -198,15 +197,25 @@ export default function OrderTrackingPage({ showNotification }) {
               type="text"
               placeholder="e.g. BCM-12345"
               value={form.reference}
-              onChange={e => setForm({ ...form, reference: e.target.value.toUpperCase() })}
+              onChange={e => setForm({
+                ...form,
+                reference: e.target.value.toUpperCase()
+              })}
               onKeyDown={e => e.key === "Enter" && handleTrack()}
-              style={{ paddingLeft: 38, fontFamily: "monospace", fontSize: "1rem" }}
+              style={{
+                paddingLeft: 38,
+                fontFamily: "monospace",
+                fontSize: "1rem",
+                letterSpacing: 1
+              }}
             />
           </div>
         </div>
 
         <div className="form-group">
-          <label className="form-label">Phone Number or Email *</label>
+          <label className="form-label">
+            Phone Number or Email *
+          </label>
           <div style={{ position: "relative" }}>
             <HiOutlinePhone
               size={18}
@@ -222,13 +231,20 @@ export default function OrderTrackingPage({ showNotification }) {
             <input
               className="form-input"
               type="text"
-              placeholder="Your phone number or email"
+              placeholder="7-digit phone (e.g. 6221234) or email"
               value={form.contact}
               onChange={e => setForm({ ...form, contact: e.target.value })}
               onKeyDown={e => e.key === "Enter" && handleTrack()}
               style={{ paddingLeft: 38 }}
             />
           </div>
+          <p style={{
+            fontSize: "0.75rem",
+            color: "var(--muted)",
+            marginTop: 4
+          }}>
+            Enter the phone number or email used when placing your order
+          </p>
         </div>
 
         {error && (
@@ -264,7 +280,7 @@ export default function OrderTrackingPage({ showNotification }) {
           disabled={loading}
         >
           <HiOutlineSearch size={18} />
-          {loading ? "Searching..." : "Track Order"}
+          {loading ? "Searching..." : "Track My Order"}
         </button>
       </div>
 
@@ -297,7 +313,7 @@ export default function OrderTrackingPage({ showNotification }) {
             }}>
               {currentStatusData?.icon}
             </div>
-            <div>
+            <div style={{ flex: 1 }}>
               <div style={{
                 fontWeight: 800,
                 fontSize: "1.2rem",
@@ -310,7 +326,7 @@ export default function OrderTrackingPage({ showNotification }) {
                 {currentStatusData?.desc}
               </div>
             </div>
-            <div style={{ marginLeft: "auto", textAlign: "right" }}>
+            <div style={{ textAlign: "right" }}>
               <div style={{
                 fontFamily: "monospace",
                 fontWeight: 700,
@@ -360,7 +376,8 @@ export default function OrderTrackingPage({ showNotification }) {
                   <div style={{
                     height: "100%",
                     background: "#2563EB",
-                    width: `${(getStatusIndex(order.status) / (ORDER_STATUSES.length - 1)) * 100}%`,
+                    width: `${(getStatusIndex(order.status) /
+                      (ORDER_STATUSES.length - 1)) * 100}%`,
                     transition: "width 0.5s ease",
                     borderRadius: 2
                   }} />
@@ -404,7 +421,7 @@ export default function OrderTrackingPage({ showNotification }) {
                           {status.icon}
                         </div>
                         <div style={{
-                          fontSize: "0.7rem",
+                          fontSize: "0.68rem",
                           fontWeight: isCurrent ? 700 : 500,
                           color: isDone ? "#2563EB" : "#9ca3af",
                           textAlign: "center",
@@ -426,7 +443,6 @@ export default function OrderTrackingPage({ showNotification }) {
                 display: "flex",
                 alignItems: "center",
                 gap: 8,
-                color: "var(--muted)",
                 fontSize: "0.85rem"
               }}>
                 <HiOutlineClock size={16} color="#2563EB" />
@@ -434,11 +450,13 @@ export default function OrderTrackingPage({ showNotification }) {
                   <strong style={{ color: "var(--dark)" }}>
                     Estimated Delivery:
                   </strong>{" "}
-                  {getEstimatedDelivery(
-                    order.status,
-                    order.district,
-                    order.created_at
-                  )}
+                  <span style={{ color: "var(--muted)" }}>
+                    {getEstimatedDelivery(
+                      order.status,
+                      order.district,
+                      order.created_at
+                    )}
+                  </span>
                 </span>
               </div>
             </div>
@@ -469,12 +487,14 @@ export default function OrderTrackingPage({ showNotification }) {
                 {
                   icon: <HiOutlineLocationMarker size={16} color="#2563EB" />,
                   label: "Delivery Address",
-                  value: `${order.shipping_address}, ${order.district}`
+                  value: `${order.shipping_address || ""}, ${order.district || ""}`
                 },
                 {
                   icon: <HiOutlineCreditCard size={16} color="#2563EB" />,
                   label: "Payment Method",
-                  value: order.payment_method?.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase())
+                  value: order.payment_method
+                    ?.replace(/_/g, " ")
+                    .replace(/\b\w/g, l => l.toUpperCase())
                 },
                 {
                   icon: <HiOutlineShoppingBag size={16} color="#2563EB" />,
@@ -484,7 +504,7 @@ export default function OrderTrackingPage({ showNotification }) {
                 {
                   icon: <HiOutlineCheckCircle size={16} color="#2563EB" />,
                   label: "Payment Status",
-                  value: order.status === "delivered" ? "Paid" : "Pending"
+                  value: order.status === "delivered" ? "✅ Paid" : "⏳ Pending"
                 },
               ].map(item => (
                 <div key={item.label} style={{
@@ -507,7 +527,7 @@ export default function OrderTrackingPage({ showNotification }) {
                   </div>
                   <div style={{
                     fontWeight: 600,
-                    fontSize: "0.9rem",
+                    fontSize: "0.88rem",
                     color: "var(--dark)"
                   }}>
                     {item.value}
@@ -517,7 +537,7 @@ export default function OrderTrackingPage({ showNotification }) {
             </div>
           </div>
 
-          {/* CONTACT SUPPORT */}
+          {/* WHATSAPP SUPPORT */}
           <div style={{
             background: "#f0f7ff",
             border: "1px solid #dbeafe",
@@ -537,15 +557,12 @@ export default function OrderTrackingPage({ showNotification }) {
               }}>
                 Need help with your order?
               </p>
-              <p style={{
-                color: "var(--muted)",
-                fontSize: "0.82rem"
-              }}>
-                Contact us with your reference: {order.payment_ref}
+              <p style={{ color: "var(--muted)", fontSize: "0.82rem" }}>
+                Contact us with your reference: <strong>{order.payment_ref}</strong>
               </p>
             </div>
-            
-              href={`https://wa.me/5016206637?text=Hi! I need help with my order ${order.payment_ref}`}
+            <a
+              href={`https://wa.me/501XXXXXXX?text=Hi! I need help with my order ${order.payment_ref}`}
               target="_blank"
               rel="noreferrer"
               style={{
@@ -559,17 +576,17 @@ export default function OrderTrackingPage({ showNotification }) {
                 fontWeight: 600,
                 fontSize: "0.85rem",
                 textDecoration: "none"
-              }}
-            <a>
+              }}>
               <FaWhatsapp size={16} />
               WhatsApp Us
             </a>
           </div>
+
         </div>
       )}
 
-      {/* NO ORDER FOUND */}
-      {searched && !order && !loading && !error && (
+      {/* NOT FOUND */}
+      {searched && !order && !loading && (
         <div style={{
           textAlign: "center",
           padding: "3rem",
@@ -579,9 +596,29 @@ export default function OrderTrackingPage({ showNotification }) {
         }}>
           <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🔍</div>
           <h3 style={{ marginBottom: "0.5rem" }}>Order not found</h3>
-          <p style={{ color: "var(--muted)", fontSize: "0.9rem" }}>
+          <p style={{ color: "var(--muted)", fontSize: "0.9rem", marginBottom: "1.5rem" }}>
             Please check your reference number and contact details
           </p>
+          <a
+            href="https://wa.me/5016206637"
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              background: "#25D366",
+              color: "white",
+              padding: "10px 20px",
+              borderRadius: 10,
+              fontWeight: 600,
+              fontSize: "0.85rem",
+              textDecoration: "none"
+            }}
+          >
+            <FaWhatsapp size={16} />
+            Contact Support
+          </a>
         </div>
       )}
 

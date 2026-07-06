@@ -1,11 +1,10 @@
 import { NAV_LINKS } from "../data/constants";
 import {
   HiOutlineMail,
-  HiOutlinePhone,
-  HiOutlineLocationMarker,
-  HiOutlineChatAlt2
+  HiOutlineLocationMarker
 } from "react-icons/hi";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { SOCIAL_LINKS } from "../data/constants";
 
 export default function Footer({ setPage }) {
   return (
@@ -24,8 +23,7 @@ export default function Footer({ setPage }) {
             }}
           />
           <p className="footer-tagline">
-            B-Com — Belize's premier online fashion marketplace,
-            from local artisans to global brands.
+            B-Com — Belize's premier online fashion hub.
           </p>
         </div>
 
@@ -46,21 +44,76 @@ export default function Footer({ setPage }) {
         {/* CONTACT */}
         <div>
           <h4 className="footer-link-title">Contact</h4>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: "1.25rem" }}>
             {[
               { icon: <HiOutlineLocationMarker size={16} />, text: "Belize City, Belize" },
-              { icon: <HiOutlineMail size={16} />, text: "bcom@gmail.com" },
-              { icon: <HiOutlinePhone size={16} />, text: "+501-6206637" },
-              { icon: <FaWhatsapp size={16} color="#25D366" />, text: "WhatsApp Support" },
+              { icon: <HiOutlineMail size={16} />, text: "hello@b-com.bz" },
+              { icon: <FaWhatsapp size={16} />, text: SOCIAL_LINKS.whatsappDisplay },
             ].map(c => (
               <span key={c.text} className="footer-contact" style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 {c.icon} {c.text}
               </span>
             ))}
           </div>
-        </div>
-      </div>
-      <div className="footer-bottom" style={{ flexDirection: "column", gap: "0.75rem" }}>
+
+          {/* SOCIAL ICONS */}
+          <div style={{ display: "flex", gap: 10 }}>
+            <a
+              href={SOCIAL_LINKS.facebook}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                background: "rgba(255,255,255,0.1)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "white",
+                transition: "all 0.2s"
+              }}
+            >
+              <FaFacebook size={17} />
+            </a>
+            <a
+              href={SOCIAL_LINKS.instagram}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                background: "rgba(255,255,255,0.1)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "white",
+                transition: "all 0.2s"
+              }}
+            >
+              <FaInstagram size={17} />
+            </a>
+            <a
+              href={SOCIAL_LINKS.whatsapp}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                background: "rgba(255,255,255,0.1)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "white",
+                transition: "all 0.2s"
+              }}>
+              <FaWhatsapp size={17} />
+              </a>
+            </div>
+          </div>
+        <div className="footer-bottom" style={{ flexDirection: "column", gap: "0.75rem" }}>
         <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", justifyContent: "center" }}>
           
           {[
@@ -98,6 +151,7 @@ export default function Footer({ setPage }) {
           <span>© 2026 B-Com Belize Ltd. All rights reserved. Belize City, Belize</span>
           <span>🔒 PCI DSS Compliant · Proudly Belizean</span>
         </div>
+      </div>
       </div>
     </footer>
   );

@@ -66,29 +66,43 @@ export default function AdminProducts({ showNotification }) {
     }
   };
 
-  const handleSubmit = async () => {
-    if (!form.name || !form.price_bzd) {
-      showNotification("Name and price are required", "error");
+    const handleSubmit = async () => {
+    if (!form.name || !form.price_bzd === undefined) {
+      showNotification("Name is required", "error");
       return;
     }
     try {
+      const body = {
+        ...form,
+        price_bzd: parseFloat(form.price_bzd) || 0,
+        stock_qty: parseInt(form.stock_qty) || 0,
+        sizes: form.sizes
+          ? JSON.stringify(form.sizes.split(",").map(s => s.trim()).filter(Boolean))
+          : "[]",
+        colors: form.colors
+          ? JSON.stringify(form.colors.split(",").map(c => c.trim()).filter(Boolean))
+          : "[]"
+      };
+
       if (editProduct) {
-        await updateProduct(editProduct.id);
+        await updateProduct(editProduct.id, body);
+        showNotification("Product updated! ✅");
       } else {
-        await addProduct();
+        await addProduct(body);
+        showNotification("Product added! ✅");
       }
 
       fetchProducts();
       setShowForm(false);
       setEditProduct(null);
-      showNotification(editProduct ? "Product updated!" : "Product added!");
       setForm({
         name: "", description: "", price_bzd: "", stock_qty: "",
-        brand: "", category_id: 1,
+        brand: "", category_id: 1, external_store: "own",
         is_active: true, featured: false, sizes: "", colors: ""
       });
     } catch (err) {
-      showNotification("Error saving product", "error");
+      console.error("Product save error:", err);
+      showNotification("Error saving product. Please try again.", "error");
     }
   };
 

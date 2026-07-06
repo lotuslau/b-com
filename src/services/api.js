@@ -35,7 +35,7 @@ export const getProduct = (id) => request(`/products/${id}`);
 export const createOrder = (orderData, token) =>
   request('/orders', {
     method: 'POST',
-    headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
     body: JSON.stringify(orderData),
   });
 export const getOrder = (ref) => request(`/orders/${ref}`);
@@ -64,12 +64,6 @@ export const registerSeller = (data) =>
   request('/sellers/register', {
     method: 'POST',
     body: JSON.stringify(data),
-  });
-
-export const createPayPalOrder = (amount) =>
-  request('/payments/paypal/create-order', {
-    method: 'POST',
-    body: JSON.stringify({ amount }),
   });
 
   // Reviews
