@@ -114,7 +114,7 @@ export default function AccountPage({ customer, setCustomer, setPage, wishlist, 
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
           <div style={{
             background: "rgba(255,255,255,0.15)",
             borderRadius: 10,
@@ -142,6 +142,28 @@ export default function AccountPage({ customer, setCustomer, setPage, wishlist, 
             <div style={{ fontWeight: 700, fontSize: "1.2rem" }}>{cart.length}</div>
             <div style={{ fontSize: "0.75rem", opacity: 0.8 }}>Cart</div>
           </div>
+
+          {/* SHOP NOW BUTTON */}
+          <button
+            onClick={() => setPage("featured")}
+            style={{
+              background: "white",
+              color: "#2563EB",
+              border: "none",
+              borderRadius: 10,
+              padding: "10px 20px",
+              fontWeight: 700,
+              fontSize: "0.9rem",
+              cursor: "pointer",
+              fontFamily: "'DM Sans', sans-serif",
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              transition: "all 0.2s"
+            }}
+          >
+            Shop Now
+          </button>
         </div>
       </div>
 

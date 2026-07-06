@@ -78,7 +78,7 @@ export default function OrdersPage({ cart, cartTotal, removeFromCart, showNotifi
         items
       };
 
-      const token = localStorage.getItem("bcom_token");
+      const token = sessionStorage.getItem("bcom_token");
       const response = await createOrder(orderData, token);
 
       if (response.success) {
