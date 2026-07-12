@@ -3,6 +3,7 @@ import { HiStar, HiOutlineStar, HiOutlineChevronDown, HiOutlineChevronUp } from 
 import ReviewCard from "../components/ReviewCard";
 import ReviewForm from "../components/ReviewForm";
 import { getReviews } from "../services/api";
+import { resolveProductImage } from "../utils/image";
 
 export default function ProductReviewsPage({ product, setPage }) {
   const [reviews, setReviews] = useState([]);
@@ -89,7 +90,7 @@ export default function ProductReviewsPage({ product, setPage }) {
          {product.images && (
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <img
-              src={product.images}
+              src={resolveProductImage(product.images)}
               alt={product.name}
               style={{
                 width: 80,

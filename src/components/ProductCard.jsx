@@ -8,6 +8,7 @@ import {
   HiOutlineZoomIn
 } from "react-icons/hi";
 import { useState } from "react";
+import { resolveProductImage } from "../utils/image";
 
 export default function ProductCard({
   product,
@@ -31,6 +32,7 @@ export default function ProductCard({
   const showSizes = (isClothing || isShoes) && sizes.length > 0 && sizes[0] !== "One Size" && sizes[0] !== "Contact us for sizes";
   const stock = product.stock_qty ?? product.stock ?? 0;
   const isWishlisted = wishlist.includes(product.id);
+  const imageSrc = resolveProductImage(product.images);
 
   const handleBuyNow = () => {
     addToCart(product, selectedSize, selectedColor);
@@ -55,16 +57,16 @@ export default function ProductCard({
           className="product-image"
           style={{ cursor: product.images ? "zoom-in" : "pointer" }}
           onClick={() => {
-            if (product.images && onImageClick) {
-              onImageClick(product.images, product);
+            if (imageSrc && onImageClick) {
+              onImageClick(imageSrc, product);
             } else {
               handleCardClick();
             }
           }}
         >
-          {product.images ? (
+          {imageSrc ? (
             <>
-              <img src={product.images} alt={product.name} />
+              <img src={imageSrc} alt={product.name} />
               <div style={{
                 position: "absolute",
                 inset: 0,

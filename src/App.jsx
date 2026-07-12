@@ -3,6 +3,7 @@ import PrivacyPage from "./pages/PrivacyPage";
 import RefundPolicyPage from "./pages/RefundPolicyPage";
 import DeliveryPolicyPage from "./pages/DeliveryPolicyPage";
 import { useState, useEffect } from "react";
+import { resolveProductImage } from "./utils/image";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import CartDrawer from "./components/CartDrawer";
@@ -382,7 +383,7 @@ const addToCart = (product, size, color) => {
     }}>
       {selectedProduct.images && (
         <img
-          src={selectedProduct.images}
+          src={resolveProductImage(selectedProduct.images)}
           alt={selectedProduct.name}
           style={{
             width: "100%",
