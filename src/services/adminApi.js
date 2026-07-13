@@ -1,7 +1,9 @@
 // ============================================================
 // B-COM BELIZE — Admin API Service (Secured)
 // ============================================================
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+import { API_BASE_URL } from './apiConfig';
+
+const BASE_URL = API_BASE_URL;
 const ADMIN_KEY = import.meta.env.VITE_ADMIN_KEY;
 
 const adminRequest = async (endpoint, options = {}) => {

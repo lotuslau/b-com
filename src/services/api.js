@@ -1,5 +1,7 @@
 // src/services/api.js
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+import { API_BASE_URL } from './apiConfig';
+
+const BASE_URL = API_BASE_URL;
 
 async function request(endpoint, options = {}) {
   const { headers, ...fetchOptions } = options;

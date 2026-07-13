@@ -14,6 +14,7 @@ import OrderTrackingPage from "./pages/OrderTrackingPage";
 import AboutPage from "./pages/AboutPage";
 import CustomerServicePage from "./pages/CustomerServicePage";
 import { getProducts } from "./services/api";
+import { getApiUrl } from "./services/apiConfig";
 import { HiOutlineArrowUp } from "react-icons/hi";
 import ProductReviewsPage from "./pages/ProductReviewsPage";
 import WishlistPage from "./pages/WishlistPage";
@@ -101,7 +102,7 @@ export default function BComStore() {
       const token = sessionStorage.getItem("bcom_token");
 
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/wishlist`,
+        getApiUrl('/wishlist'),
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -194,7 +195,7 @@ const addToCart = (product, size, color) => {
 
     try {
       const token = sessionStorage.getItem("bcom_token");
-      await fetch(`${import.meta.env.VITE_API_URL}/wishlist/toggle`, {
+      await fetch(getApiUrl('/wishlist/toggle'), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

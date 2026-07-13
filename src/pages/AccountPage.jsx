@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { getApiUrl } from "../services/apiConfig";
 import {
   HiOutlineUser,
   HiOutlineShoppingBag,
@@ -31,7 +32,7 @@ export default function AccountPage({ customer, setCustomer, setPage, wishlist, 
     try {
       setLoadingOrders(true);
       const token = sessionStorage.getItem("bcom_token");
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/orders/customer`, {
+      const res = await fetch(getApiUrl('/orders/customer'), {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -363,7 +364,7 @@ export default function AccountPage({ customer, setCustomer, setPage, wishlist, 
                       try {
                         const token = sessionStorage.getItem("bcom_token");
                         const res = await fetch(
-                          `${import.meta.env.VITE_API_URL}/auth/update`,
+                          getApiUrl('/auth/update'),
                           {
                             method: "PUT",
                             headers: {

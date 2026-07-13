@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getApiUrl } from "../services/apiConfig";
 import {
   HiOutlineSearch,
   HiOutlineCheckCircle,
@@ -86,7 +87,7 @@ export default function OrderTrackingPage({ showNotification }) {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/orders/track`,
+        getApiUrl('/orders/track'),
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

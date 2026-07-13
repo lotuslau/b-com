@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { HiOutlineMail, HiOutlineCheckCircle } from "react-icons/hi";
+import { getApiUrl } from "../services/apiConfig";
 
 export default function NewsletterSection({ showNotification }) {
   const [form, setForm] = useState({ email: "", name: "" });
@@ -21,7 +22,7 @@ export default function NewsletterSection({ showNotification }) {
     try {
       setLoading(true);
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/newsletter/subscribe`,
+        getApiUrl('/newsletter/subscribe'),
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

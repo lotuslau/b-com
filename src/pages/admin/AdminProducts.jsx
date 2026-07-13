@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { getApiUrl } from "../../services/apiConfig";
 import {
   HiOutlinePencil,
   HiOutlineTrash,
@@ -35,7 +36,7 @@ export default function AdminProducts({ showNotification }) {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/products`);
+      const res = await fetch(getApiUrl('/products'));
       const data = await res.json();
       setProducts(data.products || []);
     } catch (err) {
