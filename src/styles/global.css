@@ -177,3 +177,142 @@ button:hover {
 .footer-link:hover {
   color: #2563EB !important;
 }
+/* ============================================================
+   MOBILE RESPONSIVE — B-COM BELIZE
+   ============================================================ */
+
+/* ── TABLET (768px and below) ── */
+@media (max-width: 768px) {
+
+  /* NAV */
+  .nav-links {
+    display: none !important;
+  }
+
+  #mobile-menu-btn {
+    display: flex !important;
+  }
+
+  .nav-inner {
+    height: 65px !important;
+    padding: 0 1rem !important;
+  }
+
+  .nav-logo img {
+    height: 50px !important;
+  }
+
+  /* HERO */
+  .hero {
+    flex-direction: column !important;
+    min-height: auto !important;
+    padding: 2rem 1rem 1rem !important;
+    gap: 1.5rem !important;
+  }
+
+  .hero-text {
+    text-align: center !important;
+  }
+
+  .hero-title {
+    font-size: 2.5rem !important;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem !important;
+    margin: 0 auto 1.5rem !important;
+  }
+
+  .hero-image img {
+    max-width: 100% !important;
+  }
+
+  /* PRODUCT GRID */
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+
+  /* FOOTER */
+  .footer-inner {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2rem !important;
+  }
+
+  .footer-bottom {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 0.5rem !important;
+  }
+
+  /* ORDERS */
+  .orders-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* CUSTOMER SERVICE */
+  .cs-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* STORES */
+  .stores-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── MOBILE (480px and below) ── */
+@media (max-width: 480px) {
+
+  /* NAV */
+  .nav-inner {
+    height: 60px !important;
+    padding: 0 0.75rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .nav-logo img {
+    height: 42px !important;
+  }
+
+  /* Search bar hidden on small mobile */
+  .nav-inner > div:nth-child(3) {
+    display: none !important;
+  }
+
+  /* HERO */
+  .hero-title {
+    font-size: 2rem !important;
+  }
+
+  /* PRODUCT GRID — single column on very small screens */
+  .product-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* FOOTER */
+  .footer-inner {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* PAGE PADDING */
+  .page-container {
+    padding: 1rem !important;
+  }
+
+  .section {
+    padding: 2rem 1rem !important;
+  }
+}

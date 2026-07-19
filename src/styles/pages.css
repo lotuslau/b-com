@@ -287,14 +287,73 @@
 
 /* ---- RESPONSIVE ---- */
 @media (max-width: 768px) {
-  .hero { flex-direction: column; min-height: auto; padding-top: 3rem; }
-  .cs-grid { grid-template-columns: 1fr; }
-  .orders-layout { grid-template-columns: 1fr; }
-  .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .hero {
+    flex-direction: column;
+    min-height: auto;
+    padding: 2rem 1rem;
+    gap: 1.5rem;
+  }
+
+  .hero-text {
+    text-align: center;
+  }
+
+  .hero-image img {
+    max-width: 100%;
+  }
+
+  .cs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .orders-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .about-hero {
+    padding: 3rem 1rem;
+  }
+
+  .about-hero h1 {
+    font-size: 2rem;
+  }
 }
 
 @media (max-width: 480px) {
-  .footer-inner { grid-template-columns: 1fr; }
+  .footer-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .stores-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trust-strip {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .collection-banner {
+    padding: 0.75rem 1rem;
+    font-size: 0.82rem;
+  }
 }
 /* ---- HOVER STATES ---- */
 .about-card:hover {

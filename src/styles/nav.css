@@ -102,12 +102,22 @@
 }
 
 /* Mobile menu */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .nav-links {
-    display: none;
+    display: none !important;
   }
 
   #mobile-menu-btn {
     display: flex !important;
+  }
+
+  .nav-inner {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-logo img {
+    height: 42px;
   }
 }

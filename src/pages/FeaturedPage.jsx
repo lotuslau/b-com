@@ -72,8 +72,8 @@ export default function FeaturedPage({
       {/* MAIN LAYOUT */}
       <div style={{
         display: "grid",
-        gridTemplateColumns: "220px 1fr",
-        gap: "2rem"
+        gridTemplateColumns: "clamp(160px, 22%, 220px) 1fr",
+        gap: "1.5rem"
       }}>
 
         {/* SIDEBAR */}
